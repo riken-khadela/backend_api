@@ -66,6 +66,7 @@ class CustomUser(AbstractUser,TimeStampModel):
     last_name = models.CharField(max_length=25)
     city = models.CharField(max_length=25)
     gender = models.CharField(max_length=25,choices=GENDER)
+    verification_code = models.BigIntegerField(null=True,blank=True)
     is_user_verified = models.BooleanField(default=False)
     
     objects = UserManager()
@@ -83,29 +84,5 @@ class CustomUser(AbstractUser,TimeStampModel):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-    
-    
-
-class Product(models_D.Model):
-    """ 
-    A model to store and use Products data
-    """
-    id = models_D.AutoField(primary_key=True)
-    Name = models_D.TextField(max_length=1000,null=False,blank=False)
-    ImgLink = models_D.CharField(max_length=255,null=False,blank=False)
-    Price = models_D.IntegerField(null=False,blank=False)
-    
-    class Meta:
-        db_table = 'Product'
-
-
-        
-class Cart(models_D.Model):
-    """ 
-    A model to store and use Cart details of particular user and this will be connected to the User and Products as well which will add in the cart
-    """
-    id = models_D.AutoField(primary_key=True)
-    user = models_D.ForeignKey(CustomUser,on_delete=models.CASCADE)
-    Products =  models_D.ArrayReferenceField(to=Product,on_delete=models_D.CASCADE,null=True,blank=True)
     
     

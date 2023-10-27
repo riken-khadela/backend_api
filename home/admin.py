@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, Product
+from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -11,4 +11,3 @@ class CustomUserAdmin(UserAdmin):
     list_display = ["email", "username",]
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Product)

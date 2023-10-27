@@ -81,19 +81,19 @@ WSGI_APPLICATION = 'e_com.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
-   'default' : {
-      'ENGINE' : 'djongo',
-      'NAME' : 'E_commerce'
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
+
+# DATABASES = {
+#    'default' : {
+#       'ENGINE' : 'djongo',
+#       'NAME' : 'E_commerce'
+#    }
+# }
 
 
 # Password validation
@@ -188,3 +188,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 CRONJOBS = [
     ('*/1 1 * * *', 'cron.cron.my_scheduled_job')
 ]
+
+# added by riken
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'rikenkhadelamain@gmail.com'
+EMAIL_HOST_PASSWORD = 'Nekir@123'
