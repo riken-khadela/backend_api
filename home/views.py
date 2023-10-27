@@ -101,7 +101,7 @@ class send_email(APIView):
 
         subject = 'Hello, Django Email'
         message = 'This is a test email sent from a Django application.'
-        from_email = 'rikenkhadelamain@gmail.com'
+        from_email = 'info@keywordlit.com'
         recipient_list = ['rikenkhadela85@gmail.com']   
 
         send_mail(subject, message, from_email, recipient_list)
