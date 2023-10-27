@@ -13,7 +13,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
-import random
+import random, dotenv
+
 
     
 def get_or_createToken(request):
@@ -51,7 +52,44 @@ class UserRegistrationView(APIView):
                 return Response({'msg':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
             user = serializer.save()
             token = get_tokens_for_user(user)
-            return Response({'token':token, 'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
+            verification_code = random.randint(100000,999999)
+            user.verification_code = verification_code
+            user.save()
+            subject = 'Verification code is here'
+            message = f'verification code : {verification_code}'
+            from_email = 'info@keywordlit.com'
+            recipient_list = [user.email]   
+            send_mail(subject, message, from_email, recipient_list)            
+            return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
+
+class UserEmailVerificationView(APIView):
+    """ 
+    To verify user needs to send email and verification 
+    """
+    def post(self, request):
+        email = request.data.get('email')
+        verification_code = request.data.get('verification_code')
+
+        user = CustomUser.objects.filter(email=email, verification_code=verification_code).first()
+        if user :
+            user.is_user_verified = True
+            user.save()
+            return Response({'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
+        else :
+            try :
+                verification_code = random.randint(100000,999999)
+                user.verification_code = verification_code
+                user.save()
+                subject = 'Verification code is here'
+                message = f'verification code : {verification_code}'
+                from_email = 'info@keywordlit.com'
+                recipient_list = [email]   
+                send_mail(subject, message, from_email, recipient_list) 
+                send_verification_code = True
+            except : 
+                send_verification_code = False
+
+            return Response({'message': 'Invalid verification code.','ResendVerificationCode' : send_verification_code}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLoginView(APIView):
     """ 
@@ -66,7 +104,8 @@ class UserLoginView(APIView):
         user = CustomUser.objects.get(email = email)
         if user.check_password(password)  :
             token = get_tokens_for_user(user)
-            return Response({'token':token, 'msg':'Login Success'}, status=status.HTTP_200_OK)
+
+            return Response({'token':token,'verified' : user.is_user_verified, 'msg':'Login Success'}, status=status.HTTP_200_OK)
         else:
             return Response({'errors':{'non_field_errors':['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
