@@ -1,0 +1,1 @@
+cd /home/dell/Desktop/upwork/backend_api/backend_api && . env/bin/activate && python main.py
