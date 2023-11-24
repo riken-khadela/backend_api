@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/profile/', UserProfileView.as_view(), name='api-profile'),
     path('api/changepassword/', UserChangePasswordView.as_view(), name='api-changepassword'),
     path('api/send-email/', send_email.as_view(), name='api-send-email'),
+    path('api/get-insta-tags/', InstaHashTag.as_view(), name='get-insta-tags'),
 ]

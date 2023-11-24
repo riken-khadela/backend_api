@@ -87,6 +87,15 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # Assuming you're using PostgreSQL
+#         'NAME': 'keywordl_db',
+#         'USER': 'keywordl_db',
+#         'PASSWORD': 'sajaltech',
+#         'HOST': 'keywordlit.com',
+#     }
+# }
 
 # DATABASES = {
 #    'default' : {

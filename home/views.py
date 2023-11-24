@@ -14,6 +14,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
+from django.http import JsonResponse
+
 
 
     
@@ -145,3 +147,15 @@ class send_email(APIView):
 
         send_mail(subject, message, from_email, recipient_list)
         return Response({"Email sent successfully."},status=status.HTTP_200_OK)
+    
+
+class InstaHashTag(APIView):
+    """ 
+    Get a user profile data with email and password
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        hashtag = ['meme','memes','memesespanol','memesdaily','memepage','memesbrasil','memes','memeindonesia','memeaccount','memeita','memegod','memedaily','memer','memestagram','memess','memesbrasileiros','memesquad','memesbr','memelife']
+        # serializer = UserProfileSerializer(request.user)
+        return JsonResponse({"Hastag" : hashtag})
