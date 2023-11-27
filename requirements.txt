@@ -34,7 +34,6 @@ oauthlib==3.2.2
 outcome==1.2.0
 packaging==23.2
 pandas==2.1.1
-psycopg2==2.9.9
 psycopg2-binary==2.9.9
 pycparser==2.21
 pycryptodome==3.19.0
