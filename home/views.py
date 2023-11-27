@@ -15,7 +15,8 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
 from django.http import JsonResponse
-
+from .utils import GetActiveChromeSelenium
+from django.contrib.auth.models import AnonymousUser
 
 
     
@@ -118,6 +119,7 @@ class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
+        breakpoint()
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -143,8 +145,8 @@ class send_email(APIView):
         subject = 'Hello, Django Email'
         message = 'This is a test email sent from a Django application.'
         from_email = 'info@keywordlit.com'
-        recipient_list = ['rikenkhadela85@gmail.com']   
-
+        recipient_list = [request.data['email']]   
+        breakpoint()
         send_mail(subject, message, from_email, recipient_list)
         return Response({"Email sent successfully."},status=status.HTTP_200_OK)
     
@@ -153,9 +155,32 @@ class InstaHashTag(APIView):
     """ 
     Get a user profile data with email and password
     """
-    renderer_classes = [UserRenderer]
-    permission_classes = [IsAuthenticated]
     def post(self, request, format=None):
-        hashtag = ['meme','memes','memesespanol','memesdaily','memepage','memesbrasil','memes','memeindonesia','memeaccount','memeita','memegod','memedaily','memer','memestagram','memess','memesbrasileiros','memesquad','memesbr','memelife']
-        # serializer = UserProfileSerializer(request.user)
-        return JsonResponse({"Hastag" : hashtag})
+        Hastag = GetActiveChromeSelenium(request.data['hashtag'])
+        if Hastag == False : 
+            msg = 'could not get hashtag or The all drivers are busy !'
+            Hastag = []
+        else :
+            msg = 'Extracted the Hashtags !'
+
+        return Response({"Hastag" : Hastag, "Message" : msg },status=status.HTTP_200_OK)
+
+class start_drivers(APIView):
+
+    def post(self, request, format=None):
+        try :
+            return JsonResponse({"Hastag" : "hashtag"})
+        except Exception as e :
+            return JsonResponse({"Hastag" : "hashtag"})
+        
+
+class UserProfileView2(APIView):
+    def get(self, request, *args, **kwargs):
+        # Access the authenticated user from the request
+        authenticated_user = request.user
+
+        if isinstance(authenticated_user, AnonymousUser):
+            return Response({"detail": "Invalid or missing token."}, status=401)
+        else:
+            # Token is valid, return the username
+            return Response({"username": authenticated_user.username}, status=200)

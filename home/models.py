@@ -3,6 +3,7 @@ from django import forms
 from django.db import models
 from djongo import models as models_D
 # from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import JSONField
 
 class TimeStampModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -85,4 +86,16 @@ class CustomUser(AbstractUser,TimeStampModel):
         # Simplest possible answer: Yes, always
         return True
     
-    
+class instagram_accounts(TimeStampModel):
+    STATUS = (
+        ('ACTIVE','ACTIVE'),
+        ('INACTIVE','INACTIVE'),
+    )
+    username = models.CharField(max_length=25)
+    password = models.CharField(max_length=25)
+    busy = models.BooleanField(default=False)
+    status = models.CharField(max_length=25,choices=STATUS,default='ACTIVE')
+
+class driver_status(models.Model):
+    need_to_restart_driver = models.BooleanField(default=True)
+    user_data = models.TextField(null=True,blank=True)

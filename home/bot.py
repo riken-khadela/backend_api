@@ -11,12 +11,28 @@ from selenium.webdriver.common.by import By
 from dotenv import load_dotenv
 load_dotenv()
 
+from .models import instagram_accounts
+
+
 class Bot():
-    def __init__(self) :
-        self.cookies_path = os.path.join(os.getcwd()+'/cookies',f'cookietest.json')
-        self.get_driver(0)
-        if self.check_login() :
-            self.extract_tag('meme')
+    def __init__(self,user,start_drivers : bool,driver='', extract_hashtag = False,hashtag = '') :
+
+        self.username = user.username
+        self.password = user.password
+
+        if start_drivers == True :
+            self.cookies_path = os.path.join(os.getcwd()+'/cookies',f'{user.id}_cookietest.json')
+            self.get_driver(user.id)
+            return self.check_login() 
+        else : 
+            if extract_hashtag == True and driver != '':
+                self.driver = driver
+                if self.check_login() :
+                    return self.extract_tag(hashtag)
+                else :
+                    return False
+
+
         # cookies = self.driver.get_cookies()
 
         # path = os.path.join(os.getcwd()+'/cookies',f'cookietest.json')
@@ -172,14 +188,13 @@ class Bot():
             print('Driver is closed !')
         except Exception as e: ...
     def check_login(self) :
-        username = os.getenv('INSTA_USERNAME')
-        self.driver.get(f'https://www.instagram.com/'+username+'/')
+        self.driver.get(f'https://www.instagram.com/'+self.username+'/')
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
         if all_a :
             all_a[-1].click()
             if 'login' in self.driver.current_url.lower() :
-                self.input_text(os.getenv('INSTA_USERNAME'),'username',"//input[@aria-label='Phone number, username, or email']",By.XPATH)
-                self.input_text(os.getenv('INSTA_PASSWORD'),'password',"//input[@aria-label='Password']",By.XPATH)
+                self.input_text(self.username,'username',"//input[@aria-label='Phone number, username, or email']",By.XPATH)
+                self.input_text(self.password,'password',"//input[@aria-label='Password']",By.XPATH)
                 self.click_element('submit',"//button[@type='submit']",By.XPATH)
                 self.random_sleep(5,7)
                 if 'onetap' in self.driver.current_url :
@@ -190,7 +205,7 @@ class Bot():
         self.random_sleep(10,15)
         edit_profile_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'a') if 'edit profile' in i.text.lower()]
         if edit_profile_btn :
-            return True
+            return self.driver
         return False
 
         ...
@@ -203,4 +218,4 @@ class Bot():
 
         ...
 
-Bot()
+# Bot()
