@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django import forms
 from django.db import models
-from djongo import models as models_D
 # from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.fields import JSONField
 
