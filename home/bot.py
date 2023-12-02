@@ -57,7 +57,7 @@ class Bot():
         # options.add_experimental_option("prefs", prefs)
         
         
-        self.driver = uc(headless=True,version_main=119)
+        # self.driver = uc(headless=True,version_main=119)
         self.driver = webdriver.Chrome()
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
