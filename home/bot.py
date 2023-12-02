@@ -65,10 +65,10 @@ class Bot():
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--enable-javascript")
         options.add_argument("--enable-popup-blocking")
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
         for _ in range(30):
             try:
-                self.driver = webdriver.Chrome('./chromedriver',options=options)
+                self.driver = webdriver.Chrome(options=options)
                 break
             except Exception as e:
                 print(e)
