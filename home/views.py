@@ -15,10 +15,10 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
 from django.http import JsonResponse
-from .utils import GetActiveChromeSelenium
+from .utils import GetActiveChromeSelenium, scrape_hashtags
 from django.contrib.auth.models import AnonymousUser
 
-
+# user_driver_dict = GetActiveChromeSelenium()
     
 def get_or_createToken(request):
     """ 
@@ -156,14 +156,34 @@ class InstaHashTag(APIView):
     Get a user profile data with email and password
     """
     def post(self, request, format=None):
-        Hastag = GetActiveChromeSelenium(request.data['hashtag'])
-        if Hastag == False : 
-            msg = 'could not get hashtag or The all drivers are busy !'
-            Hastag = []
-        else :
-            msg = 'Extracted the Hashtags !'
+        driver = ''
+        global user_driver_dict
+        for keys,value in user_driver_dict.items():
+            if value['status'] == True :
+                driver = value['driver']
+            if driver : 
+                value['status'] = False
+                break
+        print(user_driver_dict)
+        Hastag = []
+        if driver:
+            try :
+                Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
+                if Hastag:
+                    msg = 'Hashtag scraped successfully'
+                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)
+                else:
+                    msg = 'Failed to scrape the hashtag'
+                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+            except :
+                msg = 'Failed to scrape the hashtag'
+            finally :
+                value['status'] = True
+                return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"Hastag" : Hastag, "Message" : msg },status=status.HTTP_200_OK)
+        else:
+            msg = 'All drivers are busy!'
+            return Response({"Message": msg}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 class start_drivers(APIView):
 

@@ -15,29 +15,16 @@ from .models import instagram_accounts
 
 
 class Bot():
-    def __init__(self,user,start_drivers : bool,driver='', extract_hashtag = False,hashtag = '') :
-
+    def __init__(self,user) :
+        self.user = user
         self.username = user.username
         self.password = user.password
 
-        if start_drivers == True :
-            self.cookies_path = os.path.join(os.getcwd()+'/cookies',f'{user.id}_cookietest.json')
-            self.get_driver(user.id)
-            return self.check_login() 
-        else : 
-            if extract_hashtag == True and driver != '':
-                self.driver = driver
-                if self.check_login() :
-                    return self.extract_tag(hashtag)
-                else :
-                    return False
-
-
-        # cookies = self.driver.get_cookies()
-
-        # path = os.path.join(os.getcwd()+'/cookies',f'cookietest.json')
-        # with open(path, 'w', newline='') as outputdata:  json.dump(cookies, outputdata)
-        # ...
+        
+                
+    def return_driver(self) : 
+        self.get_driver(self.user.id) 
+        return self.check_login() 
 
     def get_driver(self,profile_id : int,add_cybeghost=False):
         """Start webdriver and return state of it."""
@@ -72,6 +59,7 @@ class Bot():
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--enable-javascript")
         options.add_argument("--enable-popup-blocking")
+        options.add_argument('--headless')
         for _ in range(30):
             try:
                 self.driver = webdriver.Chrome(options=options)
@@ -138,6 +126,7 @@ class Bot():
         if ele:
             for i in range(3):
                 try: 
+                    ele.clear()
                     ele.send_keys(text)
                     print(f'Inputed "{text}" for the element: {element}')
                     return ele    
@@ -187,6 +176,7 @@ class Bot():
             self.driver.quit()
             print('Driver is closed !')
         except Exception as e: ...
+
     def check_login(self) :
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
@@ -205,17 +195,19 @@ class Bot():
         self.random_sleep(10,15)
         edit_profile_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'a') if 'edit profile' in i.text.lower()]
         if edit_profile_btn :
+            self.driver.get('https://www.instagram.com/')
+            self.click_element('search btn',"//a[@href='#']")
             return self.driver
         return False
 
-        ...
-
-    def extract_tag(self,tag : str):
-        self.driver.get('https://www.instagram.com/')
-        self.click_element('search btn',"//a[@href='#']")
-        self.input_text(f"#{tag}",'password',"//input[@aria-label='Search input']",By.XPATH)
-        all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
-
-        ...
-
+    def extract_tag(self,tag : str,driver):
+        self.driver = driver
+        self.input_text(f"#{tag}",tag,"//input[@aria-label='Search input']",By.XPATH)
+        for _ in range(10) :
+            all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
+            if not all_hashtah_links :
+                time.sleep(1)
+            else :
+                return all_hashtah_links
+        return []
 # Bot()

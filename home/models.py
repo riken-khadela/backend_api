@@ -95,6 +95,6 @@ class instagram_accounts(TimeStampModel):
     busy = models.BooleanField(default=False)
     status = models.CharField(max_length=25,choices=STATUS,default='ACTIVE')
 
-class driver_status(models.Model):
-    need_to_restart_driver = models.BooleanField(default=True)
-    user_data = models.TextField(null=True,blank=True)
+# class driver_status(models.Model):
+#     need_to_restart_driver = models.BooleanField(default=True)
+#     user_data = models.TextField(null=True,blank=True)
