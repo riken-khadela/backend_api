@@ -54,6 +54,7 @@ class Bot():
         #     'download.directory_upgrade': True,
         #     'safebrowsing.enabled': True ,
         #     "profile.password_manager_enabled": True}
+        
         # options.add_experimental_option("prefs", prefs)
         
         
