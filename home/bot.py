@@ -22,7 +22,8 @@ class Bot():
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
         from selenium.webdriver.chrome.options import Options
-        options = Options()
+        from selenium import webdriver
+        options =webdriver.ChromeOptions()
         # options = ChromesOptions()
         options.add_argument('--autoplay-policy=no-user-gesture-required')
         options.add_argument('--start-maximized')    
