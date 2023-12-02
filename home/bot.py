@@ -1,4 +1,5 @@
 import random, time, os, json
+from click import option
 import undetected_chromedriver as uc
 from selenium import webdriver  
 from selenium_stealth import stealth
@@ -48,7 +49,7 @@ class Bot():
         options.add_argument("disable-infobars")
         
         options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profiles','profile_'+str(profile_id))}")
-
+        options.add_argument('--profile-directory=Defualt')
         prefs = {"credentials_enable_service": True,
                  'profile.default_content_setting_values.automatic_downloads': 1,
             'download.prompt_for_download': False,  # Optional, suppress download prompt
