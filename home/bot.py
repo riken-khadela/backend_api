@@ -58,7 +58,7 @@ class Bot():
         
         
         # self.driver = uc(headless=True,version_main=119)
-        self.driver = webdriver.Chrome(executable_path='chromedriver')
+        self.driver = webdriver.Chrome(executable_path='/home/sajal/back-end/backend_api/chromedriver')
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
