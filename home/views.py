@@ -157,7 +157,7 @@ class InstaHashTag(APIView):
     def post(self, request, format=None):
         Hastag = []
         user_id = get_user_id_from_token(request)
-        user = CustomUser.objects.filter(id=user_id)
+        user = CustomUser.objects.filter(id=user_id).first()
         if user.credit < 10 :
             msg = 'Insufficient credit to perform this action.'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
@@ -174,7 +174,7 @@ class InstaHashTag(APIView):
             try :
                 Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
                 if Hastag:
-                    user = user.credit - 10
+                    user.credit= user.credit - 10
                     user.save()
                     msg = 'Hashtag scraped successfully'
                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)

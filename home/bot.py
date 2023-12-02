@@ -1,13 +1,12 @@
 import random, time, os, json
 from click import option
-import undetected_chromedriver as uc
-from selenium import webdriver  
 from selenium_stealth import stealth
-from selenium.common.exceptions import NoSuchElementException, TimeoutException,ElementNotInteractableException,NoSuchElementException,WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from undetected_chromedriver import Chrome as uc, ChromeOptions
+import logging
 
 class Bot():
     def __init__(self,user) :
@@ -21,57 +20,46 @@ class Bot():
         self.get_driver(self.user.id) 
         return self.check_login() 
 
-    def get_driver(self,profile_id : int,add_cybeghost=False):
+    def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
-        from selenium.webdriver.chrome.options import Options
-        options = Options()
 
-        options = uc.ChromeOptions()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--autoplay-policy=no-user-gesture-required')
-        options.add_argument('--start-maximized')    
-        options.add_argument('--single-process')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument("--disable-blink-features")
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--enable-javascript")
-        options.add_argument("--disable-notifications")
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument("--enable-popup-blocking")
-        options.add_experimental_option('useAutomationExtension', False)
-        options.add_experimental_option("excludeSwitches", [
-            "enable-logging",
-            "enable-automation",
-            "ignore-certificate-errors",
-            "safebrowsing-disable-download-protection",
-            "safebrowsing-disable-auto-update",
-            "disable-client-side-phishing-detection"])
-        options.add_argument("disable-infobars")
-        options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profiles','profile_'+str(profile_id))}")
+        options = ChromeOptions()
+        # options.add_argument('--autoplay-policy=no-user-gesture-required')
+        # options.add_argument('--start-maximized')    
+        # options.add_argument('--single-process')
+        # options.add_argument("--ignore-certificate-errors")
+        # options.add_argument("--enable-javascript")
+        # options.add_argument("--disable-notifications")
+        # options.add_argument('--disable-blink-features=AutomationControlled')
+        # options.add_argument('--no-sandbox')
+        # options.add_argument('--disable-dev-shm-usage')
+        # options.add_argument('--disable-gpu')
+        # options.add_argument("--enable-popup-blocking")
+        # options.add_argument(f"user-data-dir={str(profile_id)}")
+        # options.add_argument(f"user-data-dir=profile-directory")
+
+        # options.add_experimental_option('useAutomationExtension', False)
+        # options.add_experimental_option("excludeSwitches", [
+        #     "enable-logging",
+        #     "enable-automation",
+        #     "safebrowsing-disable-download-protection",
+        #     "safebrowsing-disable-auto-update",
+        #     "disable-client-side-phishing-detection"])
         
         # options.add_argument(f"user-data-dir={str(profile_id)}")
         # options.add_argument('--profile-directory=Defualt')
-        prefs = {"credentials_enable_service": True,
-                 'profile.default_content_setting_values.automatic_downloads': 1,
-            'download.prompt_for_download': False,  # Optional, suppress download prompt
-            'download.directory_upgrade': True,
-            'safebrowsing.enabled': True ,
-            "profile.password_manager_enabled": True}
-        options.add_experimental_option("prefs", prefs)
-        if add_cybeghost :
-            options.add_extension('./Stay-secure-with-CyberGhost-VPN-Free-Proxy.crx')
-        options.add_extension('./Buster-Captcha-Solver-for-Humans.crx')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--start-maximized')    
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-gpu')
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--enable-javascript")
-        options.add_argument("--enable-popup-blocking")
-        options.add_argument('--headless')
+        # prefs = {"credentials_enable_service": True,
+        #          'profile.default_content_setting_values.automatic_downloads': 1,
+        #     'download.prompt_for_download': False,  # Optional, suppress download prompt
+        #     'download.directory_upgrade': True,
+        #     'safebrowsing.enabled': True ,
+        #     "profile.password_manager_enabled": True}
+        # options.add_experimental_option("prefs", prefs)
+        
+        
         for _ in range(30):
             try:
-                self.driver = webdriver.Chrome(options=options)
+                self.driver = uc(user_data_dir='profile/'+str(profile_id))
                 break
             except Exception as e:
                 print(e)
@@ -107,7 +95,7 @@ class Bot():
             else:
                 print(f'Found the element: {element}')
             return ele
-        except (NoSuchElementException, TimeoutException) as e:
+        except Exception as e:
             if page:
                 print(f'Cannot find the element "{element}"'
                         f' in the page "{page}"')
@@ -139,7 +127,7 @@ class Bot():
                     ele.send_keys(text)
                     print(f'Inputed "{text}" for the element: {element}')
                     return ele    
-                except ElementNotInteractableException :...
+                except  :...
     
     def ScrollDown(self,px):
         self.driver.execute_script(f"window.scrollTo(0, {px})")
@@ -154,7 +142,7 @@ class Bot():
         try:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(element))
             element.click()
-        except WebDriverException:
+        except :
             self.driver.execute_script("arguments[0].click();", element)
     
     def new_tab(self):
@@ -188,6 +176,7 @@ class Bot():
 
     def check_login(self) :
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
+        time.sleep(3)
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
         if all_a :
             all_a[-1].click()
@@ -214,9 +203,8 @@ class Bot():
         self.input_text(f"#{tag}",tag,"//input[@aria-label='Search input']",By.XPATH)
         for _ in range(10) :
             all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
-            if not all_hashtah_links :
+            if  len(all_hashtah_links) < 1:
                 time.sleep(1)
             else :
                 return all_hashtah_links
         return []
-# Bot()
