@@ -26,7 +26,6 @@ class Bot():
         from selenium.webdriver.chrome.options import Options
         options = Options()
 
-        options = uc.ChromeOptions()
         options.add_argument('--no-sandbox')
         options.add_argument('--autoplay-policy=no-user-gesture-required')
         options.add_argument('--start-maximized')    

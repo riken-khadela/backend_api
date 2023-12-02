@@ -21,21 +21,23 @@ class Bot():
 
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
-
+        from selenium.webdriver.chrome.options import Options
+        options = Options()
         # options = ChromesOptions()
-        # options.add_argument('--autoplay-policy=no-user-gesture-required')
-        # options.add_argument('--start-maximized')    
-        # options.add_argument('--single-process')
-        # options.add_argument("--ignore-certificate-errors")
-        # options.add_argument("--enable-javascript")
-        # options.add_argument("--disable-notifications")
-        # options.add_argument('--disable-blink-features=AutomationControlled')
-        # options.add_argument('--no-sandbox')
-        # options.add_argument('--disable-dev-shm-usage')
-        # options.add_argument('--disable-gpu')
-        # options.add_argument("--enable-popup-blocking")
-        # options.add_argument(f"user-data-dir={str(profile_id)}")
-        # options.add_argument(f"user-data-dir=profile-directory")
+        options.add_argument('--autoplay-policy=no-user-gesture-required')
+        options.add_argument('--start-maximized')    
+        options.add_argument('--single-process')
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--enable-javascript")
+        options.add_argument("--disable-notifications")
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--headless')
+        options.add_argument("--enable-popup-blocking")
+        options.add_argument(f"user-data-dir={str(profile_id)}")
+        options.add_argument(f"user-data-dir=profile-directory")
 
         # options.add_experimental_option('useAutomationExtension', False)
         # options.add_experimental_option("excludeSwitches", [
@@ -58,7 +60,7 @@ class Bot():
         
         
         # self.driver = uc(headless=True,version_main=119)
-        self.driver = webdriver.Chrome(executable_path='/home/sajal/back-end/backend_api/chromedriver')
+        self.driver = webdriver.Chrome(executable_path='/home/sajal/back-end/backend_api/chromedriver',options=options)
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
