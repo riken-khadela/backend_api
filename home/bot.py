@@ -184,6 +184,7 @@ class Bot():
             self.driver.get('https://www.instagram.com/')
             self.click_element('search btn',"//a[@href='#']")
             return self.driver
+        breakpoint()
         print('user has been logged 111111111111111!')
         return False
 
