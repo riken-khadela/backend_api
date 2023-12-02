@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from undetected_chromedriver import Chrome as uc, ChromeOptions
+from undetected_chromedriver import Chrome as uc
 import logging
 
 class Bot():
@@ -23,7 +23,7 @@ class Bot():
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
 
-        options = ChromeOptions()
+        # options = ChromeOptions()
         # options.add_argument('--autoplay-policy=no-user-gesture-required')
         # options.add_argument('--start-maximized')    
         # options.add_argument('--single-process')
@@ -60,7 +60,7 @@ class Bot():
         for _ in range(30):
             try:
                 breakpoint()
-                self.driver = uc(user_data_dir='profile/'+str(profile_id))
+                self.driver = uc()
                 break
             except Exception as e:
                 print(e)
