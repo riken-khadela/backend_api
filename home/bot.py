@@ -26,15 +26,26 @@ class Bot():
         options = Options()
 
         options = uc.ChromeOptions()
-        options.add_argument('--lang=en')  # Set webdriver language to English.
-        options.add_argument('log-level=3')  # No logs is printed.
-        options.add_argument('--mute-audio')  # Audio is muted.
-        options.add_argument("--enable-webgl-draft-extensions")
-        options.add_argument('--mute-audio')
-        options.add_argument("--ignore-gpu-blocklist")
+        options.add_argument('--no-sandbox')
+        options.add_argument('--autoplay-policy=no-user-gesture-required')
+        options.add_argument('--start-maximized')    
+        options.add_argument('--single-process')
         options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--headless')
-        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument("--disable-blink-features")
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--enable-javascript")
+        options.add_argument("--disable-notifications")
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument("--enable-popup-blocking")
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_experimental_option("excludeSwitches", [
+            "enable-logging",
+            "enable-automation",
+            "ignore-certificate-errors",
+            "safebrowsing-disable-download-protection",
+            "safebrowsing-disable-auto-update",
+            "disable-client-side-phishing-detection"])
+        options.add_argument("disable-infobars")
         
         options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profiles','profile_'+str(profile_id))}")
 
