@@ -24,6 +24,8 @@ class Bot():
         from selenium.webdriver.chrome.options import Options
         from selenium import webdriver
         options =webdriver.ChromeOptions()
+        options.binary_location = "/usr/bin/google-chrome-stable"
+        # /usr/bin/google-chrome-stable
         # options = ChromesOptions()
         options.add_argument('--autoplay-policy=no-user-gesture-required')
         options.add_argument('--start-maximized')    
