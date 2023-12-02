@@ -1,14 +1,4 @@
-from lib2to3.pgen2 import driver
 from .models import instagram_accounts
-import random, time, os, json
-import undetected_chromedriver as uc
-from selenium import webdriver  
-from selenium_stealth import stealth
-from selenium.common.exceptions import NoSuchElementException, TimeoutException,ElementNotInteractableException,NoSuchElementException,WebDriverException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
 from dotenv import load_dotenv
 load_dotenv()
 

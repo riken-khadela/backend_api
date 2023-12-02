@@ -1,6 +1,5 @@
 import random, time, os, json
 from click import option
-import undetected_chromedriver as uc
 from selenium import webdriver  
 from selenium_stealth import stealth
 from selenium.common.exceptions import NoSuchElementException, TimeoutException,ElementNotInteractableException,NoSuchElementException,WebDriverException
@@ -59,7 +58,7 @@ class Bot():
         
         
         # self.driver = uc(headless=True,version_main=119)
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(executable_path='/home/dell/Desktop/upwork/backend_api/backend_api/chromedriver')
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
