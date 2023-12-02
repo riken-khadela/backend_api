@@ -180,6 +180,7 @@ class Bot():
         self.random_sleep(10,15)
         edit_profile_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'a') if 'edit profile' in i.text.lower()]
         if edit_profile_btn :
+            print('user has been logged 1!')
             self.driver.get('https://www.instagram.com/')
             self.click_element('search btn',"//a[@href='#']")
             return self.driver
