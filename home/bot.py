@@ -54,11 +54,11 @@ class Bot():
         #     'download.directory_upgrade': True,
         #     'safebrowsing.enabled': True ,
         #     "profile.password_manager_enabled": True}
-        
+
         # options.add_experimental_option("prefs", prefs)
         
         
-        # self.driver = uc(headless=True,version_main=119)
+        self.driver = uc(headless=True,version_main=119)
         self.driver = webdriver.Chrome()
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
