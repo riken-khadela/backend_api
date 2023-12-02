@@ -18,7 +18,7 @@ from django.http import JsonResponse
 from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token
 from django.contrib.auth.models import AnonymousUser
 
-# user_driver_dict = GetActiveChromeSelenium()
+user_driver_dict = GetActiveChromeSelenium()
     
 def get_or_createToken(request):
     """ 
