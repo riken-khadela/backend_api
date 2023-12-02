@@ -57,12 +57,7 @@ class Bot():
         # options.add_experimental_option("prefs", prefs)
         
         
-        for _ in range(30):
-            try:
-                self.driver = uc(user_data_dir=str(profile_id))
-                break
-            except Exception as e:
-                print(e)
+        self.driver = uc(user_data_dir=str(profile_id))
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
