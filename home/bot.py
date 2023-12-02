@@ -59,6 +59,7 @@ class Bot():
         
         for _ in range(30):
             try:
+                breakpoint()
                 self.driver = uc(user_data_dir='profile/'+str(profile_id))
                 break
             except Exception as e:
