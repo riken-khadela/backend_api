@@ -68,7 +68,7 @@ class CustomUser(AbstractUser,TimeStampModel):
     gender = models.CharField(max_length=25,choices=GENDER)
     verification_code = models.BigIntegerField(null=True,blank=True)
     is_user_verified = models.BooleanField(default=False)
-    
+    credit = models.BigIntegerField(default=100)
     objects = UserManager()
     REQUIRED_FIELDS = ["email","Mobile_number"]
 

@@ -15,7 +15,7 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
 from django.http import JsonResponse
-from .utils import GetActiveChromeSelenium, scrape_hashtags
+from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token
 from django.contrib.auth.models import AnonymousUser
 
 # user_driver_dict = GetActiveChromeSelenium()
@@ -119,7 +119,6 @@ class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
-        breakpoint()
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -156,6 +155,12 @@ class InstaHashTag(APIView):
     Get a user profile data with email and password
     """
     def post(self, request, format=None):
+        Hastag = []
+        user_id = get_user_id_from_token(request)
+        user = CustomUser.objects.filter(id=user_id)
+        if user.credit < 10 :
+            msg = 'Insufficient credit to perform this action.'
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
         driver = ''
         global user_driver_dict
         for keys,value in user_driver_dict.items():
@@ -165,11 +170,12 @@ class InstaHashTag(APIView):
                 value['status'] = False
                 break
         print(user_driver_dict)
-        Hastag = []
         if driver:
             try :
                 Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
                 if Hastag:
+                    user = user.credit - 10
+                    user.save()
                     msg = 'Hashtag scraped successfully'
                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)
                 else:
