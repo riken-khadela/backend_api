@@ -48,7 +48,7 @@ class Bot():
             "disable-client-side-phishing-detection"])
         options.add_argument("disable-infobars")
         
-        options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profiles','profile_'+str(profile_id))}")
+        options.add_argument(f"user-data-dir={str(profile_id)}")
         options.add_argument('--profile-directory=Defualt')
         prefs = {"credentials_enable_service": True,
                  'profile.default_content_setting_values.automatic_downloads': 1,
