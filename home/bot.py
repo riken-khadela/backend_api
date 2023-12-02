@@ -1,13 +1,13 @@
 import random, time, os, json
 from click import option
+import undetected_chromedriver as uc
+from selenium import webdriver  
 from selenium_stealth import stealth
+from selenium.common.exceptions import NoSuchElementException, TimeoutException,ElementNotInteractableException,NoSuchElementException,WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from undetected_chromedriver import Chrome as uc, ChromeOptions
-import logging
-
 class Bot():
     def __init__(self,user) :
         self.user = user
@@ -23,7 +23,7 @@ class Bot():
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
 
-        options = ChromeOptions()
+        # options = ChromesOptions()
         # options.add_argument('--autoplay-policy=no-user-gesture-required')
         # options.add_argument('--start-maximized')    
         # options.add_argument('--single-process')
@@ -58,6 +58,7 @@ class Bot():
         
         
         self.driver = uc(headless=True,version_main=119)
+        self.driver = webdriver.Chrome()
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
@@ -168,6 +169,7 @@ class Bot():
             self.input_text(self.username,'username',"//input[@aria-label='Phone number, username, or email']",By.XPATH)
             self.input_text(self.password,'password',"//input[@aria-label='Password']",By.XPATH)
             self.click_element('submit',"//button[@type='submit']",By.XPATH)
+            self.click_element('submit',"/html/body/div[2]/div/div/div[2]/div/div/div[1]/div[1]/div/div[3]/div",By.XPATH)
             self.random_sleep(5,7)
             if 'onetap' in self.driver.current_url :
                 save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
