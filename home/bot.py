@@ -63,14 +63,6 @@ class Bot():
                 break
             except Exception as e:
                 print(e)
-        stealth(self.driver,
-            languages=["en-US", "en"],
-            vendor="Google Inc.",
-            platform="Win32",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
-            )
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
