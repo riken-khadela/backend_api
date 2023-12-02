@@ -68,7 +68,7 @@ class Bot():
         # options.add_argument('--headless')
         for _ in range(30):
             try:
-                self.driver = webdriver.Chrome(options=options)
+                self.driver = webdriver.Chrome('./chromedriver',options=options)
                 break
             except Exception as e:
                 print(e)
