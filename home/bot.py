@@ -184,6 +184,7 @@ class Bot():
             self.driver.get('https://www.instagram.com/')
             self.click_element('search btn',"//a[@href='#']")
             return self.driver
+        print('user has been logged 111111111111111!')
         return False
 
     def extract_tag(self,tag : str,driver):
