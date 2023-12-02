@@ -57,7 +57,7 @@ class Bot():
         # options.add_experimental_option("prefs", prefs)
         
         
-        self.driver = uc(user_data_dir=str(profile_id),headless=True)
+        self.driver = uc(user_data_dir=str(profile_id),headless=True,version_main=118)
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
