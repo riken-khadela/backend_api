@@ -164,7 +164,7 @@ class Bot():
     def check_login(self) :
         self.driver.get(f'https://www.instagram.com/login')
         time.sleep(3)
-        if self.find_element('username',"//input[@aria-label='Phone number, username, or email']",By.XPATH)
+        if self.find_element('username',"//input[@aria-label='Phone number, username, or email']",By.XPATH) :
             self.input_text(self.username,'username',"//input[@aria-label='Phone number, username, or email']",By.XPATH)
             self.input_text(self.password,'password',"//input[@aria-label='Password']",By.XPATH)
             self.click_element('submit',"//button[@type='submit']",By.XPATH)
