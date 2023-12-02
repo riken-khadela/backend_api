@@ -34,6 +34,7 @@ class Bot():
         options.add_argument("--ignore-gpu-blocklist")
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--headless')
+        options.add_argument('--disable-dev-shm-usage')
         
         options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profiles','profile_'+str(profile_id))}")
 
