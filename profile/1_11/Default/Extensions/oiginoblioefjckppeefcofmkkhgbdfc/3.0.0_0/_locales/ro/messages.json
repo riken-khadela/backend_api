@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Data de încheiere"
+   },
+   "ItemCount": {
+      "message": "S-au găsit {0} articole"
+   },
+   "RateUs": {
+      "message": "Ne evalua"
+   },
+   "RemoveAll": {
+      "message": "Ștergeți TOAT Istoricul"
+   },
+   "RemoveAllConfirm": {
+      "message": "Sigur doriți să ștergeți TOATE intrările din Istoric? Acest lucru nu poate fi anulat."
+   },
+   "RemoveFiltered": {
+      "message": "Ștergeți {0} care afișează intrări"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Sigur doriți să ștergeți {0} intrări din Istoric? Acest lucru nu poate fi anulat."
+   },
+   "Search": {
+      "message": "Căutare"
+   },
+   "StartDate": {
+      "message": "Data de început"
+   },
+   "TodayHistory": {
+      "message": "Astazi Istoria"
+   },
+   "created_by": {
+      "message": "Creat de"
+   },
+   "history_date_empty": {
+      "message": "Această zi nu are înregistrări în istoric"
+   },
+   "history_recent": {
+      "message": "Istoria recentă"
+   },
+   "history_remove_single": {
+      "message": "Eliminați intrarea"
+   },
+   "history_view_more": {
+      "message": "Vizualizați istoricul complet"
+   },
+   "search_btn": {
+      "message": "Istoricul cautarilor"
+   },
+   "search_clear": {
+      "message": "[Ștergeți toate în rezultatul căutării]"
+   },
+   "search_clear_confirm": {
+      "message": "Sigur doriți să eliminați toată intrarea în rezultatul căutării? Această operație nu poate fi anulată!"
+   },
+   "search_display": {
+      "message": "cauta rezultate pentru"
+   },
+   "search_placeholder": {
+      "message": "Căutare în istorie"
+   }
+}

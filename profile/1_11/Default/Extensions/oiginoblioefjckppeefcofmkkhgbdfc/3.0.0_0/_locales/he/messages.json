@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "תאריך סיום"
+   },
+   "ItemCount": {
+      "message": "נמצאו {0} פריטים"
+   },
+   "RateUs": {
+      "message": "דרג אותנו"
+   },
+   "RemoveAll": {
+      "message": "מחק את כל ההיסטוריה"
+   },
+   "RemoveAllConfirm": {
+      "message": "האם אתה בטוח שברצונך למחוק את כל הערכים מההיסטוריה? אי אפשר לבטל את זה."
+   },
+   "RemoveFiltered": {
+      "message": "מחק {0} מציג ערכים"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "האם אתה בטוח שברצונך למחוק {0} ערכים מההיסטוריה? אי אפשר לבטל את זה."
+   },
+   "Search": {
+      "message": "לחפש"
+   },
+   "StartDate": {
+      "message": "תאריך התחלה"
+   },
+   "TodayHistory": {
+      "message": "היום היסטוריה"
+   },
+   "created_by": {
+      "message": "נוצר על ידי"
+   },
+   "history_date_empty": {
+      "message": "אין ביום זה ערכי היסטוריה"
+   },
+   "history_recent": {
+      "message": "היסטוריה אחרונה"
+   },
+   "history_remove_single": {
+      "message": "הסר את הכניסה"
+   },
+   "history_view_more": {
+      "message": "צפה בהיסטוריה המלאה"
+   },
+   "search_btn": {
+      "message": "חפש היסטוריה"
+   },
+   "search_clear": {
+      "message": "[נקה הכל בתוצאת חיפוש]"
+   },
+   "search_clear_confirm": {
+      "message": "האם אתה בטוח שברצונך להסיר את כל הרשומות בתוצאת החיפוש? לא ניתן לבטל פעולה זו!"
+   },
+   "search_display": {
+      "message": "תוצאות חיפוש עבור"
+   },
+   "search_placeholder": {
+      "message": "חיפוש בהיסטוריה"
+   }
+}

@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Дата окончания"
+   },
+   "ItemCount": {
+      "message": "Найдено элементов: {0}"
+   },
+   "RateUs": {
+      "message": "Оцените нас"
+   },
+   "RemoveAll": {
+      "message": "Удалить ВСЮ историю"
+   },
+   "RemoveAllConfirm": {
+      "message": "Вы уверены, что хотите удалить ВСЕ записи из истории? Это не может быть отменено."
+   },
+   "RemoveFiltered": {
+      "message": "Удалить {0} отображение записей"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Вы действительно хотите удалить {0} записи из истории? Это не может быть отменено."
+   },
+   "Search": {
+      "message": "Поиск"
+   },
+   "StartDate": {
+      "message": "Дата начала"
+   },
+   "TodayHistory": {
+      "message": "Сегодняшняя история"
+   },
+   "created_by": {
+      "message": "Создано"
+   },
+   "history_date_empty": {
+      "message": "В этот день нет записей истории"
+   },
+   "history_recent": {
+      "message": "Недавняя история"
+   },
+   "history_remove_single": {
+      "message": "Удалить запись"
+   },
+   "history_view_more": {
+      "message": "Посмотреть всю историю"
+   },
+   "search_btn": {
+      "message": "История поиска"
+   },
+   "search_clear": {
+      "message": "[Очистить все в результатах поиска]"
+   },
+   "search_clear_confirm": {
+      "message": "Вы уверены, что хотите удалить все записи в результатах поиска? Эта операция не может быть отменена!"
+   },
+   "search_display": {
+      "message": "Результаты поиска для"
+   },
+   "search_placeholder": {
+      "message": "Поиск в истории"
+   }
+}

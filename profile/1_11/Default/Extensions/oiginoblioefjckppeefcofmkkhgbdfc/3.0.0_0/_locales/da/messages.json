@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Slutdato"
+   },
+   "ItemCount": {
+      "message": "{0} elementer fundet"
+   },
+   "RateUs": {
+      "message": "Bedøm os"
+   },
+   "RemoveAll": {
+      "message": "Slet ALT historik"
+   },
+   "RemoveAllConfirm": {
+      "message": "Er du sikker på, at du vil slette ALLE poster fra historikken? Dette kan ikke fortrydes."
+   },
+   "RemoveFiltered": {
+      "message": "Slet {0}, der viser poster"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Er du sikker på, at du vil slette {0} poster fra historikken? Dette kan ikke fortrydes."
+   },
+   "Search": {
+      "message": "Søg"
+   },
+   "StartDate": {
+      "message": "Start dato"
+   },
+   "TodayHistory": {
+      "message": "Dagens historie"
+   },
+   "created_by": {
+      "message": "Lavet af"
+   },
+   "history_date_empty": {
+      "message": "Denne dag har ingen historikposter"
+   },
+   "history_recent": {
+      "message": "Seneste historie"
+   },
+   "history_remove_single": {
+      "message": "Fjern posten"
+   },
+   "history_view_more": {
+      "message": "Se hele historikken"
+   },
+   "search_btn": {
+      "message": "Søg i historie"
+   },
+   "search_clear": {
+      "message": "[Ryd alt i søgeresultatet]"
+   },
+   "search_clear_confirm": {
+      "message": "Er du sikker på, at du vil fjerne al post i søgeresultatet? Denne handling kan ikke fortrydes!"
+   },
+   "search_display": {
+      "message": "Søgeresultater for"
+   },
+   "search_placeholder": {
+      "message": "Søg i historien"
+   }
+}

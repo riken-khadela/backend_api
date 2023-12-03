@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "समाप्ति तिथि"
+   },
+   "ItemCount": {
+      "message": "{0} आइटम मिले"
+   },
+   "RateUs": {
+      "message": "हमें रेटिंग दें"
+   },
+   "RemoveAll": {
+      "message": "सभी इतिहास हटाएं"
+   },
+   "RemoveAllConfirm": {
+      "message": "क्या आप वाकई इतिहास से सभी प्रविष्टियां हटाना चाहते हैं? इसे असंपादित नहीं किया जा सकता है।"
+   },
+   "RemoveFiltered": {
+      "message": "प्रविष्टियां दिखाते हुए {0} हटाएं"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "क्या आप वाकई इतिहास से {0} प्रविष्टियां हटाना चाहते हैं? इसे असंपादित नहीं किया जा सकता है।"
+   },
+   "Search": {
+      "message": "खोज"
+   },
+   "StartDate": {
+      "message": "आरंभ करने की तिथि"
+   },
+   "TodayHistory": {
+      "message": "आज का इतिहास"
+   },
+   "created_by": {
+      "message": "के द्वारा बनाई गई"
+   },
+   "history_date_empty": {
+      "message": "इस दिन की कोई इतिहास प्रविष्टि नहीं है"
+   },
+   "history_recent": {
+      "message": "ताज़ा इतिहास"
+   },
+   "history_remove_single": {
+      "message": "प्रविष्टि निकालें"
+   },
+   "history_view_more": {
+      "message": "पूरा इतिहास देखें"
+   },
+   "search_btn": {
+      "message": "इतिहास खोजें"
+   },
+   "search_clear": {
+      "message": "[खोज परिणाम में सभी साफ़ करें]"
+   },
+   "search_clear_confirm": {
+      "message": "क्या आप वाकई खोज परिणाम में सभी प्रविष्टि निकालना चाहते हैं? यह ऑपरेशन पूर्ववत नहीं किया जा सकता है!"
+   },
+   "search_display": {
+      "message": "के लिए खोज परिणाम"
+   },
+   "search_placeholder": {
+      "message": "इतिहास में खोजें"
+   }
+}

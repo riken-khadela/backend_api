@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Sluttdato"
+   },
+   "ItemCount": {
+      "message": "{0} elementer funnet"
+   },
+   "RateUs": {
+      "message": "Rangere oss"
+   },
+   "RemoveAll": {
+      "message": "Slett ALL historikk"
+   },
+   "RemoveAllConfirm": {
+      "message": "Er du sikker på at du vil slette ALLE oppføringer fra loggen? Dette kan ikke angres."
+   },
+   "RemoveFiltered": {
+      "message": "Slett {0} viser oppføringer"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Er du sikker på at du vil slette {0} oppføringer fra loggen? Dette kan ikke angres."
+   },
+   "Search": {
+      "message": "Søke"
+   },
+   "StartDate": {
+      "message": "Startdato"
+   },
+   "TodayHistory": {
+      "message": "Dagens historie"
+   },
+   "created_by": {
+      "message": "Laget av"
+   },
+   "history_date_empty": {
+      "message": "Denne dagen har ingen historikkoppføringer"
+   },
+   "history_recent": {
+      "message": "Nylig historie"
+   },
+   "history_remove_single": {
+      "message": "Fjern oppføringen"
+   },
+   "history_view_more": {
+      "message": "Se hele historikken"
+   },
+   "search_btn": {
+      "message": "Logg"
+   },
+   "search_clear": {
+      "message": "[Fjern alt i søkeresultatet]"
+   },
+   "search_clear_confirm": {
+      "message": "Er du sikker på at du vil fjerne all oppføring i søkeresultatet? Denne operasjonen kan ikke angre!"
+   },
+   "search_display": {
+      "message": "Søkeresultater for"
+   },
+   "search_placeholder": {
+      "message": "Søk i historien"
+   }
+}

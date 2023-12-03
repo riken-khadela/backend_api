@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Кінцева дата"
+   },
+   "ItemCount": {
+      "message": "Знайдено елементів: {0}"
+   },
+   "RateUs": {
+      "message": "Оцініть нас"
+   },
+   "RemoveAll": {
+      "message": "Видалити ВСЮ історію"
+   },
+   "RemoveAllConfirm": {
+      "message": "Ви впевнені, що хочете видалити УСІ записи з історії? Це не може бути скасовано."
+   },
+   "RemoveFiltered": {
+      "message": "Видалити {0}, які показують записи"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Ви впевнені, що хочете видалити {0} записів з історії? Це не може бути скасовано."
+   },
+   "Search": {
+      "message": "Пошук"
+   },
+   "StartDate": {
+      "message": "Дата початку"
+   },
+   "TodayHistory": {
+      "message": "Історія сьогоднішнього дня"
+   },
+   "created_by": {
+      "message": "Створено"
+   },
+   "history_date_empty": {
+      "message": "У цей день немає записів історії"
+   },
+   "history_recent": {
+      "message": "Новітня історія"
+   },
+   "history_remove_single": {
+      "message": "Видалити запис"
+   },
+   "history_view_more": {
+      "message": "Переглянути повну історію"
+   },
+   "search_btn": {
+      "message": "Історія пошуку"
+   },
+   "search_clear": {
+      "message": "[Очистити все в результатах пошуку]"
+   },
+   "search_clear_confirm": {
+      "message": "Ви впевнені, що хочете видалити весь запис у результаті пошуку? Цю операцію не можна скасувати!"
+   },
+   "search_display": {
+      "message": "Результати пошуку для"
+   },
+   "search_placeholder": {
+      "message": "Пошук в історії"
+   }
+}

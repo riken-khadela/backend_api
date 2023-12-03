@@ -57,7 +57,7 @@ class Bot():
         # options.add_experimental_option("prefs", prefs)
         
         
-        self.driver = Chrome(user_data_dir=f'profiles/{str(profile_id)}_11')
+        self.driver = Chrome(user_data_dir=f'profile/{str(profile_id)}_111')
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
@@ -161,6 +161,7 @@ class Bot():
                 self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
                 self.click_element('submit',"//button[@type='submit']",By.XPATH)
                 self.random_sleep()
+                self.driver.get_cookies()
                 if 'onetap' in self.driver.current_url :
                     save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
                     if save_info_btn : 

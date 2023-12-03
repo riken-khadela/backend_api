@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Data zakonczenia"
+   },
+   "ItemCount": {
+      "message": "Znaleziono {0} przedmiotów"
+   },
+   "RateUs": {
+      "message": "Oceń nas"
+   },
+   "RemoveAll": {
+      "message": "Usuń całą historię"
+   },
+   "RemoveAllConfirm": {
+      "message": "Czy na pewno chcesz usunąć WSZYSTKIE wpisy z Historii? Tego nie da się cofnąć."
+   },
+   "RemoveFiltered": {
+      "message": "Usuń {0} pokazujące wpisy"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Czy na pewno chcesz usunąć {0} wpisy z Historii? Tego nie da się cofnąć."
+   },
+   "Search": {
+      "message": "Szukaj"
+   },
+   "StartDate": {
+      "message": "Data rozpoczęcia"
+   },
+   "TodayHistory": {
+      "message": "Dzisiejsza historia"
+   },
+   "created_by": {
+      "message": "Stworzone przez"
+   },
+   "history_date_empty": {
+      "message": "Ten dzień nie ma wpisów historii"
+   },
+   "history_recent": {
+      "message": "Niedawna historia"
+   },
+   "history_remove_single": {
+      "message": "Usuń wpis"
+   },
+   "history_view_more": {
+      "message": "Zobacz pełną historię"
+   },
+   "search_btn": {
+      "message": "Historia wyszukiwania"
+   },
+   "search_clear": {
+      "message": "[Wyczyść wszystko w wyniku wyszukiwania]"
+   },
+   "search_clear_confirm": {
+      "message": "Czy na pewno chcesz usunąć cały wpis w wynikach wyszukiwania? Tej operacji nie można cofnąć!"
+   },
+   "search_display": {
+      "message": "Wyniki wyszukiwania dla"
+   },
+   "search_placeholder": {
+      "message": "Szukaj w historii"
+   }
+}

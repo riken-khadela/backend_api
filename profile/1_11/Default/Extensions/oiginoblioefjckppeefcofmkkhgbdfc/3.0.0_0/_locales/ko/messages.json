@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "종료일"
+   },
+   "ItemCount": {
+      "message": "항목 {0}개를 찾았습니다."
+   },
+   "RateUs": {
+      "message": "평가"
+   },
+   "RemoveAll": {
+      "message": "모든 기록 삭제"
+   },
+   "RemoveAllConfirm": {
+      "message": "기록에서 모든 항목을 삭제하시겠습니까? 이 취소 할 수 없습니다."
+   },
+   "RemoveFiltered": {
+      "message": "항목을 표시하는 {0} 삭제"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "기록에서 항목 {0}개를 삭제하시겠습니까? 이 취소 할 수 없습니다."
+   },
+   "Search": {
+      "message": "수색"
+   },
+   "StartDate": {
+      "message": "시작일"
+   },
+   "TodayHistory": {
+      "message": "오늘의 역사"
+   },
+   "created_by": {
+      "message": "작성자"
+   },
+   "history_date_empty": {
+      "message": "이 날에는 기록이 없습니다."
+   },
+   "history_recent": {
+      "message": "최근 역사"
+   },
+   "history_remove_single": {
+      "message": "항목 제거"
+   },
+   "history_view_more": {
+      "message": "전체 이력보기"
+   },
+   "search_btn": {
+      "message": "검색 기록"
+   },
+   "search_clear": {
+      "message": "[검색 결과에서 모두 지우기]"
+   },
+   "search_clear_confirm": {
+      "message": "검색 결과에서 모든 항목을 삭제 하시겠습니까? 이 작업은 취소 할 수 없습니다!"
+   },
+   "search_display": {
+      "message": "에 대한 검색 결과"
+   },
+   "search_placeholder": {
+      "message": "역사에서 검색"
+   }
+}

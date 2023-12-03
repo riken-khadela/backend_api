@@ -1,0 +1,76 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="libs/bootstrap.min.css">
+    <link rel="stylesheet" href="css/popup.min.css" />
+
+    <title>View Chrome History</title>
+</head>
+
+<body>
+
+    <div class="page-content">
+        <h2 class="px-1" data-loc="TodayHistory"></h2>
+
+        <div class="input-group">
+            <span class="input-group-text">
+                <img src="/img/search.png" class="h-1" />
+            </span>
+            <input class="form-control txt-search" autofocus />
+        </div>
+
+        <div class="list-history">
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <template>
+                <div class="history-item">
+                    <img class="img-icon" />
+                    <div class="info">
+                        <span>
+                            <span class="item-title"></span>
+                        </span>
+                        <br />
+                        <small class="text-muted item-time"></small>
+
+                        <a target="_blank" class="item-link stretched-link"></a>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-outline-danger btn-sm btn-delete">
+                            <img src="/img/delete.png" class="h-1" />
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <div class="buttons">
+            <div class="row row align-items-center">
+                <div class="col">
+                    <a class="btn btn-warning btn-rate" target="_blank">
+                        <img src="/img/rate.png" class="h-1" />
+                        <span data-loc="RateUs"></span>
+                    </a>
+                </div>
+                <div class="col text-end">
+                    <a href="/history.html" target="_blank">
+                        <img src="/img/open.png" class="h-1" />
+                        <span data-loc="history_view_more"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/common.js"></script>
+    <script type="module" src="js/popup.js"></script>
+</body>
+
+</html>

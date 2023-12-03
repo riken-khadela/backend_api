@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Slutdatum"
+   },
+   "ItemCount": {
+      "message": "{0} objekt hittades"
+   },
+   "RateUs": {
+      "message": "Gradera oss"
+   },
+   "RemoveAll": {
+      "message": "Radera ALL historik"
+   },
+   "RemoveAllConfirm": {
+      "message": "Är du säker på att du vill ta bort ALLA poster från historiken? Detta kan inte göras ogjort."
+   },
+   "RemoveFiltered": {
+      "message": "Ta bort {0} som visar poster"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Är du säker på att du vill ta bort {0} poster från historiken? Detta kan inte göras ogjort."
+   },
+   "Search": {
+      "message": "Sök"
+   },
+   "StartDate": {
+      "message": "Start datum"
+   },
+   "TodayHistory": {
+      "message": "Idag Historia"
+   },
+   "created_by": {
+      "message": "Skapad av"
+   },
+   "history_date_empty": {
+      "message": "Den här dagen har inga historikposter"
+   },
+   "history_recent": {
+      "message": "Senaste historia"
+   },
+   "history_remove_single": {
+      "message": "Ta bort posten"
+   },
+   "history_view_more": {
+      "message": "Visa hela historien"
+   },
+   "search_btn": {
+      "message": "Sökhistorik"
+   },
+   "search_clear": {
+      "message": "[Rensa allt i sökresultatet]"
+   },
+   "search_clear_confirm": {
+      "message": "Är du säker på att du vill ta bort alla poster i sökresultatet? Denna åtgärd kan inte ångras!"
+   },
+   "search_display": {
+      "message": "Sökresultat för"
+   },
+   "search_placeholder": {
+      "message": "Sök i historien"
+   }
+}

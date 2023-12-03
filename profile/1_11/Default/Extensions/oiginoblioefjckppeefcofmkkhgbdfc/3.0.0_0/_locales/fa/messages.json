@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "تاریخ پایان"
+   },
+   "ItemCount": {
+      "message": "{0} مورد پیدا شد"
+   },
+   "RateUs": {
+      "message": "به ما رای دهید"
+   },
+   "RemoveAll": {
+      "message": "تمام تاریخچه را حذف کنید"
+   },
+   "RemoveAllConfirm": {
+      "message": "آیا مطمئن هستید که می خواهید همه ورودی ها را از تاریخچه حذف کنید؟ این قابل بازگشت نیست."
+   },
+   "RemoveFiltered": {
+      "message": "{0} ورودی های نمایش داده شده را حذف کنید"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "آیا مطمئن هستید که می خواهید {0} ورودی را از تاریخچه حذف کنید؟ این قابل بازگشت نیست."
+   },
+   "Search": {
+      "message": "جستجو کردن"
+   },
+   "StartDate": {
+      "message": "تاریخ شروع"
+   },
+   "TodayHistory": {
+      "message": "تاریخ امروز"
+   },
+   "created_by": {
+      "message": "خلق شده توسط"
+   },
+   "history_date_empty": {
+      "message": "این روز هیچ ورودی تاریخی ندارد"
+   },
+   "history_recent": {
+      "message": "تاریخ اخیر"
+   },
+   "history_remove_single": {
+      "message": "ورودی را حذف کنید"
+   },
+   "history_view_more": {
+      "message": "مشاهده تاریخچه کامل"
+   },
+   "search_btn": {
+      "message": "تاریخچه جستجو"
+   },
+   "search_clear": {
+      "message": "[پاک کردن همه در نتیجه جستجو]"
+   },
+   "search_clear_confirm": {
+      "message": "آیا مطمئن هستید که می خواهید تمام ورودی های نتیجه جستجو را حذف کنید؟ این عملیات قابل بازگشت نیست!"
+   },
+   "search_display": {
+      "message": "نتایج جستجو برای"
+   },
+   "search_placeholder": {
+      "message": "جستجو در تاریخ"
+   }
+}

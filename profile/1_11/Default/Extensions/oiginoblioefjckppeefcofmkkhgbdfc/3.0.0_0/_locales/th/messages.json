@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "วันที่สิ้นสุด"
+   },
+   "ItemCount": {
+      "message": "พบ {0} รายการ"
+   },
+   "RateUs": {
+      "message": "ให้คะแนนเรา"
+   },
+   "RemoveAll": {
+      "message": "ลบประวัติทั้งหมด"
+   },
+   "RemoveAllConfirm": {
+      "message": "คุณแน่ใจหรือไม่ว่าต้องการลบรายการทั้งหมดออกจากประวัติ? การดำเนินการนี้ไม่สามารถยกเลิกได้"
+   },
+   "RemoveFiltered": {
+      "message": "ลบ {0} แสดงรายการ"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "คุณแน่ใจหรือไม่ว่าต้องการลบ {0} รายการออกจากประวัติ? การดำเนินการนี้ไม่สามารถยกเลิกได้"
+   },
+   "Search": {
+      "message": "ค้นหา"
+   },
+   "StartDate": {
+      "message": "วันที่เริ่มต้น"
+   },
+   "TodayHistory": {
+      "message": "ประวัติวันนี้"
+   },
+   "created_by": {
+      "message": "สร้างโดย"
+   },
+   "history_date_empty": {
+      "message": "วันนี้ไม่มีรายการประวัติ"
+   },
+   "history_recent": {
+      "message": "ประวัติล่าสุด"
+   },
+   "history_remove_single": {
+      "message": "ลบรายการ"
+   },
+   "history_view_more": {
+      "message": "ดูประวัติเต็ม"
+   },
+   "search_btn": {
+      "message": "ประวัติการค้นหา"
+   },
+   "search_clear": {
+      "message": "[ล้างทั้งหมดในผลการค้นหา]"
+   },
+   "search_clear_confirm": {
+      "message": "คุณแน่ใจหรือไม่ว่าต้องการลบรายการทั้งหมดในผลการค้นหา การดำเนินการนี้ไม่สามารถยกเลิกได้!"
+   },
+   "search_display": {
+      "message": "ผลการค้นหาสำหรับ"
+   },
+   "search_placeholder": {
+      "message": "ค้นหาในประวัติ"
+   }
+}

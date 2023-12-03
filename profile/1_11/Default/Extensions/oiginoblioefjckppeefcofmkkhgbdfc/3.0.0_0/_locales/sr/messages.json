@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Крајњи датум"
+   },
+   "ItemCount": {
+      "message": "Пронађено је {0} ставки"
+   },
+   "RateUs": {
+      "message": "Оцените нас"
+   },
+   "RemoveAll": {
+      "message": "Избриши СВУ историју"
+   },
+   "RemoveAllConfirm": {
+      "message": "Да ли сте сигурни да желите да избришете СВЕ уносе из историје? Ово се не може поништити."
+   },
+   "RemoveFiltered": {
+      "message": "Избришите {0} приказаних уноса"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Да ли сте сигурни да желите да избришете {0} уноса из историје? Ово се не може поништити."
+   },
+   "Search": {
+      "message": "Претрага"
+   },
+   "StartDate": {
+      "message": "Датум почетка"
+   },
+   "TodayHistory": {
+      "message": "Данашња историја"
+   },
+   "created_by": {
+      "message": "Аутор:"
+   },
+   "history_date_empty": {
+      "message": "Овај дан нема уноса у историју"
+   },
+   "history_recent": {
+      "message": "Новија историја"
+   },
+   "history_remove_single": {
+      "message": "Уклони унос"
+   },
+   "history_view_more": {
+      "message": "Погледајте целу историју"
+   },
+   "search_btn": {
+      "message": "Историја претраге"
+   },
+   "search_clear": {
+      "message": "[Обриши све у резултатима претраге]"
+   },
+   "search_clear_confirm": {
+      "message": "Јесте ли сигурни да желите да уклоните све уносе у резултатима претраге? Ова се операција не може поништити!"
+   },
+   "search_display": {
+      "message": "Резултати претраге за"
+   },
+   "search_placeholder": {
+      "message": "Претражите у историји"
+   }
+}

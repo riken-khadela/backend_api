@@ -1,0 +1,36 @@
+{
+   "action": {
+      "default_icon": "icon-512.png",
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "js/background.js",
+      "type": "module"
+   },
+   "chrome_url_overrides": {
+      "history": "history.html"
+   },
+   "container": [ "GOOGLE_DRIVE" ],
+   "default_locale": "en",
+   "description": "__MSG_AppDesc__",
+   "homepage_url": "https://simple-history.dllplayer.com/",
+   "icons": {
+      "128": "icon-128.png",
+      "16": "icon-16.png",
+      "192": "icon-192.png",
+      "256": "icon-256.png",
+      "32": "icon-32.png",
+      "48": "icon-48.png",
+      "512": "icon-512.png",
+      "64": "icon-64.png",
+      "72": "icon-72.png",
+      "96": "icon-96.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp8S6bqPjAoe/85mZRBA437szr57bbZ3dvvm+ymppvysNaLTcM1DkvEiq/DGuAnPUUs8jrdUkZo6RN7HbtHRgAd9F1CwRabuuUVrXpkzs09B0LCTPxp2MVJeD0I/10eaqtqKSAJjOCuHJzt6qIkPWQxCdRvfCu7zeDJCxB0tGUxxHEnFBHVJA4K3d4lXBRCt40YZc7T86xSs6J88m9wSh4hJZJRWdSzmN/9swG6mL/nyUL2SadJ7mAHImeVdrI38jDuCMR/DleKvn0IaylJQo2X0sKN/H7PVTUU24rGy0hukqHrcR5L3bwfNPQyjf/N652efcKaRC+JAwCBSeavTdIQIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_AppName__",
+   "offline_enabled": true,
+   "permissions": [ "history" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "3.0.0"
+}

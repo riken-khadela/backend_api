@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "آخری تاریخ"
+   },
+   "ItemCount": {
+      "message": "{0} آئٹمز ملے"
+   },
+   "RateUs": {
+      "message": "ہمیں درجہ دیں"
+   },
+   "RemoveAll": {
+      "message": "تمام تاریخ کو حذف کریں۔"
+   },
+   "RemoveAllConfirm": {
+      "message": "کیا آپ واقعی تاریخ سے تمام اندراجات کو حذف کرنا چاہتے ہیں؟ اسے کالعدم نہیں کیا جا سکتا۔"
+   },
+   "RemoveFiltered": {
+      "message": "{0} ظاہر کرنے والے اندراجات کو حذف کریں۔"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "کیا آپ واقعی تاریخ سے {0} اندراجات کو حذف کرنا چاہتے ہیں؟ اسے کالعدم نہیں کیا جا سکتا۔"
+   },
+   "Search": {
+      "message": "تلاش کریں۔"
+   },
+   "StartDate": {
+      "message": "شروع کرنے کی تاریخ"
+   },
+   "TodayHistory": {
+      "message": "آج کی تاریخ"
+   },
+   "created_by": {
+      "message": "بنائی گئی"
+   },
+   "history_date_empty": {
+      "message": "اس دن کی تاریخ میں کوئی اندراج نہیں ہے"
+   },
+   "history_recent": {
+      "message": "حالیہ تاریخ"
+   },
+   "history_remove_single": {
+      "message": "اندراج کو ہٹا دیں"
+   },
+   "history_view_more": {
+      "message": "پوری تاریخ دیکھیں"
+   },
+   "search_btn": {
+      "message": "تاریخ تلاش کریں"
+   },
+   "search_clear": {
+      "message": "[تلاش کے نتائج میں سب صاف کریں]"
+   },
+   "search_clear_confirm": {
+      "message": "کیا آپ واقعی تلاش کے نتائج میں موجود تمام اندراجات کو ختم کرنا چاہتے ہیں؟ اس آپریشن کو کالعدم نہیں کیا جاسکتا!"
+   },
+   "search_display": {
+      "message": "کے لئے تلاش کے نتائج"
+   },
+   "search_placeholder": {
+      "message": "تاریخ میں تلاش کریں"
+   }
+}

@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Einddatum"
+   },
+   "ItemCount": {
+      "message": "{0} items gevonden"
+   },
+   "RateUs": {
+      "message": "Beoordeel ons"
+   },
+   "RemoveAll": {
+      "message": "ALLE geschiedenis wissen"
+   },
+   "RemoveAllConfirm": {
+      "message": "Weet u zeker dat u ALLE vermeldingen uit de geschiedenis wilt verwijderen? Dit kan niet ongedaan gemaakt worden."
+   },
+   "RemoveFiltered": {
+      "message": "Verwijder {0} met vermeldingen"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Weet u zeker dat u {0} vermeldingen uit de geschiedenis wilt verwijderen? Dit kan niet ongedaan gemaakt worden."
+   },
+   "Search": {
+      "message": "Zoeken"
+   },
+   "StartDate": {
+      "message": "Begin datum"
+   },
+   "TodayHistory": {
+      "message": "Geschiedenis van vandaag"
+   },
+   "created_by": {
+      "message": "Gemaakt door"
+   },
+   "history_date_empty": {
+      "message": "Deze dag heeft geen geschiedenisitems"
+   },
+   "history_recent": {
+      "message": "Recente geschiedenis"
+   },
+   "history_remove_single": {
+      "message": "Vermelding verwijderen"
+   },
+   "history_view_more": {
+      "message": "Bekijk de volledige geschiedenis"
+   },
+   "search_btn": {
+      "message": "Zoek geschiedenis"
+   },
+   "search_clear": {
+      "message": "[Wis alles in het zoekresultaat]"
+   },
+   "search_clear_confirm": {
+      "message": "Weet u zeker dat u alle vermeldingen in het zoekresultaat wilt verwijderen? Deze bewerking kan niet ongedaan worden gemaakt!"
+   },
+   "search_display": {
+      "message": "zoekresultaten voor"
+   },
+   "search_placeholder": {
+      "message": "Zoek in de geschiedenis"
+   }
+}

@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Data de finalització"
+   },
+   "ItemCount": {
+      "message": "S&#39;han trobat {0} elements"
+   },
+   "RateUs": {
+      "message": "Puntua&#39;ns"
+   },
+   "RemoveAll": {
+      "message": "Suprimeix TOT l&#39;historial"
+   },
+   "RemoveAllConfirm": {
+      "message": "Esteu segur que voleu suprimir TOTES les entrades de l&#39;historial? Això no es pot desfer."
+   },
+   "RemoveFiltered": {
+      "message": "Suprimeix {0} que es mostren entrades"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Esteu segur que voleu suprimir {0} entrades de l&#39;historial? Això no es pot desfer."
+   },
+   "Search": {
+      "message": "Cerca"
+   },
+   "StartDate": {
+      "message": "Data d&#39;inici"
+   },
+   "TodayHistory": {
+      "message": "Avui Història"
+   },
+   "created_by": {
+      "message": "Creat per"
+   },
+   "history_date_empty": {
+      "message": "Aquest dia no hi ha entrades d&#39;historial"
+   },
+   "history_recent": {
+      "message": "Història recent"
+   },
+   "history_remove_single": {
+      "message": "Elimina l&#39;entrada"
+   },
+   "history_view_more": {
+      "message": "Consulteu l&#39;historial complet"
+   },
+   "search_btn": {
+      "message": "Historial de cerques"
+   },
+   "search_clear": {
+      "message": "[Esborra tot el resultat de la cerca]"
+   },
+   "search_clear_confirm": {
+      "message": "Esteu segur que voleu eliminar tota l’entrada al resultat de la cerca? Aquesta operació no es pot desfer!"
+   },
+   "search_display": {
+      "message": "Resultats de la cerca"
+   },
+   "search_placeholder": {
+      "message": "Cerca a la història"
+   }
+}

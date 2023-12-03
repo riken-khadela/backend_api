@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Data di fine"
+   },
+   "ItemCount": {
+      "message": "{0} articoli trovati"
+   },
+   "RateUs": {
+      "message": "Valutaci"
+   },
+   "RemoveAll": {
+      "message": "Elimina TUTTA la cronologia"
+   },
+   "RemoveAllConfirm": {
+      "message": "Sei sicuro di voler eliminare TUTTE le voci dalla Cronologia? Questo non può essere annullato."
+   },
+   "RemoveFiltered": {
+      "message": "Elimina {0} che mostrano voci"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Sei sicuro di voler eliminare {0} voci dalla Cronologia? Questo non può essere annullato."
+   },
+   "Search": {
+      "message": "Ricerca"
+   },
+   "StartDate": {
+      "message": "Data d&#39;inizio"
+   },
+   "TodayHistory": {
+      "message": "Storia di oggi"
+   },
+   "created_by": {
+      "message": "Creato da"
+   },
+   "history_date_empty": {
+      "message": "Questo giorno non ha voci di cronologia"
+   },
+   "history_recent": {
+      "message": "Storia recente"
+   },
+   "history_remove_single": {
+      "message": "Rimuovi voce"
+   },
+   "history_view_more": {
+      "message": "Visualizza la cronologia completa"
+   },
+   "search_btn": {
+      "message": "Cronologia delle ricerche"
+   },
+   "search_clear": {
+      "message": "[Cancella tutto nei risultati di ricerca]"
+   },
+   "search_clear_confirm": {
+      "message": "Sei sicuro di voler rimuovere tutte le voci nei risultati di ricerca? Questa operazione non può essere annullata!"
+   },
+   "search_display": {
+      "message": "cerca risultati per"
+   },
+   "search_placeholder": {
+      "message": "Cerca nella storia"
+   }
+}

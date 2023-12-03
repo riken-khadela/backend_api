@@ -1,0 +1,68 @@
+{
+   "AppDesc": {
+      "message": "You can easily delete, edit your history on Chrome browser"
+   },
+   "AppName": {
+      "message": "View Chrome History"
+   },
+   "EndDate": {
+      "message": "Päättymispäivä"
+   },
+   "ItemCount": {
+      "message": "{0} kohdetta löydetty"
+   },
+   "RateUs": {
+      "message": "Anna meille arvosana"
+   },
+   "RemoveAll": {
+      "message": "Poista KAIKKI historia"
+   },
+   "RemoveAllConfirm": {
+      "message": "Haluatko varmasti poistaa KAIKKI merkinnät historiasta? Tätä ei voi peruuttaa."
+   },
+   "RemoveFiltered": {
+      "message": "Poista {0} näkyvät merkinnät"
+   },
+   "RemoveFilteredConfirm": {
+      "message": "Haluatko varmasti poistaa {0} merkintää historiasta? Tätä ei voi peruuttaa."
+   },
+   "Search": {
+      "message": "Hae"
+   },
+   "StartDate": {
+      "message": "Aloituspäivämäärä"
+   },
+   "TodayHistory": {
+      "message": "Tämän päivän historia"
+   },
+   "created_by": {
+      "message": "Luonut"
+   },
+   "history_date_empty": {
+      "message": "Tällä päivällä ei ole historiaa"
+   },
+   "history_recent": {
+      "message": "Lähihistoria"
+   },
+   "history_remove_single": {
+      "message": "Poista merkintä"
+   },
+   "history_view_more": {
+      "message": "Näytä koko historia"
+   },
+   "search_btn": {
+      "message": "Hakuhistoria"
+   },
+   "search_clear": {
+      "message": "[Tyhjennä kaikki hakutuloksissa]"
+   },
+   "search_clear_confirm": {
+      "message": "Haluatko varmasti poistaa kaikki hakutuloksen merkinnät? Tätä toimintoa ei voi peruuttaa!"
+   },
+   "search_display": {
+      "message": "Etsi tuloksia"
+   },
+   "search_placeholder": {
+      "message": "Etsi historiasta"
+   }
+}

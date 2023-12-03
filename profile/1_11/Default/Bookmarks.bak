@@ -1,0 +1,263 @@
+{
+   "checksum": "b422c794c031d0fc79d9a88f30bce329",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13306145556152262",
+            "date_last_used": "0",
+            "guid": "438b1105-6d15-423f-99d7-9752e604debc",
+            "id": "5",
+            "name": "Complete Road Map To Be Expert In Python- Follow My Way - YouTube",
+            "type": "url",
+            "url": "https://www.youtube.com/watch?v=bPrmA1SEN2k&list=PLZoTAELRMXVPBTrWtJkn3wWQxZkmTXGwe&index=2&ab_channel=KrishNaik"
+         }, {
+            "date_added": "13272410724498482",
+            "date_last_used": "0",
+            "guid": "6b89203d-a275-4690-ba59-e78bdeff5232",
+            "id": "6",
+            "name": "Watch Dogs 2 Download - Gaming Beasts",
+            "type": "url",
+            "url": "https://gamingbeasts.com/watch-dogs-2-download/"
+         }, {
+            "date_added": "13276150410192571",
+            "date_last_used": "0",
+            "guid": "a4f4ee31-b414-4dfb-9e4f-352f42c50af1",
+            "id": "7",
+            "name": "HackerRank",
+            "type": "url",
+            "url": "https://www.hackerrank.com/"
+         }, {
+            "date_added": "13277458193571587",
+            "date_last_used": "0",
+            "guid": "f406d326-2c3f-4a02-bc6a-a40623af6081",
+            "id": "8",
+            "name": "__ad",
+            "type": "url",
+            "url": "https://docs.python.org/3/reference/datamodel.html"
+         }, {
+            "date_added": "13279121272310019",
+            "date_last_used": "0",
+            "guid": "ecd5637d-6fef-4197-a18a-f4cbf80e02f4",
+            "id": "9",
+            "name": "Riken_update_sheet - Google Sheets",
+            "type": "url",
+            "url": "https://docs.google.com/spreadsheets/d/1QtoRmZpBz_qpP2k_3XNTzXwRw3SUyGD1Rfe8tDHk2iY/edit#gid=0"
+         }, {
+            "date_added": "13312641299587158",
+            "date_last_used": "13322103619938961",
+            "guid": "64c5b27b-6ea4-46b5-9eb5-d2d46ceaf4a4",
+            "id": "10",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "INTENSE 10 MINUTE FAT MELTING HIIT CARDIO WORKOUT [10 SECOND BREAKS] - YouTube",
+            "type": "url",
+            "url": "https://www.youtube.com/watch?v=uTo2m16eJqI&ab_channel=BullyJuice"
+         }, {
+            "date_added": "13311634054257052",
+            "date_last_used": "0",
+            "guid": "6176d37d-4ea8-47cc-9a95-210969e8015b",
+            "id": "11",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "FilePursuit- Discover Everything!, Search the web for files, videos, audios, eBooks and much more.",
+            "type": "url",
+            "url": "https://filepursuit.com/"
+         }, {
+            "date_added": "13279291736054441",
+            "date_last_used": "0",
+            "guid": "8147f86b-d96a-4e00-88f6-7f7b205db45e",
+            "id": "12",
+            "name": "Ubuntu: Install PostgreSQL and pgAdmin - codingpub",
+            "type": "url",
+            "url": "https://codingpub.dev/ubuntu-install-postgresql-and-pgadmin/"
+         }, {
+            "date_added": "13282146258210106",
+            "date_last_used": "0",
+            "guid": "ff910ee7-7eaa-45ca-bff8-1bf57517d515",
+            "id": "13",
+            "name": "Installation and Getting Started — pytest documentation",
+            "type": "url",
+            "url": "https://docs.pytest.org/en/6.2.x/getting-started.html"
+         }, {
+            "date_added": "13282835049955703",
+            "date_last_used": "0",
+            "guid": "1bd57da4-3471-4ef9-8bcd-34afd653b3c5",
+            "id": "14",
+            "name": "python - Save uploaded image to database on Flask - Stack Overflow",
+            "type": "url",
+            "url": "https://stackoverflow.com/questions/63690158/save-uploaded-image-to-database-on-flask"
+         }, {
+            "date_added": "13283944372132992",
+            "date_last_used": "0",
+            "guid": "29d586a2-3422-4a19-bb50-2ec7b7c89714",
+            "id": "15",
+            "name": "Django REST Framework Tutorial: How to Develop APIs",
+            "type": "url",
+            "url": "https://djangostars.com/blog/rest-apis-django-development/"
+         }, {
+            "date_added": "13284628952211927",
+            "date_last_used": "0",
+            "guid": "0509dd68-a2bc-4011-840e-436c0d6aedb1",
+            "id": "16",
+            "name": ".each() | jQuery API Documentation",
+            "type": "url",
+            "url": "https://api.jquery.com/each/"
+         }, {
+            "date_added": "13286873006153884",
+            "date_last_used": "0",
+            "guid": "413c3ed6-71fb-472b-9695-3e197d6de0ad",
+            "id": "17",
+            "name": "GitHub - alexander-akhmetov/python-telegram: Python client for the Telegram's tdlib",
+            "type": "url",
+            "url": "https://github.com/alexander-akhmetov/python-telegram"
+         }, {
+            "date_added": "13289573101442244",
+            "date_last_used": "0",
+            "guid": "6b094469-b6d2-4ef1-acad-a496f73f8d3f",
+            "id": "18",
+            "name": "💥Cool Music 2021 Mix ♫ Top 50 NCS Gaming Music ♫ Best Vocal Mix, EDM, Trap, DnB, Dubstep, House - YouTube",
+            "type": "url",
+            "url": "https://www.youtube.com/watch?v=dcGnUnl65js&ab_channel=FreemeAddictedMusic"
+         }, {
+            "date_added": "13297587578436591",
+            "date_last_used": "0",
+            "guid": "23ead2d1-73a5-4343-8220-c7d868222cd9",
+            "id": "19",
+            "name": "Thank you for downloading Ubuntu Desktop | Ubuntu",
+            "type": "url",
+            "url": "https://ubuntu.com/download/desktop/thank-you?version=22.04&architecture=amd64"
+         }, {
+            "date_added": "13302971259746619",
+            "date_last_used": "0",
+            "guid": "c594933a-d4b9-4a42-9198-3d2c8d660cab",
+            "id": "20",
+            "name": "Prepaid Broadband Plans & Offers - JioFiber Prepaid Plans",
+            "type": "url",
+            "url": "https://www.jio.com/selfcare/plans/fiber/fiber-prepaid-plans-list/"
+         }, {
+            "date_added": "13302972055022868",
+            "date_last_used": "0",
+            "guid": "15112d47-23d9-44dd-963d-499027ed8022",
+            "id": "21",
+            "name": "Enterprise & Jio Business Solutions - Register Your Business Online",
+            "type": "url",
+            "url": "https://www.jio.com/business/"
+         }, {
+            "date_added": "13306145550592874",
+            "date_last_used": "0",
+            "guid": "a00799ab-bffa-48b7-b019-22c488ce8558",
+            "id": "22",
+            "name": "Complete Road Map To Be Expert In Python- Follow My Way - YouTube",
+            "type": "url",
+            "url": "https://www.youtube.com/watch?v=bPrmA1SEN2k&list=PLZoTAELRMXVPBTrWtJkn3wWQxZkmTXGwe&index=2"
+         }, {
+            "date_added": "13307697708103729",
+            "date_last_used": "0",
+            "guid": "85723485-a3e9-4e26-b2d1-4f122aca2236",
+            "id": "23",
+            "name": "Surviral.io",
+            "type": "url",
+            "url": "http://127.0.0.1:8000/en/advance/dashboard/youtube_manager/"
+         }, {
+            "date_added": "13307993748316928",
+            "date_last_used": "0",
+            "guid": "e3121410-50f6-40d5-80ef-2b44e7c93d79",
+            "id": "24",
+            "name": "Machine-Learning-in-90-days/Section 1- Python Crash Course at master · krishnaik06/Machine-Learning-in-90-days · GitHub",
+            "type": "url",
+            "url": "https://github.com/krishnaik06/Machine-Learning-in-90-days/tree/master/Section%201-%20Python%20Crash%20Course"
+         }, {
+            "date_added": "13312384160433442",
+            "date_last_used": "0",
+            "guid": "21c4351d-0fb7-45f8-971a-2751be3de716",
+            "id": "25",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "ubuntu transfer postgres database from storage file - YouTube",
+            "type": "url",
+            "url": "https://www.youtube.com/results?search_query=ubuntu+transfer+postgres+database+from+storage+file"
+         } ],
+         "date_added": "13346058469538648",
+         "date_last_used": "0",
+         "date_modified": "13312641299587158",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Bookmarks bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [ {
+            "date_added": "13307997627858465",
+            "date_last_used": "0",
+            "guid": "b0af9e20-6b6f-4395-9e6d-7a544c391397",
+            "id": "26",
+            "name": "8 Real Love Spells to Make Someone Love You: How to Cast a Successful Attraction Spell | Raleigh News & Observer",
+            "type": "url",
+            "url": "https://www.newsobserver.com/health-wellness/article264360021.html"
+         }, {
+            "date_added": "13308062978156468",
+            "date_last_used": "0",
+            "guid": "b60d9f48-1fa2-47b4-8d74-5b31b47f838c",
+            "id": "27",
+            "name": "DALL·E mini by craiyon.com on Hugging Face",
+            "type": "url",
+            "url": "https://huggingface.co/spaces/dalle-mini/dalle-mini"
+         }, {
+            "date_added": "13318194191855284",
+            "date_last_used": "0",
+            "guid": "cbb3eb70-36ec-460c-a326-0948943f66e3",
+            "id": "28",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "Annimex Web | HTML Template Develpoment | Shopify Development | WordPress Development | Magento Development | Bigcommerce Development",
+            "type": "url",
+            "url": "https://www.annimexweb.com/"
+         }, {
+            "date_added": "13321652265752880",
+            "date_last_used": "0",
+            "guid": "54a40613-c266-48e8-a772-13000e3fcac9",
+            "id": "29",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "The Friend She Falls In Love With",
+            "type": "url",
+            "url": "https://friendshefallsfor.com/enroll/"
+         }, {
+            "date_added": "13343587773883221",
+            "date_last_used": "0",
+            "guid": "3e1db79b-7af1-4518-8364-26f2966b3fa0",
+            "id": "30",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "Solve Algorithms | HackerRank",
+            "type": "url",
+            "url": "https://www.hackerrank.com/domains/algorithms?utm_source=hrwCandidateFeedback"
+         } ],
+         "date_added": "13346058469538695",
+         "date_last_used": "0",
+         "date_modified": "13343587773883221",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13346058469538707",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile bookmarks",
+         "type": "folder"
+      }
+   },
+   "sync_metadata": "CqUECoQECIiBAhL9AyAAkgHyAwqoAwoOY2hyb21lX3N5bmNfYm0SBTUxIWJtGhIJp5fQmJULBgARp5fQmJULBgAiMQmBGkaXlQsGABARGZQNNwhPlHvCIAEqGTUxIWJtOjk1ODE5NzUzMTA1MzY4MzQ1NTgiNAluXsGWlQsGABADGb00LTmtebcmIAEqHDUxIWJtL2ZkOjkxNjM3MjM1NTk0Njg4OTMxNjEiNAluXsGWlQsGABADGb00LTmtebcmIAEqHDUxIWJtL2ZkOjkxNjM3MjM1NTk0Njg4OTMxNjEiNAluXsGWlQsGABADGb00LTmtebcmIAEqHDUxIWJtL2ZkOjkxNjM3MjM1NTk0Njg4OTMxNjEiNAluXsGWlQsGABADGb00LTmtebcmIAEqHDUxIWJtL2ZkOjkxNjM3MjM1NTk0Njg4OTMxNjEiNAluXsGWlQsGABADGb00LTmtebcmIAEqHDUxIWJtL2ZkOjkxNjM3MjM1NTk0Njg4OTMxNjEiMQmBGkaXlQsGABARGZQNNwhPlHvCIAEqGTUxIWJtOjk1ODE5NzUzMTA1MzY4MzQ1NTgpgHfVmJULBgAKRQoWYW5ub3RhdGlvbl9jaHJvbWVfc3luYxIFNTEhYmQaEgkAyuuTlQsGABEAyuuTlQsGACmDlNCYlQsGADCAlK+f2fKCA7oBAggBEgAqGDlzeEZzejB1OFpIVEc2eHYvaGlhcWc9PUgDEuwBCBAS5wEKHDd0Umhka1lTMjFzS1FUZVdvcUZXeGIzeGswaz0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNWpEQ1VPS0hYMlJhaHl5SXB4VFMrSHRhcTBJTlBiV3prT1Q3Q2VHTC90d1FNV2YxeGVMRXRLR2pWZzVzUld5RXhmUGhYNkE9PRgAIAIoAjCBtZi62fKCAziVmYKH3i9A4sry88IxShwvMDltbFZwRTM5T3BEWlk0djEzb2NBTTV0UEU9Wh8iHf8xRnpiVTNIeExURUNmS1ZYN0hnMjVLWVVSRDA9Za11yKAS7QEIFhLoAQocQkQvcmpvbnU4UE1mYXM0aXo2VDlYc2luSGRZPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1SGYvOGxCREcrTnFUQ1UwZFQrakovT2I4Q054azFpTjBSSFhHZE5aZTZ0UW5iRDA5cE9Hd1hOckN3akVxMWpWTFBHTGtQQT09GAAgACgAMOXu0LWC6fkCOICS95quMECAkvearjBKHCtwTUhkdlRweFNldGtDcUV5ZTJYOXBESGdXUT1aICIe//pKY1lXWTMvT09IL3E2ZzUvY1JLRm5UT3dFQUU9ZTj5OTMSqwEIARKmAQoceXhKLzZmdmtlY3I3a3A1RVF6QjR0V0xwZGJFPRJOWjpBRHF0QVp5THpxa3JmMnFHT3k1MHZaVjdxWEQrWTVKOTN4SWNicVdsNmU5R1NiWmRuRnFwRDNiakhSL204bVQ2TzBhVFlKZ2lhNm1sGAAgACgAMO68hbbZ8oIDOABAAEocYVJDV0xnaEY5YjVJbnFLSUR2dUovanZRa0ZjPVoAZQAAAAAS7AEICBLnAQocdFp6OTNLYjZPdnBpMkFGbktMYzlJTURUVWhRPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1aHNTN1NYSWRQaFpWRFBHU0orTXUxNTZqUkZydW1HRnMvcjFvb3hmVEREVm9WajR5NFVoaHhDYTRTM2htMTlnUDJFblhadz09GAAgAigCMIG1mLrZ8oIDOKax4MTJL0DgyvLzwjFKHGd2K0ZzbTF5bVpURURHVDBTaVhQMlRSRHVobz1aHyId3E55WWd4OGdyTFQrKzFUMmxpdmNSWThxalpLbz1l1VLb8RLrAQgGEuYBChxtdUEzNnNza3pKbm1FRTcyK1lLdHMvQjBwN0U9EmZaOkFEcXRBWnp0amVYZjJxd1hLV3U4Ym50elRTYzU2R3UwbG1pa0pCanQ5SHZVRG9TdUlvWjVRd2IwQ1FiSWVjV2xXL3BtR2F3TUFwYWtDQTRxRW9nZVdDYjVraWh2eFljcXZBPT0YACACKAIwgbWYutnyggM4kuH0xLAvQN/K8vPCMUocODhwOGZZT1pWd2Izb0w0eGczSUFHSTFlcGRjPVoeIhxzMlNOL2syVXZaMHlkekt1WW1PZnhqTG5GeWM9Zfu700gS6wEIGxLmAQocVUFQbkhWUUVMdUJ0bUQxOXhJYml0aW1jMWVzPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1RGY3RHozaFk4WTlld1FCaDA2L01GR1JFUGd3NjJBNEhOWkFCeWRJTERkUzJoYm16UG8wcnpFVXI3UzhRczd0VHAvbk16dz09GAAgACgAMJT8y7DpoPoCOO3Qna21MEDt0J2ttTBKHGdQNkc0bE55emxlVDNGL0NpdEk0MDNwYjB6cz1aHiIcYXllUmQ2TFpGMVM3VjgxTFYxNVMrZnNJSW84PWWE4XiOEuwBCAoS5wEKHHpLQ3BlZFJ3U25ROHQyWFVxbFQyL212RWpDcz0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNTMvUWU0OGJZT3RMOXUwUEQvdFZuaXl6UU5EWUdRV0oxL3Q4c05iOVZVeExHa2Y3SFN5M2xsVm0zcjA5Rks1Y2oybUl3OXc9PRgAIAIoAjCBtZi62fKCAziDmay0xjBA4Mry88IxShxianFUR3N5WEtmK2NLVjdaUVN5eFQrK3J0UTQ9Wh8iHfB4ejBZb2kzODBzRERPNHl4bGo1blljUnBCT009ZTj5OTMS6wEIBRLmAQocTVorOFUyYWVRY2RQTUkyWEl0SklIZG1TdG9JPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1UzAzVTBTb0o5WjM5U1FkdHhaN0hGUDg5NHY5SHJIVVEzd05xWmJBT3hveGlnMExZT0kzZlliWExaL3ZBbTc2U2pVQWQ3dz09GAAgAigCMIG1mLrZ8oIDOLi995quMEDeyvLzwjFKHDN4Vk5vdmtiSDFJOHQ2VnNZbEg5ZWR2ZG1FWT1aHiIcckh3RmdDVWNrbXBVb2xEbjhnaGwvTEJ4Z08wPWU4+TkzEuwBCAcS5wEKHC9GL3QySFZsdFNyRzlQbHRSWXBWNEI4L01tST0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNUtFcG8vWXVyYWJIcUx3Nmo1Qng2b2s3YXQwNU5hb3owbVQzdTlOQmhhTTFzRWw2ZXJQQ29nUnJUNjBoUW9ZcEhBZ3FDNEE9PRgAIAIoAjCBtZi62fKCAzimseDEyS9A38ry88IxShxyRFQzVVpzVTVQZTJEN0JqS2dqWFoxaTFTbDA9Wh8iHblYaWhXUWlMcXozdWZaczQzU2ROMCt6L3RKQTg9ZVBo8dsS7AEICRLnAQocWU5qTXFlc2xLckV0cHhkMHMvODZtY242OE93PRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1a2Z3eU9YNkhlR21qc3p4S3I5YU9hQ1p1NW00K3lTa2dKS0dMOHZyaitsTDA4dmthWktEUFFndWtHMlF0enFLWmo5OTAxQT09GAAgAigCMIG1mLrZ8oIDOKax4MTJL0DgyvLzwjFKHEtLSE5HNHEveUE2MXJaY0Z6RjJVaTdHVjFMST1aHyId7lV6VElZc0lWZjU5ZUF4Vi8vZUUyelBqTE5qWT1loGbb6BLsAQgMEucBChxKYzhzZDNFZ2dHK3UyUjJkZlJkUGxFc3dhaUE9EmZaOkFEcXRBWnp0amVYZjJxd1hLV3U4Ym50elRTYzVSdll1R0NGOTcwL2F1dmxKOGZGSnoyZmx1VkdGZUF5ZVpQU2JVZUdEV2ZMVCtoOURJLzZYOExLYTZnM0dadFU3RWJBZjBRPT0YACACKAIwgbWYutnyggM4+K+ElsovQOHK8vPCMUocRkpoOFh5RnZtOER3R2lhR3BTTHFqYzd5aFVVPVofIh33SmlqQlFZcGZyZUd1Z0c4dUcvWDhjMmU1bkhzPWWyUTm1EuwBCAsS5wEKHEttbW02RWUwS1JiWkgrYXl3QkhPTHNJRVhwVT0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNURvcUJyWlhsMERuUGtDdUZ0ZGEyZUZzemswZ2VlOFdIcFZWaG9TTFpSaEtlZlcwU1o5NzJGVVRwdlFGT1NNZkdJUzAyVnc9PRgAIAIoAjCBtZi62fKCAzjx6IbUwjBA4Mry88IxShxVVmNSVFVycWFQcncxdTh0d2J0a2ZGOGJ3YnM9Wh8iHfJtTmRpb1Faa3NXcUc2WkgyMTJqYi9BejZpOEU9ZTzJoYIS7AEIERLnAQocSS9ObW9XeXdhNXRtTzNiZ0dHNy9PeFVUbHNzPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1MERyeHhpbmtvZ00veVFPZENGazUzTW12bEVtRkE5UlpvZW9oQks1NlRxRStMTWVWMVR0WVBQOVlHWHI4NzE3SEtYbjJrdz09GAAgAigCMIG1mLrZ8oIDOMuwiLXmL0DjyvLzwjFKHEVTcVFwSEdYRnUvQkVFK3hxV1hlZ09XYkRUdz1aHyId/1VVOTR6T0ZBZ1dJeHZSNUZWRUthU1pvV2I4az1lKNDhqRLsAQgNEucBChw4Tm40bytYVi81dWZGYUN1UkFIeEZ2Q0Z4QXM9EmZaOkFEcXRBWnp0amVYZjJxd1hLV3U4Ym50elRTYzVwc2tkUFZmR3BxLzFWcGZxSWY5akhxUGJYeThQa0lrQXBWc1dpTFBQOFVOQlltWnJpeUt4OVNWYWY3T0gwdEdGRzZScmRRPT0YACACKAIwgbWYutnyggM4pMqW59QvQOHK8vPCMUocR29HOW5DWFpSc1pvbkQ5YTZEQ2VkeWJLUHNJPVofIh37RjNIQ0JycDBVNTN5ZVplS3RDNE1TMFZhR2c4PWVHEpdwEu0BCBIS6AEKHHIwTmJmWkFoS2VkRGQvZHo0cDAwem9SVmthVT0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNXFxR3ZpbjNWV0FkeVk4V1FUd25ETmlTWERNS0VVU1Y1SDYzWG5GOStxSkdTdmUvRmZHbnRoSnFmMzJ0M1VGb3JUd0dUVUE9PRgAIAIoAjCBtZi62fKCAziDj8m88C9A48ry88IxShx0RGppRHpScEdub1FIbGp1TmtuR29mRnA0VlU9WiAiHv+qTmdnZHVjSVhPVExnUExrVHdFVmh6bDV1Q3g0PWU4+TkzEuwBCA4S5wEKHFA0U0xvdFdRbGhWcldlVTVmdkp5aUV3VThTST0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNUpSeitGUkRmZ25lL1RONzFMbVIvZ0xxL3RleE9iam5EUFZBU0Nid1VtdHA3V3oxaGt4QlhnZ2FLZWVtQU5SaUtoU1d0SEE9PRgAIAIoAjCBtZi62fKCAzjki8+v1y9A4cry88IxShxOWDNzeitrVFJyQ2lQZnVEcXJtK1RNdDNOZlk9Wh8iHf0rRkh5SEczdTNnTFozY1ZPTVc3c0ZIVUJHY1U9ZQ/MNBQS7QEIFBLoAQocYy9majlZQ0Y4M0FuSmFsY1h6UTZzWDJkdkhvPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1VFJ0RGxwb1RLSFJycTNmU3dyMUlhT1JpajJnalVPVWI1VWFzUFlrTjVIdDR4MG5OQTVpU1k4cTZNa3dxQTZZMFJraEw2dz09GAAgACgAMN2qyKDRjPkCOOLmp7GiMEDi5qexojBKHGRZaW42c1RuZjl4ZU5BSGdzQkxWTU00YUMxUT1aICIe/+pJcmlXM1JQZ0xwUk55bnVHTEZUT0JVNEpiZkk9ZfIe50US7QEIGRLoAQocalBZSUs4d2o3dlVWUmZNeXNtRHFHNWFRRUZ3PRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1RU1PbmJ2WDFpaDRuN1cxOVhPTTd0eHVVTUM4RGs5c2hDUVI2MllyREJKZkcxenJkYkJKZlFPMXNSbXQ5SzNzMVRrcEFVdz09GAAgACgAMN/854TLnvsCOLHV3bnFMECx1d25xTBKHEtHRG5lVXIzNk9kU2o4WnRiSjg2ZXY1UkoxND1aICIe//9QVVprd0pkUXF2aXk1VWVBd2FPVldWc1dobFE9ZTj5OTMS7QEIFxLoAQocRHV6aHBSSVA2K2pxbHFHaE1xWjVzSHRuclJzPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1V21KSUh3S29TTkhoeEJGQWNpT0tCelpiWVcyTlcxYnd2S0ZONjc0OXU5ZUc1RUM5ZGNkUGNFbEVIMmswVVpRNGJXVXY4QT09GAAgACgAMKD9ndKYlvoCOMioh/+zMEDIqIf/szBKHFh2QmNWYXNIRjd1MTEwWlVTQ0M5L3dmTi91VT1aICIe//1zVC9BOThHcjRob1hnMHBhT2w0empnWnNPVmc9ZQAAAAASwwEIAxK+AQocbmpnRHU4OGVDcnZYcDg2cEQ3ZkhHY3FGcDg4PRJmWjpBRHF0QVp3R1krK0xpeUhaSHN2aWQ3QVIvV084L2RCdnNaZWhkcm1Ca2NZVWg2dmZEUGVRYkJBTDdtTEZ4aXFIVkkvSCttdlR0Q2hPV2lrQXBxRFhobExXYTJvcEVjNy9nZz09GAAgACgAMO68hbbZ8oIDOABAAEoceXpOQjAxY241NEE3Y1JVMHVUKy9QZ21UdFVvPVoAZQAAAAAS7QEIExLoAQocUHgyVFMvVHUyL1RtTWhoaU5WV3FuUGpFTVRBPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1QTB6Y0FtOGJsMmE3LzBJNG8xbm1SdVZzQjNpdHlZK0dDQW16bFJJN1c0WUtUMGRaUktUWGp4NHRXNGhtKzRieVlISktpZz09GAAgACgAMMH8yb757/cCOMT8laqOMEDE/JWqjjBKHGNpdXJDZzBMQlJXaGorM1ZGN3QwQmpYWEhCcz1aICIe/9VWVkxGdVNrN0ozNlJWaXdSSklpaE1XVllmMUU9ZQAAAAAS6wEIHBLmAQocR0lOMjlPMkZsMXN3azNCWEEzNU00K2FVRS9jPRJmWjpBRHF0QVp6dGplWGYycXdYS1d1OGJudHpUU2M1d3BoT3hBMjhlME45eTB2UkxUcFlZa2hVeEJEelgyQUluNlU5OHowVzFDV1ZGL1ZRNFFjbnRTODBCY2U3VTBaSnU5VTA5UT09GAAgACgAMPars/rcx/wCOO/rlYzbMEDv65WM2zBKHEZTTXl3V08vNWhlZ1hsb2dpSy9KYUlObVJoYz1aHiIcazdsenVkeTArTkNBUnpXL2IyY3pJTTkvUkZrPWUU+dHwEusBCBoS5gEKHGtLTHJ4ZUlmdnA1WS9ZazlhcFZWemlNRU0rWT0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNUk0enlnZ2JnV0lVbGZldWxwK2VGTlBVb3liaGsrMGxDcUhPMHNha3l3MzlPRVhIV25ORDZlUXNBay9Gbytza1d2VnA3RXc9PRgAIAAoADD/t4D69Z76AjjS+4iOtTBA0vuIjrUwShxta3ZmQ0NMbEhmMXA4Y2JrL0tBQzZROEpSdVU9Wh4iHC9rTWZqS0swdGlsUzQvbnN0NTNYN0FpMlhpND1lV35lbhLsAQgPEucBChwrY2JVZGEzRWFKOHZsK2Q5NEJDMk1yeTlPYjA9EmZaOkFEcXRBWnp0amVYZjJxd1hLV3U4Ym50elRTYzV1Y3RZMDRhNGphVlVsUkNwcHZ4U1lZVllETjlYV2ZBcURTTVBMaXRBeTRNaThDZENsWjRuNVVPbWFrTXpwdUREZXJEUjFRPT0YACACKAIwgbWYutnyggM4pd/KwNsvQOLK8vPCMUocOThnUEh1UC95MG1Damg5V3B2ZEpzbFpYSmo4PVofIh3+T29qd0grNDF3VnFBM1RkcDhvd0xxb05PMzNzPWWQ3NZEEusBCB0S5gEKHEhvSUJ4aVptdnNOYjBRSVI2SWx3ZWdFeVd3WT0SZlo6QURxdEFaenRqZVhmMnF3WEtXdThibnR6VFNjNTRFUlk1YWdRdjdoSitGYncyZEpOL2FNSVdOWGptYkhoeC9kZmVqaXpyVkFFbURGQWVKSlRYaUFORHBEYlp4N0dJa0pmOEE9PRgAIAAoADCSmOa1qaz9AjiZ9o395zBAmfaN/ecwShxoUFpkVVhZWm5RcTc0bzV3aGYrU2syMkF5SFE9Wh4iHHRrOWJkMllwK3RVaExhRCtWWUI1NHdWclZHMD1lAAAAABLtAQgVEugBChxhN2NYQTFnSnN1YzYrbGRtMXRTbVgxVGVINUE9EmZaOkFEcXRBWnp0amVYZjJxd1hLV3U4Ym50elRTYzUwejFhaHZsZUZIeEdzYVRrbnU2bHliN3F3K0YyTkhBVTZ1R3hyTHRMY3R3V1B2ZWNseE9oN2ZnbWx4SGZRMGhQOHJwZStnPT0YACAAKAAwpIXom9SM+QI476vYsaIwQO+r2LGiMEocclBqcGlEdlhRYlk2Z2l0Yjh4cmNGNmpVaVdrPVogIh7/9U9Ra0VUTWtpMS9XNjkyRjRwMnJnZ0htaG5Edz1liLMqCRLtAQgYEugBChxTc0Vld1pmdXoxWllBcE9TZGNsc1JyZENMNDQ9EmZaOkFEcXRBWnp0amVYZjJxd1hLV3U4Ym50elRTYzVmM3RRdWpiK242YVRoOTF5ZlVuYThDbmZDYnhOaTJvNWUrQ0wvV2Z1aFNMNDJNL0lxY0x2UHc0ZGpzb094VnBFZzROODBBPT0YACAAKAAwgfGWveee+gI43ZacjLUwQN2WnIy1MEocWGJVajZIajIwUkxFWHBjZEJ4K2x0Q3o1WXhvPVogIh7//lMyOXA1Qy9uMmRPaC9DTDlGMHZQMnptNEk3bz1lKNDhqRLDAQgCEr4BChxZY1NUb252RVNQd3FDczRMMmNyVmh2NjhMOTg9EmZaOkFEcXRBWndMMjlmdWRabGZQbm5ydWY1eUNpdVFWaUZnNVNCMVpjd3hnangyL29BS3ZvbzJYS3VERkJnMDhreXQ2eVlLNFVKS21iU2hHTWdqSWlNeHMwaVgvTS9NazNSWkxRPT0YACAAKAAw7ryFttnyggM4AEAAShxvUFZraHdCUmJWNjVLQ1dSMitJT05IV29PdTg9WgBlAAAAABLsAQgeEucBChxQQTB0SnYvOXlMdzRIUXhjREFIdHdNNHNBdlU9EmZaOkFEcXRBWnp0amVYZjJxd1hLV3U4Ym50elRTYzU3c1R4WStEU0Fya3YzT1JWMWRIdSt5VTR3bXN2TDMwaUtUSDd4ZHZFQ05pNkNNVS9KeGQvbnUxY0cydEY3d2RKNk9zdWV3PT0YACAAKAAws4WUx92qggM4u4vj2LkxQLuL49i5MUocNytodERnZlg0NmM5Q2JSeGJXaTNkTUcyUVFZPVofIh26VmZpWVZYME81eGRTempFSkR2VC9KdFJjbGVJPWUAAAAAMAE4AA==",
+   "version": 1
+}

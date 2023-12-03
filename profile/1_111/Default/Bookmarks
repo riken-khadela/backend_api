@@ -1,0 +1,47 @@
+{
+   "checksum": "705abc0ca8ce96295aafc0a74da78aa2",
+   "roots": {
+      "bookmark_bar": {
+         "children": [  ],
+         "date_added": "13346060642574000",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Bookmarks bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [ {
+            "date_added": "13346061784224274",
+            "date_last_used": "0",
+            "guid": "34bd7ac1-6758-46e7-a721-b5250269e42a",
+            "id": "5",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "Stay secure with CyberGhost VPN Free Proxy",
+            "type": "url",
+            "url": "https://chromewebstore.google.com/detail/stay-secure-with-cybergho/ffbkglfijbcbgblgflchnbphjdllaogb"
+         } ],
+         "date_added": "13346060642574001",
+         "date_last_used": "0",
+         "date_modified": "13346061784224274",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13346060642574002",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
