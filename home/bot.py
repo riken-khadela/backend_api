@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from undetected_chromedriver import Chrome as uc
+from undetected_chromedriver import Chrome
 import logging
 
 class Bot():
@@ -57,7 +57,7 @@ class Bot():
         # options.add_experimental_option("prefs", prefs)
         
         
-        self.driver = uc(headless=True,version_main=119)
+        self.driver = Chrome(headless=True)
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
