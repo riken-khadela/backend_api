@@ -57,7 +57,7 @@ class Bot():
         # options.add_experimental_option("prefs", prefs)
         
         
-        self.driver = Chrome(headless=True)
+        self.driver = Chrome(headless=True,user_data_dir=f'profiles/{str(profile_id)}')
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
@@ -152,6 +152,7 @@ class Bot():
 
     def check_login(self) :
         self.driver.get(f'https://www.instagram.com/login')
+        self.driver.save_screenshot('1.png')
         breakpoint()
         time.sleep(3)
         if self.find_element('username',"//input[@aria-label='Phone number, username, or email']",By.XPATH) :
