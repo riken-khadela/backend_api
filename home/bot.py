@@ -152,7 +152,6 @@ class Bot():
 
     def check_login(self) :
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
-        breakpoint()
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
         if all_a :
             all_a[0].click()
@@ -161,7 +160,6 @@ class Bot():
                 self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
                 self.click_element('submit',"//button[@type='submit']",By.XPATH)
                 self.random_sleep()
-                self.driver.get_cookies()
                 if 'onetap' in self.driver.current_url :
                     save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
                     if save_info_btn : 
