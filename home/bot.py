@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from undetected_chromedriver import Chrome as uc, ChromeOptions
+from undetected_chromedriver import Chrome as uc
 import logging
 
 class Bot():
@@ -23,7 +23,7 @@ class Bot():
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
 
-        options = ChromeOptions()
+        # options = ChromeOptions()
         # options.add_argument('--autoplay-policy=no-user-gesture-required')
         # options.add_argument('--start-maximized')    
         # options.add_argument('--single-process')
@@ -118,13 +118,7 @@ class Bot():
     
     def ScrollDown(self,px):
         self.driver.execute_script(f"window.scrollTo(0, {px})")
-    
-    def get_cookies(self,website :str):
-        cookies = self.driver.get_cookies()
-        with open(os.path.isfile(self.cookies_path), 'w', newline='') as outputdata:
-            json.dump(cookies, outputdata)
-        return cookies
-    
+
     def ensure_click(self, element, timeout=3):
         try:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(element))
@@ -148,12 +142,7 @@ class Bot():
         value = self.driver.execute_script(f'return {script}')  
         return value
     
-    def load_cookies(self):
-        if os.path.isfile(self.cookies_path):
-            with open(self.cookies_path,'rb') as f:cookies = json.load(f)
-            for item in cookies:
-                self.driver.add_cookie(item)
-            self.random_sleep()
+
 
     def CloseDriver(self):
         try: 
@@ -163,6 +152,7 @@ class Bot():
 
     def check_login(self) :
         self.driver.get(f'https://www.instagram.com/login')
+        breakpoint()
         time.sleep(3)
         if self.find_element('username',"//input[@aria-label='Phone number, username, or email']",By.XPATH) :
             self.input_text(self.username,'username',"//input[@aria-label='Phone number, username, or email']",By.XPATH)
