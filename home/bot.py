@@ -57,7 +57,7 @@ class Bot():
         # options.add_experimental_option("prefs", prefs)
         
         
-        self.driver = Chrome(headless=True,user_data_dir=f'profiles/{str(profile_id)}')
+        self.driver = Chrome(user_data_dir=f'profiles/{str(profile_id)}_11')
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
@@ -151,22 +151,20 @@ class Bot():
         except Exception as e: ...
 
     def check_login(self) :
-        self.driver.get(f'https://www.instagram.com/login')
-        self.driver.save_screenshot('1.png')
-        breakpoint()
-        time.sleep(3)
-        if self.find_element('username',"//input[@aria-label='Phone number, username, or email']",By.XPATH) :
-            self.input_text(self.username,'username',"//input[@aria-label='Phone number, username, or email']",By.XPATH)
-            self.input_text(self.password,'password',"//input[@aria-label='Password']",By.XPATH)
-            self.click_element('submit',"//button[@type='submit']",By.XPATH)
-            self.random_sleep(5,7)
-            if 'onetap' in self.driver.current_url :
-                save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
-                if save_info_btn : 
-                    save_info_btn[-1].click()
-
-        self.random_sleep(10,15)
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
+        breakpoint()
+        all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
+        if all_a :
+            all_a[0].click()
+            if 'login' in self.driver.current_url.lower() :
+                self.input_text(self.username,'username',"//input[@name='username']",By.XPATH)
+                self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
+                self.click_element('submit',"//button[@type='submit']",By.XPATH)
+                self.random_sleep()
+                if 'onetap' in self.driver.current_url :
+                    save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
+                    if save_info_btn : 
+                        save_info_btn[-1].click()
         self.random_sleep(10,15)
         edit_profile_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'a') if 'edit profile' in i.text.lower()]
         if edit_profile_btn :

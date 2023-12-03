@@ -142,8 +142,7 @@ class Bot():
     
     def get_cookies(self,website :str):
         cookies = self.driver.get_cookies()
-        with open(os.path.isfile(self.cookies_path), 'w', newline='') as outputdata:
-            json.dump(cookies, outputdata)
+        with open(os.path.isfile(self.cookies_path), 'w', newline='') as outputdata: json.d ump(coc, outputdata)
         return cookies
     
     def ensure_click(self, element, timeout=3):
@@ -192,6 +191,8 @@ class Bot():
                 self.input_text(self.password,'password',"//input[@aria-label='Password']",By.XPATH)
                 self.click_element('submit',"//button[@type='submit']",By.XPATH)
                 self.random_sleep(5,7)
+                coc = self.driver.get_cookies()
+                
                 if 'onetap' in self.driver.current_url :
                     save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
                     if save_info_btn : 
