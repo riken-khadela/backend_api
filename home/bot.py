@@ -65,7 +65,7 @@ class Bot():
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--enable-javascript")
         options.add_argument("--enable-popup-blocking")
-        # options.add_argument('--headless')
+        options.add_argument('--headless')
         
         options.add_argument('--start-maximized')    
         self.driver = webdriver.Chrome(options=options)
