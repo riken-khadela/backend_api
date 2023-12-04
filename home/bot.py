@@ -23,19 +23,26 @@ class Bot():
 
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
-        from selenium.webdriver.chrome.options import Options
-        options = webdriver.ChromeOptions()
-        service = Service(chromedriver_path)
-        # service.enable_log()
-        options.binary_location = chrome_binary_path
-        options.add_argument('--headless')  
-        options.add_argument('--no-sandbox')  
+        # from selenium.webdriver.chrome.options import Options
+        # options = webdriver.ChromeOptions()
+        # service = Service(chromedriver_path)
+        # # service.enable_log()
+        # options.binary_location = chrome_binary_path
+        # options.add_argument('--headless')  
+        # options.add_argument('--no-sandbox')  
+        # options.add_argument('--disable-dev-shm-usage')
+
+        # options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profile','profile_'+str(profile_id))}")
+        # options.add_argument('--headless')
+        # options.add_argument('--start-maximized')    
+        # self.driver =webdriver.Chrome(service=service, options=options)
+        from undetected_chromedriver import Chrome, ChromeOptions
+
+        options = ChromeOptions()
+        options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
 
-        options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profile','profile_'+str(profile_id))}")
-        options.add_argument('--headless')
-        options.add_argument('--start-maximized')    
-        self.driver =webdriver.Chrome(service=service, options=options)
+        self.driver = Chrome(options=options,headless=True)
         
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
