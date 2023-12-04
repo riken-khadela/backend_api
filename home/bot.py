@@ -50,7 +50,6 @@ class Bot():
         options.add_extension('cyberghost.crx')
 
         
-        options.add_argument(f"user-data-dir={str(profile_id)}")
         options.add_argument('--profile-directory=Defualt')
         prefs = {"credentials_enable_service": True,
                  'profile.default_content_setting_values.automatic_downloads': 1,
@@ -164,16 +163,14 @@ class Bot():
 
     def check_login(self) :
 
+        self.driver.get(f'https://www.instagram.com/'+self.username+'/')
         if os.path.exists('cookies/coockies_'+str(self.user.id)+'.txt') :
             with open('cookies/coockies_'+str(self.user.id)+'.txt', 'r') as file:
                 cookies = eval(file.read())  
             for cookie in cookies:
                 self.driver.add_cookie(cookie)
-
-        self.driver.get(f'https://www.instagram.com/'+self.username+'/')
+            self.driver.refresh()
         self.random_sleep(5,10)
-        breakpoint()
-        
 
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
         if all_a :
