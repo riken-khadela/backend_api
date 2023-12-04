@@ -27,45 +27,8 @@ class Bot():
         options = webdriver.ChromeOptions()
         service = Service(chromedriver_path)
 
-        options.add_argument('--no-sandbox')
-        options.add_argument('--autoplay-policy=no-user-gesture-required')
-        # options.add_argument('--start-maximized')    
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument("--disable-blink-features")
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--enable-javascript")
-        options.add_argument("--disable-notifications")
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument("--enable-popup-blocking")
-        options.add_experimental_option('useAutomationExtension', False)
-        options.add_experimental_option("excludeSwitches", [
-            "enable-logging",
-            "enable-automation",
-            "ignore-certificate-errors",
-            "safebrowsing-disable-download-protection",
-            "safebrowsing-disable-auto-update",
-            "disable-client-side-phishing-detection"])
-        options.add_argument("disable-infobars")
         options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profile','profile_'+str(profile_id))}")
-        options.add_extension('cyberghost.crx')
-
-        
-        options.add_argument('--profile-directory=Defualt')
-        prefs = {"credentials_enable_service": True,
-                 'profile.default_content_setting_values.automatic_downloads': 1,
-            'download.prompt_for_download': False,  # Optional, suppress download prompt
-            'download.directory_upgrade': True,
-            'safebrowsing.enabled': True ,
-            "profile.password_manager_enabled": True}
-        options.add_experimental_option("prefs", prefs)
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-gpu')
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--enable-javascript")
-        options.add_argument("--enable-popup-blocking")
-        # options.add_argument('--headless')
-        
+        options.add_argument('--headless')
         options.add_argument('--start-maximized')    
         self.driver = webdriver.Chrome(service=service, options=options)
         
