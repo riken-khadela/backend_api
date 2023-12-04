@@ -65,10 +65,11 @@ class Bot():
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--enable-javascript")
         options.add_argument("--enable-popup-blocking")
-        options.add_argument('--headless')
+        # options.add_argument('--headless')
         
         options.add_argument('--start-maximized')    
         self.driver = webdriver.Chrome(service=service, options=options)
+        
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
@@ -162,8 +163,17 @@ class Bot():
         except Exception as e: ...
 
     def check_login(self) :
+
+        if os.path.exists('cookies/coockies_'+str(self.user.id)+'.txt') :
+            with open('cookies/coockies_'+str(self.user.id)+'.txt', 'r') as file:
+                cookies = eval(file.read())  
+            for cookie in cookies:
+                self.driver.add_cookie(cookie)
+
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
         self.random_sleep(5,10)
+        breakpoint()
+        
 
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
         if all_a :
@@ -173,6 +183,8 @@ class Bot():
                 self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
                 self.click_element('submit',"//button[@type='submit']",By.XPATH)
                 self.random_sleep()
+                cookies = self.driver.get_cookies()
+                with open('cookies/coockies_'+str(self.user.id)+'.txt', 'w') as file: file.write(str(cookies))
                 if 'onetap' in self.driver.current_url :
                     save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
                     if save_info_btn : 
