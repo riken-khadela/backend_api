@@ -69,7 +69,6 @@ class Bot():
         
         options.add_argument('--start-maximized')    
         self.driver = webdriver.Chrome(options=options)
-        breakpoint()
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
@@ -163,7 +162,6 @@ class Bot():
         except Exception as e: ...
 
     def check_login(self) :
-        breakpoint()
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
         self.random_sleep(5,10)
 
