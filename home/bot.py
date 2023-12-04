@@ -30,7 +30,7 @@ class Bot():
         options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profile','profile_'+str(profile_id))}")
         options.add_argument('--headless')
         options.add_argument('--start-maximized')    
-        self.driver = webdriver.Chrome(service=service, options=options)
+        self.driver = webdriver.Chrome(options=options)
         
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
