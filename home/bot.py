@@ -1,13 +1,14 @@
 import random, time, os, json
-from click import option
 from selenium_stealth import stealth
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from undetected_chromedriver import Chrome
 import logging
-
+from selenium import webdriver  
+from selenium.webdriver.chrome.service import Service
+chromedriver_path = os.path.join(os.getcwd(),'chromedriver')
+chrome_binary_path = '/usr/bin/google-chrome'
 class Bot():
     def __init__(self,user) :
         self.user = user
@@ -22,42 +23,53 @@ class Bot():
 
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
+        from selenium.webdriver.chrome.options import Options
+        options = webdriver.ChromeOptions()
+        service = Service(chromedriver_path)
 
-        # options = ChromeOptions()
-        # options.add_argument('--autoplay-policy=no-user-gesture-required')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--autoplay-policy=no-user-gesture-required')
         # options.add_argument('--start-maximized')    
-        # options.add_argument('--single-process')
-        # options.add_argument("--ignore-certificate-errors")
-        # options.add_argument("--enable-javascript")
-        # options.add_argument("--disable-notifications")
-        # options.add_argument('--disable-blink-features=AutomationControlled')
-        # options.add_argument('--no-sandbox')
-        # options.add_argument('--disable-dev-shm-usage')
-        # options.add_argument('--disable-gpu')
-        # options.add_argument("--enable-popup-blocking")
-        # options.add_argument(f"user-data-dir={str(profile_id)}")
-        # options.add_argument(f"user-data-dir=profile-directory")
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument("--disable-blink-features")
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--enable-javascript")
+        options.add_argument("--disable-notifications")
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument("--enable-popup-blocking")
+        options.add_experimental_option('useAutomationExtension', False)
+        options.add_experimental_option("excludeSwitches", [
+            "enable-logging",
+            "enable-automation",
+            "ignore-certificate-errors",
+            "safebrowsing-disable-download-protection",
+            "safebrowsing-disable-auto-update",
+            "disable-client-side-phishing-detection"])
+        options.add_argument("disable-infobars")
+        options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profile','profile_'+str(profile_id))}")
+        options.add_extension('cyberghost.crx')
 
-        # options.add_experimental_option('useAutomationExtension', False)
-        # options.add_experimental_option("excludeSwitches", [
-        #     "enable-logging",
-        #     "enable-automation",
-        #     "safebrowsing-disable-download-protection",
-        #     "safebrowsing-disable-auto-update",
-        #     "disable-client-side-phishing-detection"])
         
-        # options.add_argument(f"user-data-dir={str(profile_id)}")
-        # options.add_argument('--profile-directory=Defualt')
-        # prefs = {"credentials_enable_service": True,
-        #          'profile.default_content_setting_values.automatic_downloads': 1,
-        #     'download.prompt_for_download': False,  # Optional, suppress download prompt
-        #     'download.directory_upgrade': True,
-        #     'safebrowsing.enabled': True ,
-        #     "profile.password_manager_enabled": True}
-        # options.add_experimental_option("prefs", prefs)
+        options.add_argument(f"user-data-dir={str(profile_id)}")
+        options.add_argument('--profile-directory=Defualt')
+        prefs = {"credentials_enable_service": True,
+                 'profile.default_content_setting_values.automatic_downloads': 1,
+            'download.prompt_for_download': False,  # Optional, suppress download prompt
+            'download.directory_upgrade': True,
+            'safebrowsing.enabled': True ,
+            "profile.password_manager_enabled": True}
+        options.add_experimental_option("prefs", prefs)
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-gpu')
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--enable-javascript")
+        options.add_argument("--enable-popup-blocking")
+        # options.add_argument('--headless')
         
-        
-        self.driver = Chrome(user_data_dir=f'profile/{str(profile_id)}_111')
+        options.add_argument('--start-maximized')    
+        self.driver = webdriver.Chrome(options=options)
+        breakpoint()
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
@@ -151,7 +163,10 @@ class Bot():
         except Exception as e: ...
 
     def check_login(self) :
+        breakpoint()
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
+        self.random_sleep(5,10)
+
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
         if all_a :
             all_a[0].click()
@@ -164,15 +179,13 @@ class Bot():
                     save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
                     if save_info_btn : 
                         save_info_btn[-1].click()
-        self.random_sleep(10,15)
         edit_profile_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'a') if 'edit profile' in i.text.lower()]
         if edit_profile_btn :
             print('user has been logged 1!')
             self.driver.get('https://www.instagram.com/')
             self.click_element('search btn',"//a[@href='#']")
             return self.driver
-        breakpoint()
-        print('user has been logged 111111111111111!')
+        print("user hasn't been logged !")
         return False
 
     def extract_tag(self,tag : str,driver):

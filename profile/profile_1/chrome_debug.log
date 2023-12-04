@@ -1,0 +1,29 @@
+[13004:13004:1204/065234.500402:WARNING:chrome_main_delegate.cc(660)] This is Chrome version 119.0.6045.199 (not a warning)
+[13004:13004:1204/065234.731084:INFO:policy_logger.cc(145)] :components/enterprise/browser/controller/chrome_browser_cloud_management_controller.cc(168) Starting CBCM Controller Initialization
+[13004:13004:1204/065234.731161:INFO:policy_logger.cc(145)] :components/enterprise/browser/controller/chrome_browser_cloud_management_controller.cc(196) No machine level policy manager exists.
+[13047:13047:1204/065235.096292:WARNING:sandbox_linux.cc(400)] InitializeSandbox() called with multiple threads in process gpu-process.
+[13004:13004:1204/065235.107405:WARNING:bluez_dbus_manager.cc(247)] Floss manager not present, cannot set Floss enable/disable.
+[13004:13004:1204/065235.364441:INFO:CONSOLE(1)] "%c Cyberghost VPN color:#008ACD; font-size: 32px", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13004:13004:1204/065235.388008:INFO:CONSOLE(1)] "Application was installed", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13004:13004:1204/065235.388753:INFO:CONSOLE(1)] "-- connection disabled", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13004:13004:1204/065235.399987:INFO:CONSOLE(1)] "path signedout", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13004:13004:1204/065235.400197:INFO:CONSOLE(1)] "icon [object Object]", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13004:13004:1204/065235.400228:INFO:CONSOLE(1)] "chrome chrome chrome [object Object]", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13004:13004:1204/065235.527083:INFO:CONSOLE(1)] "errrrrrr undefined", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13004:13004:1204/065238.502969:INFO:CONSOLE(1)] "navigator.language  en-GB", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.503130:INFO:CONSOLE(1)] "languge XXXXXXX =====  en-GB", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.510351:INFO:CONSOLE(1)] " ProxyWarningService checkPermission [object Object]", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.510680:INFO:CONSOLE(1)] "navigator.language  en-GB", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.510737:INFO:CONSOLE(1)] "languge XXXXXXX =====  en-GB", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.532684:INFO:CONSOLE(1)] "KEY  proxyCountry", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.534172:INFO:CONSOLE(1)] "KEY  activeConnection", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.553784:INFO:CONSOLE(1)] "levelOfControl  controlled_by_this_extension", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.569938:INFO:CONSOLE(1)] "KEY  browsingServers", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065238.572179:INFO:CONSOLE(1)] "endpoint  https://goerli.infura.io/v3/528cea664ebd4767b3675c41ea51fd65", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065239.441826:INFO:CONSOLE(1)] "endpoint", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065239.448059:INFO:CONSOLE(1)] "serverContract  [object Object]", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/main.js (1)
+[13004:13004:1204/065239.450822:INFO:CONSOLE(1)] "Uncaught (in promise) CommandListener or method not found", source: chrome-extension://ffbkglfijbcbgblgflchnbphjdllaogb/background.js (1)
+[13048:13060:1204/065239.673607:WARNING:spdy_session.cc(2966)] Received HEADERS for invalid stream 3
+[13048:13059:1204/065246.522039:WARNING:sqlite_persistent_store_backend_base.cc(198)] Failed to post task from FlushAndNotifyInBackground@net/extras/sqlite/sqlite_persistent_store_backend_base.cc:246 to client_task_runner_.
+[13048:13059:1204/065246.522174:WARNING:sqlite_persistent_store_backend_base.cc(198)] Failed to post task from FlushAndNotifyInBackground@net/extras/sqlite/sqlite_persistent_store_backend_base.cc:246 to client_task_runner_.
+[13004:13004:1204/065246.551435:WARNING:pref_notifier_impl.cc(41)] Pref observer for media_router.cast_allow_all_ips found at shutdown.

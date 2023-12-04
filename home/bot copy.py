@@ -142,7 +142,7 @@ class Bot():
     
     def get_cookies(self,website :str):
         cookies = self.driver.get_cookies()
-        with open(os.path.isfile(self.cookies_path), 'w', newline='') as outputdata: json.d ump(coc, outputdata)
+        with open(os.path.isfile(self.cookies_path), 'w', newline='') as outputdata: json.dump(cookies, outputdata)
         return cookies
     
     def ensure_click(self, element, timeout=3):
