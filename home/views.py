@@ -49,7 +49,6 @@ class UserRegistrationView(APIView):
     """
     renderer_classes = [UserRenderer]
     def post(self, request, format=None):
-            breakpoint()
             serializer = UserRegistrationSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             if not request.data['email'] :
@@ -144,7 +143,6 @@ class send_email(APIView):
         message = 'This is a test email sent from a Django application.'
         from_email = 'info@keywordlit.com'
         recipient_list = [request.data['email']]   
-        breakpoint()
         send_mail(subject, message, from_email, recipient_list)
         return Response({"Email sent successfully."},status=status.HTTP_200_OK)
     
@@ -156,6 +154,9 @@ class InstaHashTag(APIView):
         Hastag = []
         user_id = get_user_id_from_token(request)
         user = CustomUser.objects.filter(id=user_id).first()
+        if user :
+            msg = 'could not found the user'
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
         if user.credit < 10 :
             msg = 'Insufficient credit to perform this action.'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
