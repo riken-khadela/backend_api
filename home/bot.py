@@ -68,7 +68,7 @@ class Bot():
         options.add_argument('--headless')
         
         options.add_argument('--start-maximized')    
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome(service=service, options=options)
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
