@@ -42,7 +42,7 @@ class Bot():
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
 
-        self.driver = Chrome(options=options,headless=True)
+        self.driver = Chrome(options=options)
         
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
@@ -139,8 +139,8 @@ class Bot():
     def check_login(self) :
 
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
-        if os.path.exists('cookies/coockies_'+str(self.user.id)+'.txt') :
-            with open('cookies/coockies_'+str(self.user.id)+'.txt', 'r') as file:
+        if os.path.exists('cookies/coockies_'+str(self.username)+'.txt') :
+            with open('cookies/coockies_'+str(self.username)+'.txt', 'r') as file:
                 cookies = eval(file.read())  
             for cookie in cookies:
                 self.driver.add_cookie(cookie)
@@ -156,28 +156,42 @@ class Bot():
                 self.click_element('submit',"//button[@type='submit']",By.XPATH)
                 self.random_sleep()
                 cookies = self.driver.get_cookies()
-                with open('cookies/coockies_'+str(self.user.id)+'.txt', 'w') as file: file.write(str(cookies))
+                with open('cookies/coockies_'+str(self.username)+'.txt', 'w') as file: file.write(str(cookies))
                 if 'onetap' in self.driver.current_url :
                     save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
                     if save_info_btn : 
                         save_info_btn[-1].click()
+        time.sleep(5)
         edit_profile_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'a') if 'edit profile' in i.text.lower()]
         if edit_profile_btn :
             print('user has been logged 1!')
             self.driver.get('https://www.instagram.com/')
             self.click_element('search btn',"//a[@href='#']")
+            self.click_element('notification not now',"//button[text()='Not Now']")
             return self.driver
         print("user hasn't been logged !")
         return False
 
     def extract_tag(self,tag : str,driver):
         self.driver = driver
-        self.input_text(f"#{tag}",tag,"//input[@aria-label='Search input']",By.XPATH)
-        self.find_element('first hashtag','/html/body/div[2]/div/div/div[2]/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div/div/div[2]/div/a[1]')
-        for _ in range(10) :
-            all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
-            if  len(all_hashtah_links) < 1:
-                time.sleep(1)
-            else :
-                return all_hashtah_links
+        self.driver.get('https://www.instagram.com/')
+        self.click_element('search btn',"//a[@href='#']")
+
+        try:
+            search_input = self.input_text(f"#{tag}",tag,"//input[@aria-label='Search input']",By.XPATH)
+            if search_input :
+                for _ in range(10) :
+                    time.sleep(1)
+                    all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
+                    if  len(all_hashtah_links) < 1:
+                        time.sleep(1)
+                    else :
+                        cookies = self.driver.get_cookies()
+                        with open('cookies/coockies_'+str(self.username), 'w') as file:
+                            file.write(str(cookies))
+
+                        return all_hashtah_links
+                self.input_text(f"",tag,"//input[@aria-label='Search input']",By.XPATH)
+        except Exception as e: 
+            print(e)
         return []

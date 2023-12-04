@@ -1,8 +1,13 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django import forms
 from django.db import models
+import random, string
 # from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.fields import JSONField
+def generate_random_string(length=15):
+    letters = string.ascii_letters  # includes uppercase and lowercase letters
+    return ''.join(random.choice(letters) for _ in range(length))
+
 
 class TimeStampModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -28,11 +33,7 @@ class UserManager(BaseUserManager):
         )
         
         user.username = username
-        user.gender  = gender 
-        user.Mobile_number = Mobile_number
-        user.city = city
         user.first_name = first_name
-        user.last_name = last_name
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -61,11 +62,7 @@ class CustomUser(AbstractUser,TimeStampModel):
         ('CUSTOME','CUSTOME'),
     )
     email = models.EmailField(unique=True)
-    Mobile_number = models.CharField(max_length=10)
     first_name = models.CharField(max_length=25)
-    last_name = models.CharField(max_length=25)
-    city = models.CharField(max_length=25)
-    gender = models.CharField(max_length=25,choices=GENDER)
     verification_code = models.BigIntegerField(null=True,blank=True)
     is_user_verified = models.BooleanField(default=False)
     credit = models.BigIntegerField(default=100)

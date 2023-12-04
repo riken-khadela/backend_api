@@ -49,6 +49,7 @@ class UserRegistrationView(APIView):
     """
     renderer_classes = [UserRenderer]
     def post(self, request, format=None):
+            breakpoint()
             serializer = UserRegistrationSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             if not request.data['email'] :
@@ -133,8 +134,6 @@ class UserChangePasswordView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response({'msg':'Password Changed Successfully'}, status=status.HTTP_200_OK)
 
-    
-
 from django.core.mail import send_mail
 
 class send_email(APIView):
@@ -149,7 +148,6 @@ class send_email(APIView):
         send_mail(subject, message, from_email, recipient_list)
         return Response({"Email sent successfully."},status=status.HTTP_200_OK)
     
-
 class InstaHashTag(APIView):
     """ 
     Get a user profile data with email and password
@@ -177,7 +175,7 @@ class InstaHashTag(APIView):
                     user.credit= user.credit - 10
                     user.save()
                     msg = 'Hashtag scraped successfully'
-                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)
+                    return Response({"Hashtag": Hastag, "Message": msg},status=status.HTTP_200_OK)
                 else:
                     msg = 'Failed to scrape the hashtag'
                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
@@ -185,6 +183,8 @@ class InstaHashTag(APIView):
                 msg = 'Failed to scrape the hashtag'
             finally :
                 value['status'] = True
+                if msg == "Hashtag scraped successfully" :
+                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)
                 return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
         else:
