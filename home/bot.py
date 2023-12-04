@@ -173,6 +173,7 @@ class Bot():
     def extract_tag(self,tag : str,driver):
         self.driver = driver
         self.input_text(f"#{tag}",tag,"//input[@aria-label='Search input']",By.XPATH)
+        self.find_element('first hashtag','/html/body/div[2]/div/div/div[2]/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div[2]/div/div/div[2]/div/a[1]')
         for _ in range(10) :
             all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
             if  len(all_hashtah_links) < 1:
