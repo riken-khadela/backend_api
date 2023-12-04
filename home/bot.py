@@ -26,6 +26,7 @@ class Bot():
         from selenium.webdriver.chrome.options import Options
         options = webdriver.ChromeOptions()
         service = Service(chromedriver_path)
+        service.enable_log()
         options.binary_location = chrome_binary_path
         options.add_argument('--headless')  
         options.add_argument('--no-sandbox')  
