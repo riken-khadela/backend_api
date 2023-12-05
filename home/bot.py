@@ -44,7 +44,7 @@ class Bot():
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument(f'--user-data-dir=profile/{self.username}_{self.user.id}')
         
-
+#  gunicorn --timeout 3000 --bind 0.0.0.0:8000 e_com:wsgi.py
         self.driver = Chrome(options=options)
         
         return self.driver
