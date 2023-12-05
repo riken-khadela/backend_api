@@ -40,7 +40,10 @@ class Bot():
 
         options = ChromeOptions()
         options.add_argument('--no-sandbox')
+        options.add_argument('--headless')
         options.add_argument('--disable-dev-shm-usage')
+        options.add_argument(f'--user-data-dir=profile/{self.username}_{self.user.id}')
+        
 
         self.driver = Chrome(options=options)
         
