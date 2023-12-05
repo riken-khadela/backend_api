@@ -4,7 +4,6 @@ load_dotenv()
 
 from .bot import Bot
 def GetActiveChromeSelenium():
-    print('starting drivers !')
     user_driver_dict = {}
     all_active_user = instagram_accounts.objects.filter(status='ACTIVE')
     for user in all_active_user : 
