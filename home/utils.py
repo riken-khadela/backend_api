@@ -1,9 +1,12 @@
 from .models import instagram_accounts
 from dotenv import load_dotenv
 load_dotenv()
+import subprocess
 
 from .bot import Bot
 def GetActiveChromeSelenium():
+    subprocess.run(['pkill', 'chrome'])
+
     user_driver_dict = {}
     all_active_user = instagram_accounts.objects.filter(status='ACTIVE')
     for user in all_active_user : 
