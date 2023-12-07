@@ -50,7 +50,7 @@ class Bot():
         # options.add_argument(f'--user-data-dir=profile/{self.username}_{self.user.id}')
         
 #  gunicorn --timeout 3000 --bind 0.0.0.0:8000 e_com:wsgi.py
-        breakpoint()
+        # breakpoint()
         
         self.driver = Chrome(options=options,version_main=119)
         
