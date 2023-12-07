@@ -35,7 +35,7 @@ class Bot():
         options.add_argument('--headless')
         prefs = {"credentials_enable_service": True,
                 'profile.default_content_setting_values.automatic_downloads': 1,
-                "download.default_directory" : f"{self.download_path}",
+                # "download.default_directory" : f"{self.download_path}",
             'download.prompt_for_download': False,  # Optional, suppress download prompt
             'download.directory_upgrade': True,
             'safebrowsing.enabled': True ,
