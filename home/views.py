@@ -17,6 +17,15 @@ import random, dotenv
 from django.http import JsonResponse
 from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token
 from django.contrib.auth.models import AnonymousUser
+import random, time, os, json
+from selenium_stealth import stealth
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+import logging
+from selenium import webdriver  
+from selenium.webdriver.chrome.service import Service
 
 user_driver_dict = {}
     
