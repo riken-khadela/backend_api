@@ -18,7 +18,7 @@ from django.http import JsonResponse
 from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token
 from django.contrib.auth.models import AnonymousUser
 
-user_driver_dict = GetActiveChromeSelenium()
+user_driver_dict = {}
     
 def get_or_createToken(request):
     """ 
@@ -162,6 +162,8 @@ class InstaHashTag(APIView):
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
         driver = ''
         global user_driver_dict
+        if user_driver_dict == {} :
+            user_driver_dict = GetActiveChromeSelenium()
         for keys,value in user_driver_dict.items():
             if value['status'] == True :
                 driver = value['driver']
