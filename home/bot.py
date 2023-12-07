@@ -97,10 +97,7 @@ class Bot():
             timeout=10):
         """Find an element, then click and return it, or return None"""
         ele = self.find_element(element, locator, locator_type, timeout=timeout)
-        
-        if ele:
-            self.driver.execute_script('arguments[0].scrollIntoViewIfNeeded();',ele)
-            self.ensure_click(ele)
+        return_driver
             print(f'Clicked the element: {element}')
             return ele
 
@@ -192,8 +189,8 @@ class Bot():
 
     def extract_tag(self,tag : str,driver):
         self.driver = driver
-        if not self.check_driver_connection() :
-            self.return_driver()
+        # if not self.check_driver_connection() :
+        #     self.return_driver()
         self.driver.get('https://www.instagram.com/')
         self.click_element('search btn',"//a[@href='#']")
 
