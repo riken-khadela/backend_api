@@ -55,14 +55,6 @@ class Bot():
         self.driver = Chrome(options=options,version_main=119)
         
         return self.driver
-    def check_driver_connection(self):
-        try:
-            # Check driver connection by getting the current URL
-            self.driver.current_url
-            return True  # Driver is connected
-        except WebDriverException:
-            return False 
-        
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
             condition_func=EC.presence_of_element_located,
@@ -97,7 +89,10 @@ class Bot():
             timeout=10):
         """Find an element, then click and return it, or return None"""
         ele = self.find_element(element, locator, locator_type, timeout=timeout)
-        return_driver
+        
+        if ele:
+            self.driver.execute_script('arguments[0].scrollIntoViewIfNeeded();',ele)
+            self.ensure_click(ele)
             print(f'Clicked the element: {element}')
             return ele
 
@@ -189,8 +184,6 @@ class Bot():
 
     def extract_tag(self,tag : str,driver):
         self.driver = driver
-        # if not self.check_driver_connection() :
-        #     self.return_driver()
         self.driver.get('https://www.instagram.com/')
         self.click_element('search btn',"//a[@href='#']")
 
