@@ -156,8 +156,7 @@ class Bot():
             for cookie in cookies:
                 self.driver.add_cookie(cookie)
             self.driver.refresh()
-        self.random_sleep(5,10)
-
+        self.find_element('a tag','a',By.TAG_NAME)
         all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
         if all_a :
             all_a[0].click()
