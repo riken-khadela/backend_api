@@ -126,6 +126,7 @@ class Bot():
         self.driver.find_element(By.XPATH,'/html/body').send_keys(Keys.CONTROL+'t')
 
     def random_sleep(self,a=3,b=7):
+        import time, os
         random_time = random.randint(a,b)
         print('time sleep randomly :',random_time)
         time.sleep(random_time)
