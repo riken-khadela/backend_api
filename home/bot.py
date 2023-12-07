@@ -23,29 +23,34 @@ class Bot():
 
     def get_driver(self,profile_id : int):
         """Start webdriver and return state of it."""
-        # from selenium.webdriver.chrome.options import Options
-        # options = webdriver.ChromeOptions()
-        # service = Service(chromedriver_path)
-        # # service.enable_log()
-        # options.binary_location = chrome_binary_path
-        # options.add_argument('--headless')  
-        # options.add_argument('--no-sandbox')  
-        # options.add_argument('--disable-dev-shm-usage')
-
-        # options.add_argument(f"user-data-dir={os.path.join(os.getcwd(),f'profile','profile_'+str(profile_id))}")
-        # options.add_argument('--headless')
-        # options.add_argument('--start-maximized')    
-        # self.driver =webdriver.Chrome(service=service, options=options)
         from undetected_chromedriver import Chrome, ChromeOptions
-
         options = ChromeOptions()
-        options.add_argument('--no-sandbox')
-        options.add_argument('--headless')
+        options.add_argument('--lang=en')  # Set webdriver language to English.
+        options.add_argument('log-level=3')  # No logs is printed.
+        options.add_argument('--mute-audio')  # Audio is muted.
+        options.add_argument("--enable-webgl-draft-extensions")
+        options.add_argument('--mute-audio')
+        options.add_argument("--ignore-gpu-blocklist")
         options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--headless')
+        prefs = {"credentials_enable_service": True,
+                 'profile.default_content_setting_values.automatic_downloads': 1,
+                #  "download.default_directory" : f"{self.download_path}",
+            'download.prompt_for_download': False,  # Optional, suppress download prompt
+            'download.directory_upgrade': True,
+            'safebrowsing.enabled': True ,
+            "profile.password_manager_enabled": True}
+        options.add_experimental_option("prefs", prefs)
+        options.add_argument('--no-sandbox')
+        options.add_argument('--start-maximized')    
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument("--ignore-certificate-errors")
+        options.add_argument("--enable-javascript")
+        options.add_argument("--enable-popup-blocking")
         options.add_argument(f'--user-data-dir=profile/{self.username}_{self.user.id}')
         
 #  gunicorn --timeout 3000 --bind 0.0.0.0:8000 e_com:wsgi.py
-        self.driver = Chrome(options=options)
+        self.driver = Chrome(options=options,version_main=119)
         
         return self.driver
     def find_element(self, element, locator, locator_type=By.XPATH,
