@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'home',
     'rest_framework_simplejwt',
     'rest_framework',
-    'django_crontab'
+    'django_crontab',
+    'corsheaders'
     # 'account',
     # 'corsheaders',
 ]
@@ -55,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     # 'home.middleware.TokenAuthenticationMiddleware'
 ]
 
@@ -144,7 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
+CORS_ALLOW_ALL_ORIGINS = True  
 AUTH_USER_MODEL = "home.CustomUser"
 # AUTH_USER_MODEL = 'account.User'
 
