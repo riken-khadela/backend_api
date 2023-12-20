@@ -15,7 +15,7 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
 from django.http import JsonResponse
-from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token
+from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token, generate_random_string
 from django.contrib.auth.models import AnonymousUser
 import random, time, os, json
 from selenium_stealth import stealth
@@ -58,21 +58,27 @@ class UserRegistrationView(APIView):
     """
     renderer_classes = [UserRenderer]
     def post(self, request, format=None):
-            serializer = UserRegistrationSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            if not request.data['email'] :
-                return Response({'msg':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
-            user = serializer.save()
-            token = get_tokens_for_user(user)
-            verification_code = random.randint(100000,999999)
-            user.verification_code = verification_code
-            user.save()
-            subject = 'Verification code is here'
-            message = f'verification code : {verification_code}'
-            from_email = 'info@keywordlit.com'
-            recipient_list = [user.email]   
-            send_mail(subject, message, from_email, recipient_list)            
-            return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
+        if not 'username' in request.data :
+            while True :
+                genrated_random_username =  generate_random_string(15)
+                if CustomUser.objects.filter(username=genrated_random_username).count() == 0 :
+                    request.data['username'] = genrated_random_username
+                    break
+        serializer = UserRegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if not request.data['email'] :
+            return Response({'msg':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
+        user = serializer.save()
+        token = get_tokens_for_user(user)
+        verification_code = random.randint(100000,999999)
+        user.verification_code = verification_code
+        user.save()
+        subject = 'Verification code is here'
+        message = f'verification code : {verification_code}'
+        from_email = 'info@keywordlit.com'
+        recipient_list = [user.email]   
+        send_mail(subject, message, from_email, recipient_list)            
+        return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
 
 class UserEmailVerificationView(APIView):
     """ 
@@ -148,11 +154,11 @@ class send_email(APIView):
 
     def post(self, request, format=None):
 
-        subject = 'Hello, Django Email'
+        subject = 'Hello, Django Email111'
         message = 'This is a test email sent from a Django application.'
         from_email = 'info@keywordlit.com'
         recipient_list = [request.data['email']]   
-        send_mail(subject, message, from_email, recipient_list)
+        aa = send_mail(subject, message, from_email, recipient_list)
         return Response({"Email sent successfully."},status=status.HTTP_200_OK)
     
 class InstaHashTag(APIView):
@@ -211,14 +217,3 @@ class start_drivers(APIView):
         except Exception as e :
             return JsonResponse({"Hastag" : "hashtag"})
         
-
-class UserProfileView2(APIView):
-    def get(self, request, *args, **kwargs):
-        # Access the authenticated user from the request
-        authenticated_user = request.user
-
-        if isinstance(authenticated_user, AnonymousUser):
-            return Response({"detail": "Invalid or missing token."}, status=401)
-        else:
-            # Token is valid, return the username
-            return Response({"username": authenticated_user.username}, status=200)

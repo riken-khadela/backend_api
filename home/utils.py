@@ -3,6 +3,17 @@ from dotenv import load_dotenv
 load_dotenv()
 import subprocess
 
+
+def generate_random_string(length=10):
+    import random, string
+    # Define the characters you want to include in the random string
+    characters = string.ascii_letters 
+
+    # Generate a random string of the specified length
+    random_string = ''.join(random.choice(characters) for _ in range(length))
+
+    return random_string
+
 from .bot import Bot
 def GetActiveChromeSelenium():
     subprocess.run(['pkill', 'chrome'])

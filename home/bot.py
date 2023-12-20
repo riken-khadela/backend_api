@@ -15,46 +15,85 @@ class Bot():
         self.username = user.username
         self.password = user.password
 
-        
-                
     def return_driver(self) : 
-        self.get_driver(self.user.id) 
+        self.get_local_driver() 
         return self.check_login() 
 
-    def get_driver(self,profile_id : int):
+    def get_local_driver(self):
         """Start webdriver and return state of it."""
-        from undetected_chromedriver import Chrome, ChromeOptions
-        options = ChromeOptions()
-        options.add_argument('--lang=en')  # Set webdriver language to English.
-        options.add_argument('log-level=3')  # No logs is printed.
-        options.add_argument('--mute-audio')  # Audio is muted.
-        options.add_argument("--enable-webgl-draft-extensions")
-        options.add_argument('--mute-audio')
-        options.add_argument("--ignore-gpu-blocklist")
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--headless')
-        prefs = {"credentials_enable_service": True,
-                'profile.default_content_setting_values.automatic_downloads': 1,
-                # "download.default_directory" : f"{self.download_path}",
-            'download.prompt_for_download': False,  # Optional, suppress download prompt
-            'download.directory_upgrade': True,
-            'safebrowsing.enabled': True ,
-            "profile.password_manager_enabled": True}
-        options.add_experimental_option("prefs", prefs)
-        options.add_argument('--no-sandbox')
-        options.add_argument('--start-maximized')    
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--enable-javascript")
-        options.add_argument("--enable-popup-blocking")
-        # options.add_argument(f'--user-data-dir=profile/{self.username}_{self.user.id}')
+        from selenium import webdriver
+
+        for _ in range(30):
+            options = webdriver.ChromeOptions()
+            options.add_argument('--lang=en')  # Set webdriver language to English.
+            options.add_argument('log-level=3')  # No logs is printed.
+            options.add_argument('--mute-audio')  # Audio is muted.
+            options.add_argument("--enable-webgl-draft-extensions")
+            options.add_argument('--mute-audio')
+            options.add_argument("--ignore-gpu-blocklist")
+            options.add_argument('--disable-dev-shm-usage')
+            # options.add_argument('--headless')
+            prefs = {"credentials_enable_service": True,
+                    'profile.default_content_setting_values.automatic_downloads': 1,
+                'download.prompt_for_download': False,  # Optional, suppress download prompt
+                'download.directory_upgrade': True,
+                'safebrowsing.enabled': True ,
+                "profile.password_manager_enabled": True}
+            options.add_experimental_option("prefs", prefs)
+            options.add_argument('--no-sandbox')
+            options.add_argument('--start-maximized')    
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument("--ignore-certificate-errors")
+            options.add_argument("--enable-javascript")
+            options.add_argument("--enable-popup-blocking")
+            try:
+                driver = webdriver.Chrome()
+                driver.get('https://www.google.com')
+                break
+            except Exception as e:
+                print(e)
         
-#  gunicorn --timeout 3000 --bind 0.0.0.0:8000 e_com:wsgi.py
-        # breakpoint()
-        
-        self.driver = Chrome(options=options,version_main=119)
-        
+        self.driver = driver
         return self.driver
+    
+    def get_driver(self):
+        """Start webdriver and return state of it."""
+        for _ in range(30):
+            """Start webdriver and return state of it."""
+            from undetected_chromedriver import Chrome, ChromeOptions
+            options = ChromeOptions()
+            options.add_argument('--lang=en')  # Set webdriver language to English.
+            options.add_argument('log-level=3')  # No logs is printed.
+            options.add_argument('--mute-audio')  # Audio is muted.
+            options.add_argument("--enable-webgl-draft-extensions")
+            options.add_argument('--mute-audio')
+            options.add_argument("--ignore-gpu-blocklist")
+            options.add_argument('--disable-dev-shm-usage')
+            # options.add_argument('--headless')
+            prefs = {"credentials_enable_service": True,
+                    'profile.default_content_setting_values.automatic_downloads': 1,
+                'download.prompt_for_download': False,  # Optional, suppress download prompt
+                'download.directory_upgrade': True,
+                'safebrowsing.enabled': True ,
+                "profile.password_manager_enabled": True}
+            options.add_experimental_option("prefs", prefs)
+            options.add_argument('--no-sandbox')
+            options.add_argument('--start-maximized')    
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument("--ignore-certificate-errors")
+            options.add_argument("--enable-javascript")
+            options.add_argument("--enable-popup-blocking")
+            try:
+                driver = Chrome(options=options,version_main=119,headless=False)
+                driver.get('https://www.google.com')
+                break
+            except Exception as e:
+                print(e)
+        
+        self.driver = driver
+        return self.driver
+    
+        
     def find_element(self, element, locator, locator_type=By.XPATH,
             page=None, timeout=10,
             condition_func=EC.presence_of_element_located,
