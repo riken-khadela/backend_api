@@ -69,7 +69,7 @@ class Bot():
             options.add_argument('--mute-audio')
             options.add_argument("--ignore-gpu-blocklist")
             options.add_argument('--disable-dev-shm-usage')
-            # options.add_argument('--headless')
+            options.add_argument('--headless')
             prefs = {"credentials_enable_service": True,
                     'profile.default_content_setting_values.automatic_downloads': 1,
                 'download.prompt_for_download': False,  # Optional, suppress download prompt
