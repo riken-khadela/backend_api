@@ -26,6 +26,8 @@ from selenium.webdriver.common.by import By
 import logging
 from selenium import webdriver  
 from selenium.webdriver.chrome.service import Service
+from .models import instagram_accounts
+from .bot import Bot
 
 user_driver_dict = {}
     
@@ -165,6 +167,21 @@ class InstaHashTag(APIView):
     """ 
     Get a user profile data with email and password
     """
+    
+    def give_driver(self,CreateNew = False):
+        driver = ''
+        global user_driver_dict
+        if user_driver_dict == {} or CreateNew == True:
+            user_driver_dict = GetActiveChromeSelenium()
+        for keys,value in user_driver_dict.items():
+            if value['status'] == True :
+                driver = value['driver']
+            if driver : 
+                value['status'] = False
+
+                return driver, keys, value
+        return '','',''
+    
     def post(self, request, format=None):
         Hastag = []
         user_id = get_user_id_from_token(request)
@@ -175,19 +192,18 @@ class InstaHashTag(APIView):
         if user.credit < 10 :
             msg = 'Insufficient credit to perform this action.'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
-        driver = ''
+        
+        driver,keys,value = self.give_driver()
+        
         global user_driver_dict
-        if user_driver_dict == {} :
-            user_driver_dict = GetActiveChromeSelenium()
-        for keys,value in user_driver_dict.items():
-            if value['status'] == True :
-                driver = value['driver']
-            if driver : 
-                value['status'] = False
-                break
         print(user_driver_dict)
         if driver:
             try :
+                user = CustomUser.objects.filter(id=user_id).first()
+                i_bot = Bot(user=user)
+                if i_bot.TestRunDriver(driver) == False :
+                    driver,keys,value = self.give_driver(CreateNew=True)
+                    
                 Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
                 if Hastag:
                     user.credit= user.credit - 10

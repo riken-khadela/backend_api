@@ -1,4 +1,5 @@
 import random, time, os, json
+from traceback import print_tb
 from selenium_stealth import stealth
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -196,23 +197,27 @@ class Bot():
                 self.driver.add_cookie(cookie)
             self.driver.refresh()
         self.find_element('a tag','a',By.TAG_NAME)
-        all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
-        if all_a :
-            all_a[0].click()
-            if 'login' in self.driver.current_url.lower() :
-                self.input_text(self.username,'username',"//input[@name='username']",By.XPATH)
-                self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
-                self.click_element('submit',"//button[@type='submit']",By.XPATH)
-                self.random_sleep()
-                cookies = self.driver.get_cookies()
-                with open('cookies/coockies_'+str(self.username)+'.txt', 'w') as file: file.write(str(cookies))
-                if 'onetap' in self.driver.current_url :
-                    save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
-                    if save_info_btn : 
-                        save_info_btn[-1].click()
-        time.sleep(5)
-        edit_profile_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'a') if 'edit profile' in i.text.lower()]
-        if edit_profile_btn :
+        time.sleep(1)
+        # https://www.instagram.com/accounts/edit/
+        edit_profile_ele = self.find_element('Edit profile','//a[text()="Edit Profile"]')
+        if not edit_profile_ele :
+            all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
+            
+            if all_a :
+                all_a[0].click()
+                if 'login' in self.driver.current_url.lower() :
+                    self.input_text(self.username,'username',"//input[@name='username']",By.XPATH)
+                    self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
+                    self.click_element('submit',"//button[@type='submit']",By.XPATH)
+                    self.random_sleep()
+                    cookies = self.driver.get_cookies()
+                    with open('cookies/coockies_'+str(self.username)+'.txt', 'w') as file: file.write(str(cookies))
+                    if 'onetap' in self.driver.current_url :
+                        save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
+                        if save_info_btn : 
+                            save_info_btn[-1].click()
+            time.sleep(5)
+        else :
             print('user has been logged 1!')
             self.driver.get('https://www.instagram.com/')
             self.click_element('search btn',"//a[@href='#']")
@@ -220,18 +225,32 @@ class Bot():
             return self.driver
         print("user hasn't been logged !")
         return False
+    
+    def TestRunDriver(self,driver):
+        self.driver = driver
+        try :
+            self.driver.current_url
+            return True
+        except : return False
 
     def extract_tag(self,tag : str,driver):
         self.driver = driver
-        self.driver.get('https://www.instagram.com/')
-        self.click_element('search btn',"//a[@href='#']")
-
+        # self.driver.get('https://www.instagram.com/')
+        # self.click_element('search btn',"//a[@href='#']")
+        responsee = {}
         try:
             search_input = self.input_text(f"#{tag}",tag,"//input[@aria-label='Search input']",By.XPATH)
             if search_input :
                 for _ in range(10) :
                     time.sleep(1)
                     all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
+                    all_hashtah_links = [ i for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
+                    for a_tag in all_hashtah_links :
+                        number_idx = all_hashtah_links.index(a_tag)
+                        hash_a_tag = a_tag.get_attribute('href').split('/explore/tags/')[-1].replace('/','')
+                        total_post = a_tag.find_element(By.XPATH,'//div[1]/div/div/div[2]/div/div/span[2]/span/span/span').text
+                        responsee[number_idx] = {"hastag" : hash_a_tag,"total_post" : total_post}
+                    print(responsee)
                     if  len(all_hashtah_links) < 1:
                         time.sleep(1)
                     else :
@@ -239,7 +258,7 @@ class Bot():
                         with open('cookies/coockies_'+str(self.username), 'w') as file:
                             file.write(str(cookies))
 
-                        return all_hashtah_links
+                        return responsee
                 self.input_text(f"",tag,"//input[@aria-label='Search input']",By.XPATH)
         except Exception as e: 
             print(e)
