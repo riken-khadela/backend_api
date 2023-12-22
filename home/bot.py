@@ -227,14 +227,14 @@ class Bot():
         print("user hasn't been logged !")
         return False
     
-    def TestRunDriver(self,driver):
+    def TestRunDriver(self,driver : webdriver):
         self.driver = driver
         try :
             self.driver.current_url
             return True
         except : return False
 
-    def extract_tag(self,tag : str,driver):
+    def extract_tag(self,tag : str,driver : webdriver):
         self.driver = driver
         # self.driver.get('https://www.instagram.com/')
         # self.click_element('search btn',"//a[@href='#']")
@@ -248,7 +248,7 @@ class Bot():
                     for a_tag in all_hashtah_links :
                         number_idx = all_hashtah_links.index(a_tag)
                         hash_a_tag = a_tag.get_attribute('href').split('/explore/tags/')[-1].replace('/','')
-                        total_post = a_tag.find_element(By.XPATH,'//div[1]/div/div/div[2]/div/div/span[2]/span/span/span').text
+                        total_post = a_tag.find_element(By.XPATH,'.//div[1]/div/div/div[2]/div/div/span[2]/span/span/span').text
                         responsee[number_idx] = {"hastag" : hash_a_tag,"total_post" : total_post}
                     print(responsee)
                     if  len(all_hashtah_links) < 1:
