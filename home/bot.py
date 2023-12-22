@@ -239,11 +239,10 @@ class Bot():
         # self.click_element('search btn',"//a[@href='#']")
         responsee = {}
         try:
-            search_input = self.input_text(f"#{tag}",tag,"//input[@aria-label='Search input']",By.XPATH)
+            search_input = self.input_text(f"#{tag}",'input',"//input[@aria-label='Search input']",By.XPATH)
             if search_input :
                 for _ in range(10) :
                     time.sleep(1)
-                    all_hashtah_links = [ i.get_attribute('href').split('/explore/tags/')[-1].replace('/','') for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
                     all_hashtah_links = [ i for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
                     for a_tag in all_hashtah_links :
                         number_idx = all_hashtah_links.index(a_tag)
@@ -255,7 +254,7 @@ class Bot():
                         time.sleep(1)
                     else :
                         cookies = self.driver.get_cookies()
-                        with open('cookies/coockies_'+str(self.username), 'w') as file:
+                        with open('cookies/coockies_'+str(self.username)+'.txt', 'w') as file:
                             file.write(str(cookies))
 
                         return responsee
