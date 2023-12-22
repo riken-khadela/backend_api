@@ -199,30 +199,31 @@ class Bot():
         self.find_element('a tag','a',By.TAG_NAME)
         time.sleep(1)
         # https://www.instagram.com/accounts/edit/
-        edit_profile_ele = self.find_element('Edit profile','//a[text()="Edit Profile"]')
-        if not edit_profile_ele :
-            all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
+        # edit_profile_ele = self.find_element('Edit profile','//a[text()="Edit Profile"]')
+        # if not edit_profile_ele :
+        #     all_a = [i for i in self.driver.find_elements(By.TAG_NAME,'a') if 'log in' in i.text.lower()]
             
-            if all_a :
-                all_a[0].click()
-                if 'login' in self.driver.current_url.lower() :
-                    self.input_text(self.username,'username',"//input[@name='username']",By.XPATH)
-                    self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
-                    self.click_element('submit',"//button[@type='submit']",By.XPATH)
-                    self.random_sleep()
-                    cookies = self.driver.get_cookies()
-                    with open('cookies/coockies_'+str(self.username)+'.txt', 'w') as file: file.write(str(cookies))
-                    if 'onetap' in self.driver.current_url :
-                        save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
-                        if save_info_btn : 
-                            save_info_btn[-1].click()
-            time.sleep(5)
-        else :
-            print('user has been logged 1!')
-            self.driver.get('https://www.instagram.com/')
-            self.click_element('search btn',"//a[@href='#']")
-            self.click_element('notification not now',"//button[text()='Not Now']")
-            return self.driver
+        #     if all_a :
+        #         all_a[0].click()
+        #         if 'login' in self.driver.current_url.lower() :
+        #             self.input_text(self.username,'username',"//input[@name='username']",By.XPATH)
+        #             self.input_text(self.password,'password',"//input[@name='password']",By.XPATH)
+        #             self.click_element('submit',"//button[@type='submit']",By.XPATH)
+        #             self.random_sleep()
+        #             cookies = self.driver.get_cookies()
+        #             with open('cookies/coockies_'+str(self.username)+'.txt', 'w') as file: file.write(str(cookies))
+        #             if 'onetap' in self.driver.current_url :
+        #                 save_info_btn = [ i for i in  self.driver.find_elements(By.TAG_NAME,'button') if 'save info' in i.text.lower()]
+        #                 if save_info_btn : 
+        #                     save_info_btn[-1].click()
+        #     time.sleep(5)
+        # else :
+        print('user has been logged 1!')
+        self.driver.get('https://www.instagram.com/')
+        self.click_element('search btn',"//a[@href='#']")
+        self.click_element('notification not now',"//button[text()='Not Now']")
+            
+        return self.driver
         print("user hasn't been logged !")
         return False
     
