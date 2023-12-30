@@ -1,12 +1,7 @@
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm
-from django.views.generic.base import TemplateView
 import random, requests, json
 from rest_framework import status
 from .renderers import UserRenderer
-from home.models import CustomUser
+from home.models import CustomUser, SearchedHistory, instagram_accounts, DepositeMoney
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -16,17 +11,7 @@ from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, Use
 import random, dotenv
 from django.http import JsonResponse
 from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token, generate_random_string
-from django.contrib.auth.models import AnonymousUser
 import random, time, os, json
-from selenium_stealth import stealth
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-import logging
-from selenium import webdriver  
-from selenium.webdriver.chrome.service import Service
-from .models import instagram_accounts
 from .bot import Bot
 
 user_driver_dict = {}
@@ -137,7 +122,38 @@ class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         serializer = UserProfileSerializer(request.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        search_history = []
+        user_id = get_user_id_from_token(request)
+        user = CustomUser.objects.filter(id=user_id).first()
+        
+        for history in SearchedHistory.objects.filter(user=user) :
+            tmp = {
+                'platform' : history.platform,
+                'hashtag' : history.hashtag,
+                'date' : history.created.strftime("%d/%m/%Y"),
+                'result' : json.loads(history.result),
+            }
+            search_history.append(tmp)
+        
+        diposit_history = []
+        for MoneyHistory in DepositeMoney.objects.filter(user=user):
+            tmp = {
+                'deposit_id' : MoneyHistory.id,
+                'date' : MoneyHistory.created.strftime("%d/%m/%Y"),
+                'amount' : MoneyHistory.Amount,
+                'transection_id' : MoneyHistory.TransactionId,
+                'method' : MoneyHistory.method,
+                'status' : MoneyHistory.status
+            }
+            diposit_history.append(tmp)
+        
+        jsonn_response = {
+            'personal_data' : serializer.data,
+            'searched_history' : search_history,
+            'deposit_history' : diposit_history
+        }
+        
+        return Response(jsonn_response, status=status.HTTP_200_OK)
 
 class UserChangePasswordView(APIView):
     """ 
@@ -163,6 +179,28 @@ class send_email(APIView):
         aa = send_mail(subject, message, from_email, recipient_list)
         return Response({"Email sent successfully."},status=status.HTTP_200_OK)
     
+class HashTagHistory(APIView):
+    """ 
+    Get a user profile data with email and password
+    """
+    def post(self, request, format=None):
+        search_history = []
+        user_id = get_user_id_from_token(request)
+        user = CustomUser.objects.filter(id=user_id).first()
+        if not user :
+            msg = 'could not found the user'
+            return Response({ "search_history":search_history, "Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        for history in SearchedHistory.objects.filter(user=user) :
+            tmp = {
+                'platform' : history.platform,
+                'hashtag' : history.hashtag,
+                'result' : json.loads(history.result)
+            }
+            search_history.append(tmp)
+        msg = 'successfully searched userhistory !'
+        return Response({ "search_history":search_history, "Message": msg}, status=status.HTTP_200_OK)
+
 class InstaHashTag(APIView):
     """ 
     Get a user profile data with email and password
@@ -188,7 +226,7 @@ class InstaHashTag(APIView):
         user = CustomUser.objects.filter(id=user_id).first()
         if not user :
             msg = 'could not found the user'
-            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
         if user.credit < 10 :
             msg = 'Insufficient credit to perform this action.'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
@@ -204,11 +242,24 @@ class InstaHashTag(APIView):
                 if i_bot.TestRunDriver(driver) == False :
                     driver,keys,value = self.give_driver(CreateNew=True)
                     
-                Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
+                for _ in range(3) :
+                    Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
+                    if len(Hastag) > 5: break
+                else:
+                    msg = 'Failed to scrape the hashtag'
+                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                
                 if Hastag:
                     user.credit= user.credit - 10
                     user.save()
                     msg = 'Hashtag scraped successfully'
+                    
+                    SearchedHistory.objects.create(
+                        user = user,
+                        hashtag = request.data['hashtag'],
+                        platform = 'Instagram',
+                        result = json.dumps(Hastag)
+                    )
                     return Response({"Hashtag": Hastag, "Message": msg},status=status.HTTP_200_OK)
                 else:
                     msg = 'Failed to scrape the hashtag'

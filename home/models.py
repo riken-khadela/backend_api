@@ -81,7 +81,33 @@ class CustomUser(AbstractUser,TimeStampModel):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-    
+
+class DepositeMoney(TimeStampModel):
+    METHOD = (
+        ('CREDIT_CARD','CREDIT_CARD'),
+        ('DEBIT_CARD','DEBIT_CARD'),
+    )
+    STATUS = (
+        ('COMPLETE','COMPLETE'),
+        ('INPROCESS','INPROCESS'),
+        ('DECLINED','DECLINED'),
+    )
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    Amount = models.BigIntegerField()
+    TransactionId = models.CharField(max_length=255)
+    method = models.CharField(max_length=255,choices=METHOD)
+    status =  models.CharField(max_length=25,choices=STATUS)
+
+class SearchedHistory(TimeStampModel):
+    CHOICES = (
+        ('Instagram','Instagram'),
+        ('Youtube','Youtube'),
+    )
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    hashtag = models.CharField(max_length=25)
+    platform = models.CharField(max_length=25,choices=CHOICES)
+    result = models.TextField()
+        
 class instagram_accounts(TimeStampModel):
     STATUS = (
         ('ACTIVE','ACTIVE'),
