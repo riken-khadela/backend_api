@@ -13,6 +13,8 @@ from django.http import JsonResponse
 from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token, generate_random_string
 import random, time, os, json
 from .bot import Bot
+from datetime import timedelta, datetime
+
 
 user_driver_dict = {}
     
@@ -234,32 +236,36 @@ class InstaHashTag(APIView):
         driver,keys,value = self.give_driver()
         
         global user_driver_dict
-        print(user_driver_dict)
         if driver:
             try :
                 user = CustomUser.objects.filter(id=user_id).first()
                 i_bot = Bot(user=user)
+
+                twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+                past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago)
+                if past_searched_hashtag : 
+                    Hastag = json.loads(past_searched_hashtag.first().result)
                 if i_bot.TestRunDriver(driver) == False :
                     driver,keys,value = self.give_driver(CreateNew=True)
-                    
-                for _ in range(3) :
-                    Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
-                    if len(Hastag) > 5: break
-                else:
-                    msg = 'Failed to scrape the hashtag'
-                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                if not past_searched_hashtag :
+                    for _ in range(3) :
+                        Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
+                        if len(Hastag) > 5: break
+                    else:
+                        msg = 'Failed to scrape the hashtag'
+                        return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
                 
                 if Hastag:
                     user.credit= user.credit - 10
                     user.save()
                     msg = 'Hashtag scraped successfully'
-                    
-                    SearchedHistory.objects.create(
-                        user = user,
-                        hashtag = request.data['hashtag'],
-                        platform = 'Instagram',
-                        result = json.dumps(Hastag)
-                    )
+                    if not past_searched_hashtag :
+                        SearchedHistory.objects.create(
+                            user = user,
+                            hashtag = request.data['hashtag'],
+                            platform = 'Instagram',
+                            result = json.dumps(Hastag)
+                        )
                     return Response({"Hashtag": Hastag, "Message": msg},status=status.HTTP_200_OK)
                 else:
                     msg = 'Failed to scrape the hashtag'
