@@ -208,9 +208,8 @@ class InstaHashTag(APIView):
     Get a user profile data with email and password
     """
     def get_ranking(self,data) :
-
         for item in data["Hashtag"].values():
-            item["total_post"] = int(item["total_post"].replace(",", ""))
+            item["total_post"] = int(str(item["total_post"]).replace(",", ""))
 
         # Calculate maximum number of posts
         max_posts = max(item["total_post"] for item in data["Hashtag"].values())
@@ -303,8 +302,7 @@ class InstaHashTag(APIView):
                             platform = 'Instagram',
                             result = json.dumps(Hastag)
                         )
-                    self.get_ranking({"Hashtag": Hastag, "Message": msg})
-                    return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag, "Message": msg}), "Message": msg},status=status.HTTP_200_OK)
+                    return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
                 else:
                     msg = 'Failed to scrape the hashtag'
                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
@@ -313,7 +311,7 @@ class InstaHashTag(APIView):
             finally :
                 value['status'] = True
                 if msg == "Hashtag scraped successfully" :
-                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)
+                    return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg}, status=status.HTTP_200_OK)
                 return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
         else:

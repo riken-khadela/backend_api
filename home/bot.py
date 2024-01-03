@@ -247,7 +247,7 @@ class Bot():
                     all_hashtah_links = [ i for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
                     for a_tag in all_hashtah_links :
                         try:
-                            number_idx = all_hashtah_links.index(a_tag)
+                            number_idx = all_hashtah_links.index(a_tag)+1
                             hash_a_tag = a_tag.get_attribute('href').split('/explore/tags/')[-1].replace('/','')
                             total_post = a_tag.find_element(By.XPATH,'.//div[1]/div/div/div[2]/div/div/span[2]/span/span/span').text
                             responsee[number_idx] = {"hastag" : hash_a_tag,"total_post" : total_post}
