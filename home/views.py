@@ -209,11 +209,18 @@ class InstaHashTag(APIView):
     """
     def get_ranking(self,data) :
         for item in data["Hashtag"].values():
+            # breakpoint()
             item["total_post"] = int(str(item["total_post"]).replace(",", ""))
 
         # Calculate maximum number of posts
         max_posts = max(item["total_post"] for item in data["Hashtag"].values())
 
+        referanceposts = sum(item["total_post"] for item in data["Hashtag"].values())
+        referance_cpc = 0.9
+        referance_total_post = 1000000000
+        total_post_ration = referanceposts/referance_total_post
+        estimated_base_cpc = referance_cpc * total_post_ration
+        
         # Perform normalization and scoring calculations
         total_hashtags = len(data["Hashtag"])  # Total number of hashtags
         normalized_data = []
@@ -236,11 +243,15 @@ class InstaHashTag(APIView):
 
         # Categorize based on competition levels
         for item in normalized_data:
+            item['rank'] += 1
             if item["combined_score"] <= low_comp_threshold:
                 item["competition_level"] = "Low Competition"
+                item["CPC"] = estimated_base_cpc*0.8
             elif low_comp_threshold < item["combined_score"] <= med_comp_threshold:
                 item["competition_level"] = "Medium Competition"
+                item["CPC"] = estimated_base_cpc*1.0
             else:
+                item["CPC"] = estimated_base_cpc*1.2
                 item["competition_level"] = "High Competition"
         return normalized_data
 
