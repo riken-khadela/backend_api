@@ -216,7 +216,7 @@ class InstaHashTag(APIView):
         max_posts = max(item["total_post"] for item in data["Hashtag"].values())
 
         referanceposts = sum(item["total_post"] for item in data["Hashtag"].values())
-        referance_cpc = 0.9
+        referance_cpc = 15
         referance_total_post = 1000000000
         total_post_ration = referanceposts/referance_total_post
         estimated_base_cpc = referance_cpc * total_post_ration
