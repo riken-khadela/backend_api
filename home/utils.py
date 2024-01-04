@@ -16,7 +16,7 @@ def generate_random_string(length=10):
     return random_string
 
 def GetActiveChromeSelenium():
-    # subprocess.run(['pkill', 'chrome'])
+    subprocess.run(['pkill', 'chrome'])
 
     user_driver_dict = {}
     all_active_user = instagram_accounts.objects.filter(status='ACTIVE')
