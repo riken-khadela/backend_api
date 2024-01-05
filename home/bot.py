@@ -335,7 +335,6 @@ class Bot():
                             scrapped_likes_comment += 1
                         print(responsee[key])
                         self.close_others_tab()
-                        breakpoint()
                         
                     if  len(all_hashtah_links) < 1:
                         time.sleep(1)
