@@ -21,7 +21,7 @@ class Bot():
         self.password = user.password
 
     def return_driver(self) : 
-        self.get_local_driver() 
+        self.get_driver() 
         return self.check_login() 
 
     def get_local_driver(self):
