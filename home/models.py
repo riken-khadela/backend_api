@@ -61,6 +61,7 @@ class CustomUser(AbstractUser,TimeStampModel):
         ('FEMALE','FEMALE'),
         ('CUSTOME','CUSTOME'),
     )
+    id = models.BigAutoField(primary_key=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=25)
     verification_code = models.BigIntegerField(null=True,blank=True)
@@ -92,6 +93,7 @@ class DepositeMoney(TimeStampModel):
         ('INPROCESS','INPROCESS'),
         ('DECLINED','DECLINED'),
     )
+    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     Amount = models.BigIntegerField()
     TransactionId = models.CharField(max_length=255)
@@ -103,6 +105,7 @@ class SearchedHistory(TimeStampModel):
         ('Instagram','Instagram'),
         ('Youtube','Youtube'),
     )
+    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     hashtag = models.CharField(max_length=25)
     platform = models.CharField(max_length=25,choices=CHOICES)
@@ -113,6 +116,7 @@ class instagram_accounts(TimeStampModel):
         ('ACTIVE','ACTIVE'),
         ('INACTIVE','INACTIVE'),
     )
+    id = models.BigAutoField(primary_key=True)
     username = models.CharField(max_length=25)
     password = models.CharField(max_length=25)
     busy = models.BooleanField(default=False)

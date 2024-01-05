@@ -216,7 +216,7 @@ class InstaHashTag(APIView):
         max_posts = max(item["total_post"] for item in data["Hashtag"].values())
 
         referanceposts = sum(item["total_post"] for item in data["Hashtag"].values())
-        referance_cpc = 15
+        referance_cpc = 5
         referance_total_post = 1000000000
         total_post_ration = referanceposts/referance_total_post
         estimated_base_cpc = referance_cpc * total_post_ration
@@ -235,6 +235,9 @@ class InstaHashTag(APIView):
                 "rank" : index,
                 "combined_score": combined_score
             }
+            if 'likes' in item : item_data['likes'] = item['likes']
+            if 'comment' in item : item_data['comment'] = item['comment']
+            if 'reels' in item : item_data['reels'] = item['reels']
             normalized_data.append(item_data)
 
         # Set thresholds for competition levels
@@ -246,13 +249,15 @@ class InstaHashTag(APIView):
             item['rank'] += 1
             if item["combined_score"] <= low_comp_threshold:
                 item["competition_level"] = "Low Competition"
-                item["CPC"] = estimated_base_cpc*0.8
+                item["CPC"] = round(estimated_base_cpc*0.8,3)
             elif low_comp_threshold < item["combined_score"] <= med_comp_threshold:
                 item["competition_level"] = "Medium Competition"
-                item["CPC"] = estimated_base_cpc*1.0
+                item["CPC"] = round(estimated_base_cpc*1.0,3)
             else:
-                item["CPC"] = estimated_base_cpc*1.2
+                item["CPC"] = round(estimated_base_cpc*1.2,3)
                 item["competition_level"] = "High Competition"
+                
+            
         return normalized_data
 
     def give_driver(self,CreateNew = False):

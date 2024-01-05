@@ -1,5 +1,5 @@
+from audioop import avg
 import random, time, os, json
-from traceback import print_tb
 from selenium_stealth import stealth
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,6 +8,10 @@ from selenium.webdriver.common.by import By
 import logging
 from selenium import webdriver  
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.action_chains import ActionChains
+
+from home.cron import random_sleep
+
 chromedriver_path = os.path.join(os.getcwd(),'chromedriver')
 chrome_binary_path = '/usr/bin/google-chrome'
 class Bot():
@@ -17,7 +21,7 @@ class Bot():
         self.password = user.password
 
     def return_driver(self) : 
-        self.get_driver() 
+        self.get_local_driver() 
         return self.check_login() 
 
     def get_local_driver(self):
@@ -234,11 +238,75 @@ class Bot():
             return True
         except : return False
 
+    def scrape_tag_extra_data(self):
+        allpostmaindiv = self.find_element('all post main element','/html/body/div[2]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/main/article/div/div/div')
+        actions = ActionChains(self.driver)
+        for _ in range(3) :
+            allAelement = allpostmaindiv.find_elements(By.TAG_NAME,'a')
+            if len(allAelement) >= 30 : break
+            else : random_sleep(1,4)
+        json_ = {}
+        reel = 0
+        post = 0
+        for a_tag in allAelement :
+            tmp = {}
+            tmp['comments'] = '0'
+            tmp['likes'] = '0'
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", a_tag)
+            actions.move_to_element(a_tag).perform()
+            li_ele = a_tag.find_elements(By.TAG_NAME,'li')
+            if li_ele : 
+                post_like = li_ele[0].find_elements(By.TAG_NAME,'span')
+                if post_like :
+                    post_like = post_like[1].text
+                    if not post_like : post_like = '0'
+                    if 'K' in post_like : 
+                        post_like = int(float(str(post_like).replace('K',''))*1000)
+                    elif 'M' in post_like : 
+                        post_like = int(float(str(post_like).replace('K',''))*1000000)
+                    tmp['likes'] = post_like
+                post_comment = li_ele[1].find_elements(By.TAG_NAME,'span')
+                if post_comment :
+                    post_comment = post_comment[1].text
+                    if not post_comment : post_comment = '0'
+                    if 'K' in post_comment : 
+                        post_comment = int(float(str(post_comment).replace('K',''))*1000)
+                    elif 'M' in post_comment : 
+                        post_comment = int(float(str(post_comment).replace('K',''))*1000000)
+                    tmp['comments'] = post_comment
+            
+            svg_eles = a_tag.find_elements(By.TAG_NAME,'svg')
+            if svg_eles :
+                svg_eles = svg_eles[0]
+                if svg_eles.get_attribute('aria-label') == "Clip" :
+                    print(svg_eles.get_attribute('aria-label'))
+                    reel += 1
+            post += 1
+            json_[allAelement.index(a_tag)] = tmp
+                
+        
+        if json_ :
+            reels_perntage = (reel/post)*100
+            avg_likes = [ int(str(value['likes']).replace(',','')) for keys,value in json_.items() ]
+            avg_likes = sum(avg_likes)/len(avg_likes)
+            avg_cmt = [ int(str(value['comments']).replace(',','')) for keys,value in json_.items() ]
+            avg_cmt = sum(avg_cmt)/len(avg_cmt)
+            
+            return { "likes" : avg_likes,'comment' : avg_cmt, 'reels' : f"{int(reels_perntage)} %"}
+        
+        else : {}
+    
+    def close_others_tab(self):
+        for window in self.driver.window_handles[1:]:
+                self.driver.switch_to.window(window)
+                self.driver.close()
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        ...
+    
     def extract_tag(self,tag : str,driver : webdriver):
         self.driver = driver
-        # self.driver.get('https://www.instagram.com/')
-        # self.click_element('search btn',"//a[@href='#']")
         responsee = {}
+        
         try:
             search_input = self.input_text(f"#{tag}",'input',"//input[@aria-label='Search input']",By.XPATH)
             if search_input :
@@ -247,12 +315,28 @@ class Bot():
                     all_hashtah_links = [ i for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
                     for a_tag in all_hashtah_links :
                         try:
-                            number_idx = all_hashtah_links.index(a_tag)+1
-                            hash_a_tag = a_tag.get_attribute('href').split('/explore/tags/')[-1].replace('/','')
-                            total_post = a_tag.find_element(By.XPATH,'.//div[1]/div/div/div[2]/div/div/span[2]/span/span/span').text
-                            responsee[number_idx] = {"hastag" : hash_a_tag,"total_post" : total_post}
+                            responsee[all_hashtah_links.index(a_tag)+1] = {
+                                "hastag" : a_tag.get_attribute('href').split('/explore/tags/')[-1].replace('/',''),
+                                "total_post" : a_tag.find_element(By.XPATH,'.//div[1]/div/div/div[2]/div/div/span[2]/span/span/span').text, 
+                                "link" : a_tag.get_attribute('href')
+                                }
                         except : ...
-                    print(responsee)
+                    scrapped_likes_comment = 0
+                    for key, json_ in responsee.items() :
+                        if scrapped_likes_comment >= 3 : break
+                        self.driver.execute_script("window.open('');")
+                        self.driver.switch_to.window(self.driver.window_handles[-1])
+                        self.driver.get(json_['link'])
+                        sucess = self.scrape_tag_extra_data()
+                        if sucess : 
+                            responsee[key]['likes'] = int(sucess['likes'])
+                            responsee[key]['comment'] = int(sucess['comment'])
+                            responsee[key]['reels'] = sucess['reels']
+                            scrapped_likes_comment += 1
+                        print(responsee[key])
+                        self.close_others_tab()
+                        breakpoint()
+                        
                     if  len(all_hashtah_links) < 1:
                         time.sleep(1)
                     else :
@@ -264,4 +348,7 @@ class Bot():
                 self.input_text(f"",tag,"//input[@aria-label='Search input']",By.XPATH)
         except Exception as e: 
             print(e)
+        finally :
+            self.close_others_tab()
+
         return []
