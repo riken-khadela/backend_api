@@ -14,7 +14,9 @@ from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_tok
 import random, time, os, json
 from .bot import Bot
 from datetime import timedelta, datetime
-
+from google.ads.googleads.client import GoogleAdsClient
+from google.ads.googleads.errors import GoogleAdsException
+from urllib.parse import unquote
 
 user_driver_dict = {}
     
@@ -333,6 +335,80 @@ class InstaHashTag(APIView):
         else:
             msg = 'All drivers are busy!'
             return Response({"Message": msg}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+class YouTubeHashTag(APIView):
+    def post(self, request, format=None):
+        Hastag = []
+        user_id = get_user_id_from_token(request)
+        user = CustomUser.objects.filter(id=user_id).first()
+        if not user :
+            msg = 'could not found the user'
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        if user.credit < 10 :
+            msg = 'Insufficient credit to perform this action.'
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
+        
+        Hastag = self.get_related_keywords()
+        if Hastag:
+            user.credit= user.credit - 10
+            user.save()
+            msg = 'Hashtag scraped successfully'
+            return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
+        else:
+            msg = 'Failed to scrape the hashtag'
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def get_related_keywords(self, keyword_text):
+        hashtags = []
+        # Initialize the Google Ads client.
+        client = GoogleAdsClient.load_from_storage("./conf.yaml")
+
+        # Get the service.
+        keyword_plan_idea_service = client.get_service("KeywordPlanIdeaService")
+
+        # Set up the query parameters.
+        #language = client.get_type("StringValue")
+        language = "1000" # For English
+        language_criterion_id = "1000"  # Criterion ID for English
+        geo_target_criterion_id = "2840"  # Criterion ID for United States
+
+        keyword = keyword_text
+
+        # Create the request.
+        request = client.get_type("GenerateKeywordIdeasRequest")
+        request.customer_id = '5227482652'
+        request.language = f"languageConstants/{language_criterion_id}"
+        request.geo_target_constants.append(f"geoTargetConstants/{geo_target_criterion_id}")
+        request.keyword_plan_network = client.enums.KeywordPlanNetworkEnum.GOOGLE_SEARCH
+        request.keyword_seed.keywords.append(keyword)
+
+        try:
+            # Execute the request.
+            response = keyword_plan_idea_service.generate_keyword_ideas(request=request)
+
+            # Iterate through the results and print them.
+            for idea in response.results:
+                metric = idea.keyword_idea_metrics
+                print(f"Keyword: {idea.text}, Search Volume: {metric.avg_monthly_searches}, Competition: {metric.competition.name}")
+                hashtags.append({
+                    "Keyword" : idea.text,
+                    "Search_Volume" : metric.avg_monthly_searches,
+                    "Competition" : metric.competition.name
+                })
+
+            return hashtags
+
+        except GoogleAdsException as ex:
+            print(f"Request with ID '{ex.request_id}' failed with status '{ex.error.code().name}' and includes the following errors:")
+            for error in ex.failure.errors:
+                print(f"\tError with message '{error.message}'.")
+                if error.location:
+                    for field_path_element in error.location.field_path_elements:
+                        print(f"\t\tOn field: {field_path_element.field_name}")
+
+        return hashtags
+
 
 class start_drivers(APIView):
 

@@ -9,6 +9,7 @@ import logging
 from selenium import webdriver  
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.action_chains import ActionChains
+from urllib.parse import unquote
 
 from home.cron import random_sleep
 
@@ -316,7 +317,7 @@ class Bot():
                     for a_tag in all_hashtah_links :
                         try:
                             responsee[all_hashtah_links.index(a_tag)+1] = {
-                                "hastag" : a_tag.get_attribute('href').split('/explore/tags/')[-1].replace('/',''),
+                                "hastag" : unquote( a_tag.get_attribute('href').split('/explore/tags/')[-1].replace('/',''), encoding='utf-8'),
                                 "total_post" : a_tag.find_element(By.XPATH,'.//div[1]/div/div/div[2]/div/div/span[2]/span/span/span').text, 
                                 "link" : a_tag.get_attribute('href')
                                 }

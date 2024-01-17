@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/changepassword/', UserChangePasswordView.as_view(), name='api-changepassword'),
     path('api/send-email/', send_email.as_view(), name='api-send-email'), # email is not sending
     path('api/get-insta-tags/', InstaHashTag.as_view(), name='get-insta-tags'),
+    path('api/get-youtube-tags/', YouTubeHashTag.as_view(), name='get-youtube-tags'),
 ]
