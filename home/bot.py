@@ -250,40 +250,43 @@ class Bot():
         reel = 0
         post = 0
         for a_tag in allAelement :
-            tmp = {}
-            tmp['comments'] = '0'
-            tmp['likes'] = '0'
-            self.driver.execute_script("arguments[0].scrollIntoView(true);", a_tag)
-            actions.move_to_element(a_tag).perform()
-            li_ele = a_tag.find_elements(By.TAG_NAME,'li')
-            if li_ele : 
-                post_like = li_ele[0].find_elements(By.TAG_NAME,'span')
-                if post_like :
-                    post_like = post_like[1].text
-                    if not post_like : post_like = '0'
-                    if 'K' in post_like : 
-                        post_like = int(float(str(post_like).replace('K',''))*1000)
-                    elif 'M' in post_like : 
-                        post_like = int(float(str(post_like).replace('K',''))*1000000)
-                    tmp['likes'] = post_like
-                post_comment = li_ele[1].find_elements(By.TAG_NAME,'span')
-                if post_comment :
-                    post_comment = post_comment[1].text
-                    if not post_comment : post_comment = '0'
-                    if 'K' in post_comment : 
-                        post_comment = int(float(str(post_comment).replace('K',''))*1000)
-                    elif 'M' in post_comment : 
-                        post_comment = int(float(str(post_comment).replace('K',''))*1000000)
-                    tmp['comments'] = post_comment
+                tmp = {}
+                tmp['comments'] = '0'
+                tmp['likes'] = '0'
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", a_tag)
+                actions.move_to_element(a_tag).perform()
+                li_ele = a_tag.find_elements(By.TAG_NAME,'li')
+                if li_ele : 
+                    post_like = li_ele[0].find_elements(By.TAG_NAME,'span') if len(li_ele) >= 1 else []
+                    if post_like :
+                        post_like = post_like[1].text if len(post_like) > 1 else '0'
+                        if not post_like : post_like = '0'
+                        if 'K' in post_like : 
+                            post_like = int(float(str(post_like).replace('K',''))*1000)
+                        elif 'M' in post_like : 
+                            post_like = int(float(str(post_like).replace('K',''))*1000000)
+                        tmp['likes'] = post_like
+                    
+                    post_comment = li_ele[1].find_elements(By.TAG_NAME,'span') if len(li_ele) > 1 else []
+                    if post_comment :
+                        post_comment = post_comment[1].text if len(post_comment) > 1 else '0'
+                        if not post_comment : post_comment = '0'
+                        if 'K' in post_comment : 
+                            post_comment = int(float(str(post_comment).replace('K',''))*1000)
+                        elif 'M' in post_comment : 
+                            post_comment = int(float(str(post_comment).replace('K',''))*1000000)
+                        tmp['comments'] = post_comment
+                
+                svg_eles = a_tag.find_elements(By.TAG_NAME,'svg')
+                if svg_eles :
+                    svg_eles = svg_eles[0]
+                    if svg_eles.get_attribute('aria-label') == "Clip" :
+                        print(svg_eles.get_attribute('aria-label'))
+                        reel += 1
+                post += 1
+                json_[allAelement.index(a_tag)] = tmp
+                
             
-            svg_eles = a_tag.find_elements(By.TAG_NAME,'svg')
-            if svg_eles :
-                svg_eles = svg_eles[0]
-                if svg_eles.get_attribute('aria-label') == "Clip" :
-                    print(svg_eles.get_attribute('aria-label'))
-                    reel += 1
-            post += 1
-            json_[allAelement.index(a_tag)] = tmp
                 
         
         if json_ :
@@ -322,9 +325,10 @@ class Bot():
                                 "link" : a_tag.get_attribute('href')
                                 }
                         except : ...
+                    
                     scrapped_likes_comment = 0
                     for key, json_ in responsee.items() :
-                        if scrapped_likes_comment >= 3 : break
+                        if scrapped_likes_comment >= 1 : break
                         self.driver.execute_script("window.open('');")
                         self.driver.switch_to.window(self.driver.window_handles[-1])
                         self.driver.get(json_['link'])
@@ -336,7 +340,7 @@ class Bot():
                             scrapped_likes_comment += 1
                         print(responsee[key])
                         self.close_others_tab()
-                        
+                    
                     if  len(all_hashtah_links) < 1:
                         time.sleep(1)
                     else :
