@@ -29,7 +29,7 @@ class Bot():
     def get_local_driver(self):
         """Start webdriver and return state of it."""
         from selenium import webdriver
-
+        driver = ''
         for _ in range(30):
             options = webdriver.ChromeOptions()
             options.add_argument('--lang=en')  # Set webdriver language to English.
@@ -66,6 +66,7 @@ class Bot():
     
     def get_driver(self):
         """Start webdriver and return state of it."""
+        driver = ''
         for _ in range(30):
             """Start webdriver and return state of it."""
             from undetected_chromedriver import Chrome, ChromeOptions
