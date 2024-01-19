@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import logging
+import subprocess
 from selenium import webdriver  
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.action_chains import ActionChains
@@ -22,6 +22,7 @@ class Bot():
         self.password = user.password
 
     def return_driver(self) : 
+        subprocess.run(['pkill', 'chrome'])
         self.get_driver() 
         return self.check_login() 
 
@@ -53,7 +54,8 @@ class Bot():
             options.add_argument("--enable-javascript")
             options.add_argument("--enable-popup-blocking")
             try:
-                driver = webdriver.Chrome()
+                subprocess.run(['pkill', 'chrome'])
+                driver = webdriver.Chrome(options=options)
                 driver.get('https://www.google.com')
                 break
             except Exception as e:
@@ -90,6 +92,7 @@ class Bot():
             options.add_argument("--enable-javascript")
             options.add_argument("--enable-popup-blocking")
             try:
+                subprocess.run(['pkill', 'chrome'])
                 driver = Chrome(options=options,version_main=119,headless=False)
                 driver.get('https://www.google.com')
                 break
