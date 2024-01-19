@@ -191,6 +191,13 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "*"
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "*"
+]
+CORS_ORIGIN_WHITELIST = [
+    '*'
+]
 CORS_ALLOW_CREDENTIALS = True
 
 STATIC_URL = '/static/'
