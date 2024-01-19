@@ -156,8 +156,12 @@ class UserProfileView(APIView):
             'searched_history' : search_history,
             'deposit_history' : diposit_history
         }
+        response = Response(jsonn_response, status=status.HTTP_200_OK)
         
-        return Response(jsonn_response, status=status.HTTP_200_OK)
+        # Set the Referrer Policy header
+        response['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+
+        return response
 
 class UserChangePasswordView(APIView):
     """ 
