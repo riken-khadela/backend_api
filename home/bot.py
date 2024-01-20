@@ -1,4 +1,5 @@
 from audioop import avg
+import datetime
 import random, time, os, json
 from selenium_stealth import stealth
 from selenium.webdriver.support.ui import WebDriverWait
@@ -57,6 +58,9 @@ class Bot():
                 subprocess.run(['pkill', 'chrome'])
                 driver = webdriver.Chrome(options=options)
                 driver.get('https://www.google.com')
+                driver.save_screenshot('aa.png')
+                driver.current_url
+                driver.execute_script("window.open('about:blank','secondtab');")
                 break
             except Exception as e:
                 print(e)
@@ -96,6 +100,7 @@ class Bot():
                 subprocess.run(['pkill', 'chrome'])
                 driver = Chrome(options=options,version_main=119,headless=False)
                 driver.get('https://www.google.com')
+                driver.save_screenshot('aa.png')
                 break
             except Exception as e:
                 print(e)
@@ -246,19 +251,24 @@ class Bot():
     def scrape_tag_extra_data(self):
         allpostmaindiv = self.find_element('all post main element','/html/body/div[2]/div/div/div[2]/div/div/div[1]/div[1]/div[2]/section/main/article/div/div/div')
         actions = ActionChains(self.driver)
-        for _ in range(3) :
+        for _ in range(30) :
             allAelement = allpostmaindiv.find_elements(By.TAG_NAME,'a')
             if len(allAelement) >= 30 : break
-            else : random_sleep(1,4)
+            else : time.sleep(0.2)
         json_ = {}
         reel = 0
         post = 0
+        post_on_screen = 0
+                # self.driver.execute_script("arguments[0].scrollIntoView(true);", a_tag)
+        
         for a_tag in allAelement :
+                post_on_screen += 1
+                if post_on_screen%9 == 0 : 
+                    # self.driver.execute_script("arguments[0].scrollIntoView(true);", a_tag)
+                    actions.move_to_element(a_tag).perform()
                 tmp = {}
                 tmp['comments'] = '0'
                 tmp['likes'] = '0'
-                self.driver.execute_script("arguments[0].scrollIntoView(true);", a_tag)
-                actions.move_to_element(a_tag).perform()
                 li_ele = a_tag.find_elements(By.TAG_NAME,'li')
                 if li_ele : 
                     post_like = li_ele[0].find_elements(By.TAG_NAME,'span') if len(li_ele) >= 1 else []
@@ -285,7 +295,6 @@ class Bot():
                 if svg_eles :
                     svg_eles = svg_eles[0]
                     if svg_eles.get_attribute('aria-label') == "Clip" :
-                        print(svg_eles.get_attribute('aria-label'))
                         reel += 1
                 post += 1
                 json_[allAelement.index(a_tag)] = tmp
@@ -316,10 +325,16 @@ class Bot():
         responsee = {}
         
         try:
-            search_input = self.input_text(f"#{tag}",'input',"//input[@aria-label='Search input']",By.XPATH)
+            search_input = self.input_text(f"#{tag}",'input',"//input[@aria-label='Search input']",By.XPATH,timeout=0)
+            
             if search_input :
                 for _ in range(10) :
                     time.sleep(1)
+                    all_hashtah_links_elees = []
+                    for _ in range(50):
+                        all_hashtah_links_elees = self.driver.find_elements(By.TAG_NAME,'a')
+                        if all_hashtah_links_elees : break
+                        time.sleep(0.1)
                     all_hashtah_links = [ i for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
                     for a_tag in all_hashtah_links :
                         try:
@@ -333,9 +348,10 @@ class Bot():
                     scrapped_likes_comment = 0
                     for key, json_ in responsee.items() :
                         if scrapped_likes_comment >= 1 : break
-                        self.driver.execute_script("window.open('');")
                         self.driver.switch_to.window(self.driver.window_handles[-1])
+                        print(datetime.datetime.now())
                         self.driver.get(json_['link'])
+                        print(datetime.datetime.now())
                         sucess = self.scrape_tag_extra_data()
                         if sucess : 
                             responsee[key]['likes'] = int(sucess['likes'])
@@ -353,7 +369,11 @@ class Bot():
                             file.write(str(cookies))
 
                         return responsee
-                self.input_text(f"",tag,"//input[@aria-label='Search input']",By.XPATH)
+                
+                self.input_text(f"",'search input',"//input[@aria-label='Search input']",By.XPATH,timeout=0)
+                
+            else : 
+                self.click_element('search btn',"//a[@href='#']")
         except Exception as e: 
             print(e)
         finally :
