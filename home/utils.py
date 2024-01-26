@@ -16,7 +16,7 @@ def generate_random_string(length=10):
     return random_string
 
 def GetActiveChromeSelenium():
-    subprocess.run(['pkill', 'chrome'])
+    # subprocess.run(['pkill', 'chrome'])
 
     user_driver_dict = {}
     all_active_user = instagram_accounts.objects.filter(status='ACTIVE')
@@ -46,7 +46,7 @@ def get_user_id_from_token(request):
     if authorization_header:
         try:
             # Extracting the token part from the header
-            token = authorization_header.split(' ')[1]
+            token = authorization_header.split(' ')[1] 
             # Decoding the token to retrieve the payload
             access_token = AccessToken(token)
             # Accessing the user ID from the decoded token payload
@@ -55,3 +55,4 @@ def get_user_id_from_token(request):
         except Exception as e:
             print(f"Error decoding token: {e}")
     return None 
+

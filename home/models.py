@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django import forms
 from django.db import models
@@ -68,6 +69,7 @@ class CustomUser(AbstractUser,TimeStampModel):
     is_user_verified = models.BooleanField(default=False)
     credit = models.BigIntegerField(default=100)
     objects = UserManager()
+    Mobile_number = models.IntegerField(default=0)
     REQUIRED_FIELDS = ["email","Mobile_number"]
 
     def __str__(self):

@@ -19,6 +19,14 @@ from google.ads.googleads.errors import GoogleAdsException
 from urllib.parse import unquote
 
 user_driver_dict = {}
+
+from rest_framework.permissions import BasePermission
+
+def IsSuperUser(user_id):
+    user = CustomUser.objects.filter(id=user_id)
+    if not user : return False, False
+    user = user.first()
+    return user and user.is_superuser
     
 def get_or_createToken(request):
     """ 
@@ -60,6 +68,9 @@ class UserRegistrationView(APIView):
         if not request.data['email'] :
             return Response({'msg':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
         user = serializer.save()
+        if 'super' in request.data and request.data['super'] == True : 
+            user.is_superuser = True
+            user.save()
         token = get_tokens_for_user(user)
         verification_code = random.randint(100000,999999)
         user.verification_code = verification_code
@@ -422,3 +433,20 @@ class start_drivers(APIView):
         except Exception as e :
             return JsonResponse({"Hastag" : "hashtag"})
         
+
+class GetUserList(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        breakpoint()
+        user_id = get_user_id_from_token(request)
+        user, is_superuser = IsSuperUser(user_id)
+        if not user or not is_superuser:
+            msg = 'could not found the super user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        
+        return Response({'msg':'Password Changed Successfully'}, status=status.HTTP_200_OK)

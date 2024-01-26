@@ -23,7 +23,7 @@ class Bot():
         self.password = user.password
 
     def return_driver(self) : 
-        subprocess.run(['pkill', 'chrome'])
+        # subprocess.run(['pkill', 'chrome'])
         self.get_driver() 
         return self.check_login() 
 
@@ -40,7 +40,7 @@ class Bot():
             options.add_argument('--mute-audio')
             options.add_argument("--ignore-gpu-blocklist")
             options.add_argument('--disable-dev-shm-usage')
-            options.add_argument('--headless')
+            # options.add_argument('--headless')
             prefs = {"credentials_enable_service": True,
                     'profile.default_content_setting_values.automatic_downloads': 1,
                 'download.prompt_for_download': False,  # Optional, suppress download prompt
@@ -55,7 +55,7 @@ class Bot():
             options.add_argument("--enable-javascript")
             options.add_argument("--enable-popup-blocking")
             try:
-                subprocess.run(['pkill', 'chrome'])
+                # subprocess.run(['pkill', 'chrome'])
                 driver = webdriver.Chrome(options=options)
                 driver.get('https://www.google.com')
                 driver.save_screenshot('aa.png')
@@ -97,7 +97,7 @@ class Bot():
             options.add_argument("--enable-javascript")
             options.add_argument("--enable-popup-blocking")
             try:
-                subprocess.run(['pkill', 'chrome'])
+                # subprocess.run(['pkill', 'chrome'])
                 driver = Chrome(options=options,version_main=119,headless=False)
                 driver.get('https://www.google.com')
                 driver.save_screenshot('aa.png')
@@ -202,7 +202,6 @@ class Bot():
         except Exception as e: ...
 
     def check_login(self) :
-
         self.driver.get(f'https://www.instagram.com/'+self.username+'/')
         if os.path.exists('cookies/coockies_'+str(self.username)+'.txt') :
             with open('cookies/coockies_'+str(self.username)+'.txt', 'r') as file:

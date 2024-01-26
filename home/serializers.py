@@ -5,6 +5,7 @@ from django.contrib.postgres.fields import JSONField
 def generate_random_string(length=15):
     letters = string.ascii_letters  # includes uppercase and lowercase letters
     return ''.join(random.choice(letters) for _ in range(length))
+  
 class UserRegistrationSerializer(serializers.ModelSerializer):
       """ 
       This serializer will help to create new user's registration data and validate the password.
