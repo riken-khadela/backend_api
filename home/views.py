@@ -448,11 +448,61 @@ class GetUserList(APIView):
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
         
         all_user = CustomUser.objects.filter(is_superuser=False)
-        user_list = []
-        user_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name }} for c_user in all_user ]
+        user_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name, "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user ]
         if user_list :
             return Response({'msg' : 'successfully got the user list','userlist' : user_list}, status=status.HTTP_200_OK)
         return Response({'msg' : 'counld not got the user list', 'userlist' : user_list}, status=status.HTTP_204_NO_CONTENT)
+
+class EditUser(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+
+        user_id = get_user_id_from_token(request)
+        user, is_superuser = IsSuperUser(user_id)
+        if not user or not is_superuser:
+            msg = 'could not found the super user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        user_found = False
+        if not 'email' in request.data and not request.data['email']:
+            msg = 'could not found the email'
+            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not 'feild' in request.data and not request.data['feild']:
+            msg = 'could not found the feild which needs to be edited'
+            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not 'new_value' in request.data and not request.data['new_value']:
+            msg = 'could not found the new value which needs to be replaced with old values'
+            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+            
+        found_user = CustomUser.objects.filter(is_superuser=False,email=request.data['email'])
+        if not found_user :
+            return Response({'msg' : 'could not got the user'}, status=status.HTTP_204_NO_CONTENT)
+
+        found_user = found_user.first()
+        field_name = request.data['feild']
+        new_value = request.data['new_value']
+        
+        
+        
+        try:
+            setattr(found_user, field_name, new_value)
+            found_user.save()
+            msg = 'Successfully edited the user data'
+            status_code = status.HTTP_200_OK
+            
+        except Exception as e:
+            msg = f'Error editing user data: {str(e)}'
+            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        # foundus
+
+        
+        return Response({'msg' : msg}, status=status_code)
 
 
 class DeleteUser(APIView):
@@ -490,65 +540,106 @@ class SuperuserDashboard(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
     
-    def calculate_user(self,days):
-        """This helps to get the user as per days diffrence"""
-        
-        ...        
     
     def post(self, request, format=None):
-        tz = pytz.timezone('UTC')
+        try :
+            tz = pytz.timezone('UTC')
 
-        now = datetime.now().astimezone(tz)
-        user_id = get_user_id_from_token(request)
-        user, is_superuser = IsSuperUser(user_id)
-        if not user or not is_superuser:
-            msg = 'could not found the super user'
-            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+            now = datetime.now().astimezone(tz)
+            user_id = get_user_id_from_token(request)
+            user, is_superuser = IsSuperUser(user_id)
+            if not user or not is_superuser:
+                msg = 'could not found the super user'
+                return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 
-        #Dash board
-        # all_user = CustomUser.objects.filter(is_superuser=False)
-        weekly_data = []
+            #Dash board
+            # all_user = CustomUser.objects.filter(is_superuser=False)
+            weekly_data = []
 
-        for i in range(4):
-            # Calculate the start and end of the week
-            end_of_week = now - timedelta(days= 6*i  )
-            start_of_week = end_of_week - timedelta(days=6)
+            for i in range(4):
+                # Calculate the start and end of the week
+                end_of_week = now - timedelta(days= 6*i  )
+                start_of_week = end_of_week - timedelta(days=6)
 
-            # Query to get data created in this week
-            week_data = CustomUser.objects.filter(created__gte=start_of_week,  created__lte=end_of_week,is_superuser=False)
+                # Query to get data created in this week
+                week_data = CustomUser.objects.filter(created__gte=start_of_week,  created__lte=end_of_week,is_superuser=False)
 
-            # Add the query results to the list
-            weekly_data.append(week_data)
+                # Add the query results to the list
+                weekly_data.append(week_data)
+                
+            main_weekly_data = []
+            for week in weekly_data :
+                main_weekly_data.append( {
+                    weekly_data.index(week)+1 : {
+                        'weekly_total_user' : len(week)
+                    }
+                })
             
-        main_weekly_data = []
-        for week in weekly_data :
-            main_weekly_data.append( {
-                weekly_data.index(week)+1 : {
-                    'weekly_total_user' : len(week)
-                }
-            })
-        
-        LastMonthRegister = CustomUser.objects.filter(created__gte=now - timedelta(days=30),  created__lte=now,is_superuser=False).count()
-        
-        Weekly_income = []
-        for i in range(4):
-            # Calculate the start and end of the week
-            end_of_week = now - timedelta(days= 30*i  )
-            start_of_week = end_of_week - timedelta(days=6)
+            LastMonthRegister = CustomUser.objects.filter(created__gte=now - timedelta(days=30),  created__lte=now,is_superuser=False).count()
+            
+            Weekly_income = []
+            for i in range(4):
+                # Calculate the start and end of the week
+                end_of_week = now - timedelta(days= 6*i  )
+                start_of_week = end_of_week - timedelta(days=6)
 
-            # Query to get data created in this week
-            week_data = DepositeMoney.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
+                # Query to get data created in this week
+                week_data = DepositeMoney.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
 
-            # Add the query results to the list
-            Weekly_income.append(week_data)
-        main_weekly_income = []
-        for week in Weekly_income :
-            main_weekly_income.append( {
-                weekly_data.index(week)+1 : {
-                    'weekly_total_user' : len(week)
-                }
-            })
-        breakpoint()
+                # Add the query results to the list
+                Weekly_income.append(week_data)
+            main_weekly_income = []
+            for week in Weekly_income :
+                if not week :
+                    main_weekly_income.append({
+                        Weekly_income.index(week)+1 : {
+                            'weekly_total_income' : 0
+                        }
+                    })
+                else :
+                    main_weekly_income.append( {
+                        Weekly_income.index(week)+1 : {
+                            'weekly_total_income' : sum([ dp.Amount for dp in week])
+                        }
+                    })
+                    
+                    
+            Weekly_search = []
+            for i in range(4):
+                # Calculate the start and end of the week
+                end_of_week = now - timedelta(days= 6*i  )
+                start_of_week = end_of_week - timedelta(days=6)
+
+                # Query to get data created in this week
+                week_data = SearchedHistory.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
+
+                # Add the query results to the list
+                Weekly_search.append(week_data)
+            main_weekly_search = []
+            for week in Weekly_search :
+                if not week :
+                    main_weekly_search.append({
+                        Weekly_search.index(week)+1 : {
+                            'weekly_total_search' : 0
+                        }
+                    })
+                else :
+                    main_weekly_search.append( {
+                        Weekly_search.index(week)+1 : {
+                            'weekly_total_search' : len(week)
+                        }
+                    })
+            msg = 'get the data successfully'            
+        except :
+            msg = 'could not get the data successfully'    
+                    
+        responsee = {
+            "weekly_user" : main_weekly_data,
+            "weekly_income" : main_weekly_income,
+            "weekly_search" : main_weekly_search
+        }
+        
+        return Response({'msg' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
         

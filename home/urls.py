@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/get-insta-tags/', InstaHashTag.as_view(), name='get-insta-tags'),
     path('api/get-youtube-tags/', YouTubeHashTag.as_view(), name='get-youtube-tags'),
     path('api/get-users-list/', GetUserList.as_view(), name='get-users-list'),
+    path('api/edit-delete/', EditUser.as_view(), name='user-edit'),
     path('api/user-delete/', DeleteUser.as_view(), name='user-delete'),
-    path('api/superuser-dashboard/', SuperuserDashboard.as_view(), name='user-delete'),
+    path('api/superuser-dashboard/', SuperuserDashboard.as_view(), name='superuser-dashboard'),
 ]
