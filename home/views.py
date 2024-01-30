@@ -11,7 +11,7 @@ from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, Use
 import random, dotenv
 from django.http import JsonResponse
 from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token, generate_random_string
-import random, time, os, json
+import random, time, os, json, pytz
 from .bot import Bot
 from datetime import timedelta, datetime
 from google.ads.googleads.client import GoogleAdsClient
@@ -26,7 +26,7 @@ def IsSuperUser(user_id):
     user = CustomUser.objects.filter(id=user_id)
     if not user : return False, False
     user = user.first()
-    return user and user.is_superuser
+    return user , user.is_superuser
     
 def get_or_createToken(request):
     """ 
@@ -441,12 +441,114 @@ class GetUserList(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
     def post(self, request, format=None):
-        breakpoint()
         user_id = get_user_id_from_token(request)
         user, is_superuser = IsSuperUser(user_id)
         if not user or not is_superuser:
             msg = 'could not found the super user'
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
         
+        all_user = CustomUser.objects.filter(is_superuser=False)
+        user_list = []
+        user_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name }} for c_user in all_user ]
+        if user_list :
+            return Response({'msg' : 'successfully got the user list','userlist' : user_list}, status=status.HTTP_200_OK)
+        return Response({'msg' : 'counld not got the user list', 'userlist' : user_list}, status=status.HTTP_204_NO_CONTENT)
+
+
+class DeleteUser(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+
+        user_id = get_user_id_from_token(request)
+        user, is_superuser = IsSuperUser(user_id)
+        if not user or not is_superuser:
+            msg = 'could not found the super user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        user_deleted = False
+        if 'email' in request.data and request.data['email']:
+            del_user = CustomUser.objects.filter(is_superuser=False,email=request.data['email'])
+            if not del_user :
+                return Response({'msg' : 'successfully got the user list','user_deleted' : user_deleted}, status=status.HTTP_204_NO_CONTENT)
+
+            del_user = del_user.first()
+            if del_user.delete() :
+                user_deleted = True
+
+        if user_deleted :
+            return Response({'msg' : 'successfully deleted the user list','user_deleted' : user_deleted}, status=status.HTTP_200_OK)
+        return Response({'msg' : 'counld not delete the user', 'user_deleted' : user_deleted}, status=status.HTTP_204_NO_CONTENT)
+
+
+class SuperuserDashboard(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    
+    def calculate_user(self,days):
+        """This helps to get the user as per days diffrence"""
         
-        return Response({'msg':'Password Changed Successfully'}, status=status.HTTP_200_OK)
+        ...        
+    
+    def post(self, request, format=None):
+        tz = pytz.timezone('UTC')
+
+        now = datetime.now().astimezone(tz)
+        user_id = get_user_id_from_token(request)
+        user, is_superuser = IsSuperUser(user_id)
+        if not user or not is_superuser:
+            msg = 'could not found the super user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+        #Dash board
+        # all_user = CustomUser.objects.filter(is_superuser=False)
+        weekly_data = []
+
+        for i in range(4):
+            # Calculate the start and end of the week
+            end_of_week = now - timedelta(days= 6*i  )
+            start_of_week = end_of_week - timedelta(days=6)
+
+            # Query to get data created in this week
+            week_data = CustomUser.objects.filter(created__gte=start_of_week,  created__lte=end_of_week,is_superuser=False)
+
+            # Add the query results to the list
+            weekly_data.append(week_data)
+            
+        main_weekly_data = []
+        for week in weekly_data :
+            main_weekly_data.append( {
+                weekly_data.index(week)+1 : {
+                    'weekly_total_user' : len(week)
+                }
+            })
+        
+        LastMonthRegister = CustomUser.objects.filter(created__gte=now - timedelta(days=30),  created__lte=now,is_superuser=False).count()
+        
+        Weekly_income = []
+        for i in range(4):
+            # Calculate the start and end of the week
+            end_of_week = now - timedelta(days= 30*i  )
+            start_of_week = end_of_week - timedelta(days=6)
+
+            # Query to get data created in this week
+            week_data = DepositeMoney.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
+
+            # Add the query results to the list
+            Weekly_income.append(week_data)
+        main_weekly_income = []
+        for week in Weekly_income :
+            main_weekly_income.append( {
+                weekly_data.index(week)+1 : {
+                    'weekly_total_user' : len(week)
+                }
+            })
+        breakpoint()
+        

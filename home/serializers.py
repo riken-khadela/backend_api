@@ -51,7 +51,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = CustomUser
-        fields =['email','first_name','is_user_verified','credit']
+        fields =['email','first_name','is_user_verified','credit','password']
 
 class UserChangePasswordSerializer(serializers.Serializer):
     """ 

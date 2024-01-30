@@ -11,4 +11,7 @@ urlpatterns = [
     path('api/send-email/', send_email.as_view(), name='api-send-email'), # email is not sending
     path('api/get-insta-tags/', InstaHashTag.as_view(), name='get-insta-tags'),
     path('api/get-youtube-tags/', YouTubeHashTag.as_view(), name='get-youtube-tags'),
+    path('api/get-users-list/', GetUserList.as_view(), name='get-users-list'),
+    path('api/user-delete/', DeleteUser.as_view(), name='user-delete'),
+    path('api/superuser-dashboard/', SuperuserDashboard.as_view(), name='user-delete'),
 ]
