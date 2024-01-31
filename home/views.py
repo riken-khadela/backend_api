@@ -334,8 +334,20 @@ class InstaHashTag(APIView):
 
                 twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
                 past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
-                if past_searched_hashtag : 
-                    Hastag = json.loads(past_searched_hashtag.first().result.replace("'", "\""))
+                # if past_searched_hashtag : 
+                #     Hastag = json.loads(past_searched_hashtag.first().result.replace("'", "\""))
+                if not past_searched_hashtag :
+                    Hastag = self.get_related_keywords(request.data['hashtag'])
+                else :
+                    try :
+                        Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result.replace("'", "\""))
+                    except :
+                        try :
+                            Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result)
+                        except :
+                            msg = 'Failed to scrape the hashtag'
+                            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
                 if i_bot.TestRunDriver(driver) == False :
                     driver,keys,value = self.give_driver(CreateNew=True)
                 if not past_searched_hashtag :
