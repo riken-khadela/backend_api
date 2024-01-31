@@ -493,8 +493,7 @@ class GetUserList(APIView):
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
         
         all_user = CustomUser.objects.filter(is_superuser=False)
-        
-        user_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name, "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user ]
+        user_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name, "Diposited_balance" : sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) if  sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) else 0, "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user ]
         if user_list :
             return Response({'msg' : 'successfully got the user list','userlist' : user_list}, status=status.HTTP_200_OK)
         return Response({'msg' : 'counld not got the user list', 'userlist' : user_list}, status=status.HTTP_204_NO_CONTENT)
@@ -534,17 +533,27 @@ class EditUser(APIView):
         field_name = request.data['feild']
         new_value = request.data['new_value']
         
-        
-        
-        try:
-            setattr(found_user, field_name, new_value)
-            found_user.save()
-            msg = 'Successfully edited the user data'
-            status_code = status.HTTP_200_OK
+        if type(field_name) == list :
+            try: 
+                for fl in range(len(field_name)) :
+                    fl_name = field_name[fl]                    
+                    nv_name = new_value[fl]     
+                    setattr(found_user, fl_name, nv_name)
+                    found_user.save()               
+            except : 
+                msg = f'Error editing user data: {str(e)}'
+                status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        elif type(field_name) == str :
             
-        except Exception as e:
-            msg = f'Error editing user data: {str(e)}'
-            status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+            try:
+                setattr(found_user, field_name, new_value)
+                found_user.save()
+                msg = 'Successfully edited the user data'
+                status_code = status.HTTP_200_OK
+                
+            except Exception as e:
+                msg = f'Error editing user data: {str(e)}'
+                status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         # foundus
 
         
