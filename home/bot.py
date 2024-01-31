@@ -324,6 +324,7 @@ class Bot():
         responsee = {}
         
         try:
+            
             search_input = self.input_text(f"#{tag}",'input',"//input[@aria-label='Search input']",By.XPATH,timeout=0)
             
             if search_input :
@@ -334,6 +335,7 @@ class Bot():
                         all_hashtah_links_elees = self.driver.find_elements(By.TAG_NAME,'a')
                         if all_hashtah_links_elees : break
                         time.sleep(0.1)
+                    
                     all_hashtah_links = [ i for i in self.driver.find_elements(By.TAG_NAME,'a') if '/explore/tags/' in i.get_attribute('href')]
                     for a_tag in all_hashtah_links :
                         try:
