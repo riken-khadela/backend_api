@@ -558,6 +558,8 @@ class EditUser(APIView):
                     nv_name = new_value[fl]     
                     setattr(found_user, fl_name, nv_name)
                     found_user.save()               
+                msg = 'Successfully edited the user data'
+                status_code = status.HTTP_200_OK
             except : 
                 msg = f'Error editing user data: {str(e)}'
                 status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
