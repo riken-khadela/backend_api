@@ -335,7 +335,7 @@ class InstaHashTag(APIView):
                 twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
                 past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
                 if past_searched_hashtag : 
-                    Hastag = json.loads(past_searched_hashtag.first().result)
+                    Hastag = json.loads(past_searched_hashtag.first().result.replace("'", "\""))
                 if i_bot.TestRunDriver(driver) == False :
                     driver,keys,value = self.give_driver(CreateNew=True)
                 if not past_searched_hashtag :
@@ -398,7 +398,7 @@ class YouTubeHashTag(APIView):
         if not past_searched_hashtag :
             Hastag = self.get_related_keywords(request.data['tag'])
         else :
-            Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result)
+            Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result.replace("'", "\""))
 
         if Hastag:
             if not past_searched_hashtag :
