@@ -146,7 +146,8 @@ class UserProfileView(APIView):
                 'platform' : history.platform,
                 'hashtag' : history.hashtag,
                 'date' : history.created.strftime("%d/%m/%Y"),
-                'result' : json.loads(history.result),
+                'result' : json.loads(history.result.replace("'", "\"")
+),
             }
             search_history.append(tmp)
         
@@ -214,7 +215,7 @@ class HashTagHistory(APIView):
             tmp = {
                 'platform' : history.platform,
                 'hashtag' : history.hashtag,
-                'result' : json.loads(history.result)
+                'result' : json.loads(history.result.replace("'", "\""))
             }
             search_history.append(tmp)
         msg = 'successfully searched userhistory !'
@@ -335,6 +336,8 @@ class InstaHashTag(APIView):
                         )
                         user.credit= user.credit - 10
                         user.save()
+                    if type(Hastag) == str : 
+                        Hastag = json.loads(Hastag.replace("'", "\""))
                     return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
                 else:
                     msg = 'Failed to scrape the hashtag'
@@ -386,6 +389,9 @@ class YouTubeHashTag(APIView):
                 )
                 user.credit= user.credit - 10
                 user.save()
+            
+            if type(Hastag) == str : 
+                Hastag = json.loads(Hastag.replace("'", "\""))
             msg = 'Hashtag scraped successfully'
             return Response({"Hashtag":  Hastag, "Message": msg},status=status.HTTP_200_OK)
         else:
@@ -466,6 +472,7 @@ class GetUserList(APIView):
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
         
         all_user = CustomUser.objects.filter(is_superuser=False)
+        
         user_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name, "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user ]
         if user_list :
             return Response({'msg' : 'successfully got the user list','userlist' : user_list}, status=status.HTTP_200_OK)

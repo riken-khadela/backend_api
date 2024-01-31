@@ -8,17 +8,14 @@ def get_hashtag_details_by_id(hashtag_id):
         L = instaloader.Instaloader()
         USERNAME = 'keywordlit7'
         PASSWORD = 'Keywordlit-01'
-        
-        L.login(USERNAME,PASSWORD)
-        # L.load_session_from_file(USERNAME)
-        # Define the GraphQL query
+        L.load_session_from_file(USERNAME)
+
         graphql_query__ = {
             "id": hashtag_id,
             "first": 1,
         }
         print(graphql_query__)
         # Send a request to Instagram's GraphQL API
-        instaloader.
         response = L.context.graphql_query('hashtag', graphql_query__)
         
         # Parse the response and extract hashtag details
