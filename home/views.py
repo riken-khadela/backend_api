@@ -220,6 +220,27 @@ class HashTagHistory(APIView):
             search_history.append(tmp)
         msg = 'successfully searched userhistory !'
         return Response({ "search_history":search_history, "Message": msg}, status=status.HTTP_200_OK)
+    
+class DepositeMoneyAPI(APIView):
+    """ 
+    Get a user profile data with email and password
+    """
+    def post(self, request, format=None):
+        transection_id = 0
+        user_id = get_user_id_from_token(request)
+        user = CustomUser.objects.filter(id=user_id).first()
+        if not user :
+            msg = 'could not diposite in the user account'
+            return Response({ "transection_id":transection_id, "Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if not 'money' in request.data and not request.data['money']:
+            msg = 'could not found the money'
+            return Response({ "transection_id":transection_id, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+        transection_id = random.randint(100000000,99999999999)
+        DepositeMoney.objects.create(user=user,Amount= request.data['money'],TransactionId = str(transection_id), method = "CREDIT_CARD", status = "COMPLETE" )
+        
+        msg = 'successfully transection completed !'
+        return Response({ "transection_id":transection_id, "Message": msg}, status=status.HTTP_200_OK)
 
 class InstaHashTag(APIView):
     """ 
