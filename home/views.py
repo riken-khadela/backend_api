@@ -398,7 +398,14 @@ class YouTubeHashTag(APIView):
         if not past_searched_hashtag :
             Hastag = self.get_related_keywords(request.data['tag'])
         else :
-            Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result.replace("'", "\""))
+            try :
+                Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result.replace("'", "\""))
+            except :
+                try :
+                    Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result)
+                except :
+                    msg = 'Failed to scrape the hashtag'
+                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
         if Hastag:
             if not past_searched_hashtag :
