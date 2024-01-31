@@ -8,7 +8,9 @@ __pycache__/
 env
 # C extensions
 *.so
+db.sqlite3
 profile/*
+*.sqlite3
 # Distribution / packaging
 .Python
 build/

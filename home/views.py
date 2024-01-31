@@ -311,7 +311,7 @@ class InstaHashTag(APIView):
                 i_bot = Bot(user=user)
 
                 twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
-                past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago)
+                past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
                 if past_searched_hashtag : 
                     Hastag = json.loads(past_searched_hashtag.first().result)
                 if i_bot.TestRunDriver(driver) == False :
@@ -325,8 +325,6 @@ class InstaHashTag(APIView):
                         return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
                 
                 if Hastag:
-                    user.credit= user.credit - 10
-                    user.save()
                     msg = 'Hashtag scraped successfully'
                     if not past_searched_hashtag :
                         SearchedHistory.objects.create(
@@ -335,6 +333,8 @@ class InstaHashTag(APIView):
                             platform = 'Instagram',
                             result = json.dumps(Hastag)
                         )
+                        user.credit= user.credit - 10
+                        user.save()
                     return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
                 else:
                     msg = 'Failed to scrape the hashtag'
@@ -364,12 +364,30 @@ class YouTubeHashTag(APIView):
             msg = 'Insufficient credit to perform this action.'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
         
-        Hastag = self.get_related_keywords()
+        if not 'tag' in request.data and not request.data['tag']:
+            msg = 'could not found the tag'
+            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+        
+        twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+        past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube")
+        # breakpoint()
+        if not past_searched_hashtag :
+            Hastag = self.get_related_keywords(request.data['tag'])
+        else :
+            Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result)
+
         if Hastag:
-            user.credit= user.credit - 10
-            user.save()
+            if not past_searched_hashtag :
+                SearchedHistory.objects.create(
+                    user = user,
+                    hashtag = request.data['tag'],
+                    platform = 'Youtube',
+                    result = json.dumps(Hastag)
+                )
+                user.credit= user.credit - 10
+                user.save()
             msg = 'Hashtag scraped successfully'
-            return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
+            return Response({"Hashtag":  Hastag, "Message": msg},status=status.HTTP_200_OK)
         else:
             msg = 'Failed to scrape the hashtag'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
