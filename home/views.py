@@ -683,7 +683,7 @@ class InstaHashTagHistory(APIView):
             msg = 'could not found the super user'
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
                     
-        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Instagram")}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Instagram")}, status=status.HTTP_200_OK)
 
 
 class YoutubeHashTagHistory(APIView):
@@ -701,7 +701,7 @@ class YoutubeHashTagHistory(APIView):
             msg = 'could not found the super user'
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
                     
-        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Youtube")}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Youtube")}, status=status.HTTP_200_OK)
 
 
 
