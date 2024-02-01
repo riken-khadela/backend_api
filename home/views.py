@@ -772,7 +772,8 @@ class SuperuserDashboard(APIView):
                 else :
                     main_weekly_income.append( {
                         Weekly_income.index(week)+1 : {
-                            'weekly_total_income' : sum([ dp.Amount for dp in week])
+                            'weekly_total_income' : sum([ dp.Amount for dp in week]),
+                            "weekly_total_diposite" : len(week)
                         }
                     })
                     
