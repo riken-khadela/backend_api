@@ -1,9 +1,48 @@
 from .models import instagram_accounts
 from .bot import Bot
 from dotenv import load_dotenv
+from datetime import timedelta, datetime
+import random, time, os, json, pytz
+from home.models import CustomUser, SearchedHistory, instagram_accounts, DepositeMoney
+
 load_dotenv()
 import subprocess
 
+def get_search_history(week_num : int, platform_ : str) :
+    tz = pytz.timezone('UTC')
+    now = datetime.now().astimezone(tz)
+    
+    Weekly_search = []
+    for i in range(week_num):
+        # Calculate the start and end of the week
+        end_of_week = now - timedelta(days= 6*i  )
+        start_of_week = end_of_week - timedelta(days=6)
+
+        # Query to get data created in this week
+        week_data = SearchedHistory.objects.filter(created__gte=start_of_week,  created__lte=end_of_week,platform=platform_)
+
+        # Add the query results to the list
+        Weekly_search.append(week_data)
+        
+    main_weekly_search = []
+    for week in Weekly_search :
+        if not week :
+            main_weekly_search.append({
+                Weekly_search.index(week)+1 : {
+                    "total_search" : 0,
+                    'weekly_search' : []
+                }
+            })
+        else :
+            search_his = [ {src.id : { "hashtag" : src.hashtag, "user" : src.user.email} } for src in week]
+            main_weekly_search.append( {
+                Weekly_search.index(week)+1 : {
+                    "total_search" : len(search_his),
+                    'weekly_search' :  search_his
+                }
+            })
+    return main_weekly_search
+                
 
 def generate_random_string(length=10):
     import random, string

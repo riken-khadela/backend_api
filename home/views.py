@@ -10,13 +10,14 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
 from django.http import JsonResponse
-from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token, generate_random_string
+from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token, generate_random_string, get_search_history
 import random, time, os, json, pytz
 from .bot import Bot
 from datetime import timedelta, datetime
 from google.ads.googleads.client import GoogleAdsClient
 from google.ads.googleads.errors import GoogleAdsException
 from urllib.parse import unquote
+from django.db.models import Sum
 
 user_driver_dict = {}
 
@@ -510,11 +511,70 @@ class GetUserList(APIView):
             msg = 'could not found the super user'
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
         
-        all_user = CustomUser.objects.filter(is_superuser=False)
-        user_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name, "Diposited_balance" : sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) if  sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) else 0, "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user ]
+        if 'email' in request.data:
+            all_user = CustomUser.objects.filter(is_superuser=False,email=request.data['email'])
+            if not all_user :
+                return Response({'msg' : 'counld not got the user list', 'email' : request.data['email']}, status=status.HTTP_204_NO_CONTENT)
+                
+        else :
+            all_user = CustomUser.objects.filter(is_superuser=False)
+        user_list = [ 
+                     {
+                         c_user.id : { 
+                             'email' : c_user.email, 
+                             'credit' : c_user.credit, 
+                             'fname' : c_user.first_name, 
+                             "Diposited_history" : [ {
+                                 dp_obj.TransactionId : { 
+                                     "user" :dp_obj.user.email,
+                                     "Amount" : dp_obj.Amount,
+                                     "method" : dp_obj.method,
+                                     "status" : dp_obj.status
+                                     }
+                                 } for dp_obj in DepositeMoney.objects.filter(user=c_user) ], 
+                             "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user 
+                     ]
         if user_list :
             return Response({'msg' : 'successfully got the user list','userlist' : user_list}, status=status.HTTP_200_OK)
         return Response({'msg' : 'counld not got the user list', 'userlist' : user_list}, status=status.HTTP_204_NO_CONTENT)
+
+class GetDipositeList(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        user_id = get_user_id_from_token(request)
+        user, is_superuser = IsSuperUser(user_id)
+        if not user or not is_superuser:
+            msg = 'could not found the super user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if 'TransactionId' in request.data:
+            all_diposite = DepositeMoney.objects.filter(TransactionId=request.data['TransactionId'])
+            if not all_diposite :
+                return Response({'msg' : 'counld not got the diposite', 'TransactionId' : request.data['TransactionId']}, status=status.HTTP_204_NO_CONTENT)
+                
+        else :
+            all_diposite = DepositeMoney.objects.filter()
+            
+        diposite_list = [ 
+                     {
+                         dp.TransactionId : {
+                             "amount" : dp.Amount,
+                             "method" : dp.method,
+                             "status" : dp.status,
+                             "user" : dp.user.email,
+                         } 
+                         } 
+                     for dp in all_diposite ]
+        
+        
+        # diposite_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name, "Diposited_balance" : sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) if  sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) else 0, "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_diposite ]
+        if diposite_list :
+            return Response({'msg' : 'successfully got the user list','userlist' : diposite_list}, status=status.HTTP_200_OK)
+        return Response({'msg' : 'counld not got the user list', 'userlist' : diposite_list}, status=status.HTTP_204_NO_CONTENT)
 
 class EditUser(APIView):
     """ 
@@ -608,6 +668,43 @@ class DeleteUser(APIView):
         return Response({'msg' : 'counld not delete the user', 'user_deleted' : user_deleted}, status=status.HTTP_204_NO_CONTENT)
 
 
+class InstaHashTagHistory(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        tz = pytz.timezone('UTC')
+        now = datetime.now().astimezone(tz)
+        user_id = get_user_id_from_token(request)
+        user, is_superuser = IsSuperUser(user_id)
+        if not user or not is_superuser:
+            msg = 'could not found the super user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+                    
+        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Instagram")}, status=status.HTTP_204_NO_CONTENT)
+
+
+class YoutubeHashTagHistory(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        tz = pytz.timezone('UTC')
+        now = datetime.now().astimezone(tz)
+        user_id = get_user_id_from_token(request)
+        user, is_superuser = IsSuperUser(user_id)
+        if not user or not is_superuser:
+            msg = 'could not found the super user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+                    
+        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Youtube")}, status=status.HTTP_204_NO_CONTENT)
+
+
+
 class SuperuserDashboard(APIView):
     """ 
     Get-all-user if token is of super user
@@ -633,7 +730,7 @@ class SuperuserDashboard(APIView):
             # all_user = CustomUser.objects.filter(is_superuser=False)
             weekly_data = []
 
-            for i in range(4):
+            for i in range(6):
                 # Calculate the start and end of the week
                 end_of_week = now - timedelta(days= 6*i  )
                 start_of_week = end_of_week - timedelta(days=6)
@@ -652,10 +749,9 @@ class SuperuserDashboard(APIView):
                     }
                 })
             
-            LastMonthRegister = CustomUser.objects.filter(created__gte=now - timedelta(days=30),  created__lte=now,is_superuser=False).count()
             
             Weekly_income = []
-            for i in range(4):
+            for i in range(6):
                 # Calculate the start and end of the week
                 end_of_week = now - timedelta(days= 6*i  )
                 start_of_week = end_of_week - timedelta(days=6)
@@ -682,7 +778,7 @@ class SuperuserDashboard(APIView):
                     
                     
             Weekly_search = []
-            for i in range(4):
+            for i in range(6):
                 # Calculate the start and end of the week
                 end_of_week = now - timedelta(days= 6*i  )
                 start_of_week = end_of_week - timedelta(days=6)
@@ -711,6 +807,13 @@ class SuperuserDashboard(APIView):
             msg = 'could not get the data successfully'    
                     
         responsee = {
+            "total_user" : CustomUser.objects.filter(is_superuser=False).count(),
+            "total_Instagram_search" : SearchedHistory.objects.filter(platform="Instagram").count(),
+            "Instagram_search_history" : get_search_history(6,"Instagram"),
+            "total_Youtube_search" : SearchedHistory.objects.filter(platform="Youtube").count(),
+            "Youtube_search_history" : get_search_history(6,"Youtube"),
+            "total_diposite_amount" : DepositeMoney.objects.filter(status="COMPLETE").aggregate(total_amount=Sum('Amount'))['total_amount'],
+            "total_diposite" : DepositeMoney.objects.filter(status="COMPLETE").count(),
             "weekly_user" : main_weekly_data,
             "weekly_income" : main_weekly_income,
             "weekly_search" : main_weekly_search
