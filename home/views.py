@@ -526,7 +526,7 @@ class GetUserList(APIView):
                              'email' : c_user.email, 
                              'credit' : c_user.credit, 
                              'fname' : c_user.first_name, 
-                             "Total_diposite" :DepositeMoney.objects.filter(status="COMPLETE",user=c_user).aggregate(total_amount=Sum('Amount'))['total_amount'], 
+                             "Total_diposite" :DepositeMoney.objects.filter(status="COMPLETE",user=c_user).aggregate(total_amount=Sum('Amount'))['total_amount'] if DepositeMoney.objects.filter(status="COMPLETE",user=c_user).aggregate(total_amount=Sum('Amount'))['total_amount'] else 0, 
                              "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user 
                      ]
         if user_list :
