@@ -70,6 +70,7 @@ class Bot():
     
     def get_driver(self):
         """Start webdriver and return state of it."""
+        
         driver = ''
         for _ in range(30):
             """Start webdriver and return state of it."""

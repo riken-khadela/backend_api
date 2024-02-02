@@ -1,11 +1,7 @@
 import instaloader
 def get_hashtags_from_search(L, query):
     try:
-        # Perform a hashtag search
-        # search_results = instaloader.Hashtag.from_name(L.context, query)
         search_results = instaloader.TopSearchResults(L.context, query)
-        
-        # Extract hashtags from the search results
         
         # hashtags = [result.name for result in search_results.get_hashtags()]
         for result in search_results.get_hashtags() : 
@@ -14,6 +10,7 @@ def get_hashtags_from_search(L, query):
             except : ...
             try : print(result.mediacount)
             except : ...
+            
             # for post in result.get_top_posts():
             #     print(f"Post URL: {post.url}")
             #     print(f"Likes: {post.likes}")

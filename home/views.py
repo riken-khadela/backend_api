@@ -10,7 +10,7 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
 from django.http import JsonResponse
-from .utils import GetActiveChromeSelenium, scrape_hashtags,get_user_id_from_token, generate_random_string, get_search_history
+from .utils import GetActiveChromeSelenium, get_yt_trend_data, scrape_hashtags,get_user_id_from_token, generate_random_string, get_search_history
 import random, time, os, json, pytz
 from .bot import Bot
 from datetime import timedelta, datetime
@@ -318,6 +318,7 @@ class InstaHashTag(APIView):
         Hastag = []
         user_id = get_user_id_from_token(request)
         user = CustomUser.objects.filter(id=user_id).first()
+        
         if not user :
             msg = 'could not found the user'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
@@ -433,7 +434,7 @@ class YouTubeHashTag(APIView):
             if type(Hastag) == str : 
                 Hastag = json.loads(Hastag.replace("'", "\""))
             msg = 'Hashtag scraped successfully'
-            return Response({"Hashtag":  Hastag, "Message": msg},status=status.HTTP_200_OK)
+            return Response({"Hashtag":  Hastag, "trend" : get_yt_trend_data(request.data['tag']), "Message": msg},status=status.HTTP_200_OK)
         else:
             msg = 'Failed to scrape the hashtag'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)

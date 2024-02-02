@@ -16,7 +16,7 @@ urlpatterns = [
     path('api/get-youtube-history/', YoutubeHashTagHistory.as_view(), name='get-youtube-history'),
     path('api/get-users-list/', GetUserList.as_view(), name='get-users-list'),
     path('api/get-diposite-list/', GetDipositeList.as_view(), name='get-diposite-list'),
-    path('api/edit-delete/', EditUser.as_view(), name='user-edit'),
+    path('api/edit-user/', EditUser.as_view(), name='user-edit'),
     path('api/user-delete/', DeleteUser.as_view(), name='user-delete'),
     path('api/superuser-dashboard/', SuperuserDashboard.as_view(), name='superuser-dashboard'),
 ]
