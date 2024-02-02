@@ -372,6 +372,7 @@ class InstaHashTag(APIView):
                         user.save()
                     if type(Hastag) == str : 
                         Hastag = json.loads(Hastag.replace("'", "\""))
+                    breakpoint()
                     return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
                 else:
                     msg = 'Failed to scrape the hashtag'
@@ -525,14 +526,7 @@ class GetUserList(APIView):
                              'email' : c_user.email, 
                              'credit' : c_user.credit, 
                              'fname' : c_user.first_name, 
-                             "Diposited_history" : [ {
-                                 dp_obj.TransactionId : { 
-                                     "user" :dp_obj.user.email,
-                                     "Amount" : dp_obj.Amount,
-                                     "method" : dp_obj.method,
-                                     "status" : dp_obj.status
-                                     }
-                                 } for dp_obj in DepositeMoney.objects.filter(user=c_user) ], 
+                             "Total_diposite" :DepositeMoney.objects.filter(status="COMPLETE",user=c_user).aggregate(total_amount=Sum('Amount'))['total_amount'], 
                              "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user 
                      ]
         if user_list :
