@@ -18,6 +18,9 @@ from google.ads.googleads.client import GoogleAdsClient
 from google.ads.googleads.errors import GoogleAdsException
 from urllib.parse import unquote
 from django.db.models import Sum
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 user_driver_dict = {}
 
@@ -192,12 +195,37 @@ from django.core.mail import send_mail
 class send_email(APIView):
 
     def post(self, request, format=None):
-
-        subject = 'Hello, Django Email111'
-        message = 'This is a test email sent from a Django application.'
-        from_email = 'info@keywordlit.com'
-        recipient_list = [request.data['email']]   
-        aa = send_mail(subject, message, from_email, recipient_list)
+        user_id = get_user_id_from_token(request)
+        user = CustomUser.objects.filter(id=user_id).first()
+        if not user :
+            msg = 'could not find the user'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        EMAIL_HOST = 'mail.keywordlit.com'
+        EMAIL_PORT = 465
+        EMAIL_HOST_USER = 'donotreply@keywordlit.com'
+        EMAIL_HOST_PASSWORD = 'keywordlit'
+        from_email = 'donotreply@keywordlit.com'
+        subject = 'This mail to verify the user via OTP'
+        recipient_list = user.email
+        
+        if not user.verification_code :
+            msg = 'Could not get the userverified'
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+            
+        # Email body
+        body = 'Here is the OTP to verify the account : '+ str(user.verification_code) +'\nThanks'
+        msg = MIMEMultipart()
+        msg['From'] = from_email
+        msg['To'] = recipient_list
+        msg['Subject'] = subject
+        
+        # Attach the email body
+        msg.attach(MIMEText(body, 'plain'))
+        server = smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT)
+        server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+        server.sendmail(from_email, recipient_list, msg.as_string())
+        server.quit()
         return Response({"Email sent successfully."},status=status.HTTP_200_OK)
     
 class HashTagHistory(APIView):
