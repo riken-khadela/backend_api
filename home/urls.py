@@ -6,6 +6,7 @@ urlpatterns = [
     path('api/register/', UserRegistrationView.as_view(), name='api-register'),
     path('api/verification/', UserEmailVerificationView.as_view(), name='api-register'),
     path('api/login/', UserLoginView.as_view(), name='api-login'),
+    path('api/refresh-token/', RefreshTokenView.as_view(), name='refresh-token'),
     path('api/profile/', UserProfileView.as_view(), name='api-profile'),
     path('api/changepassword/', UserChangePasswordView.as_view(), name='api-changepassword'),
     path('api/send-email/', send_email.as_view(), name='api-send-email'), # email is not sending
