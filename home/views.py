@@ -21,6 +21,7 @@ from django.db.models import Sum
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from .insta import main_call, get_hashtags
 
 user_driver_dict = {}
 
@@ -346,6 +347,54 @@ class InstaHashTag(APIView):
             
         return normalized_data
 
+    def get_ranking2(self, data):
+        data = data['Hashtag']
+        for item in data:
+            item["total_post"] = int(str(item["total_post"]).replace(",", ""))
+
+        # Calculate maximum number of posts
+        max_posts = max(item["total_post"] for item in data)
+
+        referanceposts = sum(item["total_post"] for item in data)
+        referance_cpc = 5
+        referance_total_post = 1000000000
+        total_post_ration = referanceposts / referance_total_post
+        estimated_base_cpc = referance_cpc * total_post_ration
+
+        # Perform normalization and scoring calculations
+        total_hashtags = len(data)  # Total number of hashtags
+        normalized_data = []
+        for index, item in enumerate(data):
+            normalized_rank = 1 - ((index + 1) / total_hashtags)  # Rank normalization
+            normalized_posts = item["total_post"] / max_posts
+            combined_score = (0.4 * normalized_rank) + (0.6 * normalized_posts)  # Example weights
+
+            item_data = {
+                "hashtag": item["hashtag"],
+                "total_post": item["total_post"],
+                "rank": index,
+                "combined_score": combined_score
+            }
+            normalized_data.append(item_data)
+
+        # Set thresholds for competition levels
+        low_comp_threshold = 0.3
+        med_comp_threshold = 0.6
+
+        # Categorize based on competition levels
+        for item in normalized_data:
+            if item["combined_score"] <= low_comp_threshold:
+                item["competition_level"] = "Low Competition"
+                item["CPC"] = round(estimated_base_cpc * 0.8, 3)
+            elif low_comp_threshold < item["combined_score"] <= med_comp_threshold:
+                item["competition_level"] = "Medium Competition"
+                item["CPC"] = round(estimated_base_cpc * 1.0, 3)
+            else:
+                item["competition_level"] = "High Competition"
+                item["CPC"] = round(estimated_base_cpc * 1.2, 3)
+
+        return normalized_data
+    
     def give_driver(self,CreateNew = False):
         driver = ''
         global user_driver_dict
@@ -360,6 +409,19 @@ class InstaHashTag(APIView):
                 return driver, keys, value
         return '','',''
     
+    def convert_dict(self,original_list):
+        converted_dict = {}
+
+        for item in original_list:
+            converted_dict[item['rank']] = {
+                'hashtag': item['hashtag'],
+                'total_post': f"{item['total_post']:,}",
+                'link': item['link'],
+                'likes': 0,  # You can add more fields here if needed
+                'comment': 0,
+                'reels': '42%'  # Example value, replace with actual data if available
+            }
+        return converted_dict
     def post(self, request, format=None):
         Hastag = []
         user_id = get_user_id_from_token(request)
@@ -372,68 +434,132 @@ class InstaHashTag(APIView):
             msg = 'Insufficient credit to perform this action.'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
         
-        driver,keys,value = self.give_driver()
-        
-        global user_driver_dict
-        if driver:
-            try :
-                user = CustomUser.objects.filter(id=user_id).first()
-                i_bot = Bot(user=user)
-                twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
-                past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
-                # if past_searched_hashtag : 
-                #     Hastag = json.loads(past_searched_hashtag.first().result.replace("'", "\""))
-                # if not past_searched_hashtag :
-                #     Hastag = self.get_related_keywords(request.data['hashtag'])
-                
-                if i_bot.TestRunDriver(driver) == False :
-                    driver,keys,value = self.give_driver(CreateNew=True)
-                if not past_searched_hashtag :
-                    for _ in range(3) :
-                        Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
-                        if len(Hastag) > 5: break
-                    else:
-                        msg = 'Failed to scrape the hashtag'
-                        return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-                else :
-                    try :
-                        Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result.replace("'", "\""))
-                    except :
-                        try :
-                            Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result)
-                        except :
-                            msg = 'Failed to scrape the hashtag'
-                            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-
-                if Hastag:
-                    msg = 'Hashtag scraped successfully'
-                    if not past_searched_hashtag :
-                        SearchedHistory.objects.create(
-                            user = user,
-                            hashtag = request.data['hashtag'],
-                            platform = 'Instagram',
-                            result = json.dumps(Hastag)
-                        )
-                        user.credit= user.credit - 10
-                        user.save()
-                    if type(Hastag) == str : 
-                        Hastag = json.loads(Hastag.replace("'", "\""))
+        try :
+            user = CustomUser.objects.filter(id=user_id).first()
+            i_bot = Bot(user=user)
+            twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+            past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
+            
+            if not past_searched_hashtag :
+                for _ in range(3) :
+                    Hastag = main_call(request.data['hashtag'])
                     breakpoint()
-                    return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
+                    if len(Hastag) > 5: break
                 else:
                     msg = 'Failed to scrape the hashtag'
                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-            except :
-                msg = 'Failed to scrape the hashtag'
-            finally :
-                value['status'] = True
-                if msg == "Hashtag scraped successfully" :
-                    return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg}, status=status.HTTP_200_OK)
-                return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+            else :
+                try :
+                    Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result.replace("'", "\""))
+                except :
+                    try :
+                        Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result)
+                    except :
+                        msg = 'Failed to scrape the hashtag'
+                        return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
-        else:
-            msg = 'All drivers are busy!'
-            return Response({"Message": msg}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+            if Hastag:
+                msg = 'Hashtag scraped successfully'
+                if not past_searched_hashtag :
+                    SearchedHistory.objects.create(
+                        user = user,
+                        hashtag = request.data['hashtag'],
+                        platform = 'Instagram',
+                        result = json.dumps(Hastag)
+                    )
+                    user.credit= user.credit - 10
+                    user.save()
+                if type(Hastag) == str : 
+                    Hastag = json.loads(Hastag.replace("'", "\""))
+                return Response({"Hashtag": Hastag, "Message": msg},status=status.HTTP_200_OK)
+                # return Response({"Hashtag": self.get_ranking2({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
+            else:
+                msg = 'Failed to scrape the hashtag'
+                return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+        except :
+            msg = 'Failed to scrape the hashtag'
+        finally :
+            if msg == "Hashtag scraped successfully" :
+                return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)
+                # return Response({"Hashtag": self.get_ranking2({"Hashtag": Hastag}), "Message": msg}, status=status.HTTP_200_OK)
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+        
+        
+    # def post(self, request, format=None):
+    #     Hastag = []
+    #     user_id = get_user_id_from_token(request)
+    #     user = CustomUser.objects.filter(id=user_id).first()
+        
+    #     if not user :
+    #         msg = 'could not found the user'
+    #         return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+    #     if user.credit < 10 :
+    #         msg = 'Insufficient credit to perform this action.'
+    #         return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
+        
+    #     driver,keys,value = self.give_driver()
+        
+    #     global user_driver_dict
+    #     if driver:
+    #         try :
+    #             user = CustomUser.objects.filter(id=user_id).first()
+    #             i_bot = Bot(user=user)
+    #             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+    #             past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
+    #             # if past_searched_hashtag : 
+    #             #     Hastag = json.loads(past_searched_hashtag.first().result.replace("'", "\""))
+    #             # if not past_searched_hashtag :
+    #             #     Hastag = self.get_related_keywords(request.data['hashtag'])
+                
+    #             if i_bot.TestRunDriver(driver) == False :
+    #                 driver,keys,value = self.give_driver(CreateNew=True)
+    #             if not past_searched_hashtag :
+    #                 for _ in range(3) :
+    #                     Hastag = scrape_hashtags(keys,request.data['hashtag'], driver)
+    #                     if len(Hastag) > 5: break
+    #                 else:
+    #                     msg = 'Failed to scrape the hashtag'
+    #                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+    #             else :
+    #                 try :
+    #                     Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result.replace("'", "\""))
+    #                 except :
+    #                     try :
+    #                         Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result)
+    #                     except :
+    #                         msg = 'Failed to scrape the hashtag'
+    #                         return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+    #             if Hastag:
+    #                 msg = 'Hashtag scraped successfully'
+    #                 if not past_searched_hashtag :
+    #                     SearchedHistory.objects.create(
+    #                         user = user,
+    #                         hashtag = request.data['hashtag'],
+    #                         platform = 'Instagram',
+    #                         result = json.dumps(Hastag)
+    #                     )
+    #                     user.credit= user.credit - 10
+    #                     user.save()
+    #                 if type(Hastag) == str : 
+    #                     Hastag = json.loads(Hastag.replace("'", "\""))
+    #                 breakpoint()
+    #                 return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
+    #             else:
+    #                 msg = 'Failed to scrape the hashtag'
+    #                 return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+    #         except :
+    #             msg = 'Failed to scrape the hashtag'
+    #         finally :
+    #             value['status'] = True
+    #             if msg == "Hashtag scraped successfully" :
+    #                 return Response({"Hashtag": self.get_ranking({"Hashtag": Hastag}), "Message": msg}, status=status.HTTP_200_OK)
+    #             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+    #     else:
+    #         msg = 'All drivers are busy!'
+    #         return Response({"Message": msg}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 
 class YouTubeHashTag(APIView):
