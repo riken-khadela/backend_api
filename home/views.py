@@ -443,7 +443,6 @@ class InstaHashTag(APIView):
             if not past_searched_hashtag :
                 for _ in range(3) :
                     Hastag = main_call(request.data['hashtag'])
-                    breakpoint()
                     if len(Hastag) > 5: break
                 else:
                     msg = 'Failed to scrape the hashtag'
