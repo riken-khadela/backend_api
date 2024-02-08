@@ -183,6 +183,7 @@ def count_tags_all(tag_list):
     for i in range(len(tag_list)):
         query=tag_list[i]['hashtag']
         ranking=tag_list[i]['rank']
+        total_post=tag_list[i]['total_post']
 
         if i ==0:
             # Define the query parameters
@@ -230,7 +231,6 @@ def count_tags_all(tag_list):
             # Make the GET request
             response = requests.get(url, params=params, headers=headers, cookies=cookies)
 
-            total_post=response.json()['count']
             hashtag_name=query
             kk=response.json()
 
@@ -255,7 +255,7 @@ def count_tags_all(tag_list):
 
 
             main_second={
-                    "hashtag": hashtag_name,
+                    "hashtag": query,
                     "total_post": total_post,
                     "rank": ranking,
                     "likes": average_like_count,
@@ -267,7 +267,7 @@ def count_tags_all(tag_list):
             lst.append(main_second)
         else:
             main_second={
-                    "hashtag": hashtag_name,
+                    "hashtag": query,
                     "total_post": total_post,
                     "rank": ranking,
 
