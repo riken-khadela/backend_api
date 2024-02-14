@@ -22,6 +22,17 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from .insta import main_call, get_hashtags
+import time
+import re
+from django.views.generic import View
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.permissions import AllowAny
+from .serializers import UserChangePasswordSerializer
+from .models import CustomUser
+from .email import send_otp_via_email
+from .email import *
+from rest_framework.exceptions import ValidationError
+
 
 user_driver_dict = {}
 
@@ -87,34 +98,78 @@ class UserRegistrationView(APIView):
         send_mail(subject, message, from_email, recipient_list)            
         return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
 
+#---------------------------------------------------------UserEmailVerification By Riken--------------------------------------------------------
+
+# class UserEmailVerificationView(APIView):
+#     """ 
+#     To verify user needs to send email and verification 
+#     """
+#     def post(self, request):
+#         email = request.data.get('email')
+#         verification_code = request.data.get('verification_code')
+
+#         user = CustomUser.objects.filter(email=email, verification_code=verification_code).first()
+#         if user :
+#             user.is_user_verified = True
+#             user.save()
+#             return Response({'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
+#         else :
+#             try :
+#                 verification_code = random.randint(100000,999999)
+#                 user.verification_code = verification_code
+#                 user.save()
+#                 subject = 'Verification code is here'
+#                 message = f'verification code : {verification_code}'
+#                 from_email = 'info@keywordlit.com'
+#                 recipient_list = [email]   
+#                 send_mail(subject, message, from_email, recipient_list) 
+#                 send_verification_code = True
+#             except : 
+#                 send_verification_code = False
+
+#             return Response({'message': 'Invalid verification code.','ResendVerificationCode' : send_verification_code}, status=status.HTTP_400_BAD_REQUEST)
+#---------------------------------------------------------UserEmailVerification By Riken--------------------------------------------------------
+
+#---------------------------------------------------------UserEmailVerification By Adil--------------------------------------------------------
+    
 class UserEmailVerificationView(APIView):
-    """ 
-    To verify user needs to send email and verification 
-    """
     def post(self, request):
         email = request.data.get('email')
         verification_code = request.data.get('verification_code')
+        # Check if required fields are provided
+        if not email or not verification_code:
+            return Response({'message': 'Please provide the following details', 'details': {'email': 'Email', 'verification_code': 'Verification code'}}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = CustomUser.objects.filter(email=email, verification_code=verification_code).first()
-        if user :
-            user.is_user_verified = True
-            user.save()
-            return Response({'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
-        else :
-            try :
-                verification_code = random.randint(100000,999999)
+        try:
+            user = CustomUser.objects.get(email=email)
+
+            if user.is_user_verified:
+                # If user is already verified, return a message indicating so
+                return Response({'message': 'User is already verified.'}, status=status.HTTP_400_BAD_REQUEST)
+            
+             # Check if verification code is a valid number
+            if not verification_code.isdigit():
+                return Response({'message': 'Invalid Verification Code.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            if str(user.verification_code) == verification_code:
+                user.is_user_verified = True
+                user.save()
+                return Response({'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
+            else:
+                # If verification code is incorrect, resend verification code
+                verification_code = random.randint(100000, 999999)
                 user.verification_code = verification_code
                 user.save()
-                subject = 'Verification code is here'
-                message = f'verification code : {verification_code}'
-                from_email = 'info@keywordlit.com'
-                recipient_list = [email]   
-                send_mail(subject, message, from_email, recipient_list) 
-                send_verification_code = True
-            except : 
-                send_verification_code = False
+                send_otp_via_email(email)  # Resend verification code via email
+                return Response({'message': 'Verification code is incorrect. Resent verification code.'}, status=status.HTTP_400_BAD_REQUEST)
+        except CustomUser.DoesNotExist:
+            # If email is not in records, prompt user to register first
+            return Response({'message': 'Email not in records. Please register first.'}, status=status.HTTP_400_BAD_REQUEST)
 
-            return Response({'message': 'Invalid verification code.','ResendVerificationCode' : send_verification_code}, status=status.HTTP_400_BAD_REQUEST)
+#---------------------------------------------------------UserEmailVerification By Adil--------------------------------------------------------
+ 
+
+
 
 class UserLoginView(APIView):
     """ 
@@ -198,16 +253,68 @@ class UserProfileView(APIView):
 
         return response
 
+#----------------------------------------------------UserChangePAssword by Riken------------------------------------------------------------
+
+# class UserChangePasswordView(APIView):
+#     """ 
+#     Change user password
+#     """
+#     renderer_classes = [UserRenderer]
+#     permission_classes = [IsAuthenticated]
+#     def post(self, request, format=None):
+#         serializer = UserChangePasswordSerializer(data=request.data, context={'user':request.user})
+#         serializer.is_valid(raise_exception=True)
+#         return Response({'msg':'Password Changed Successfully'}, status=status.HTTP_200_OK)
+    
+#--------------------------------------------------UserChangePassword by Riken---------------------------------------------------------------
+
+
+#---------------------------------------------Change Password by Adil------------------------------------------------------------
+
 class UserChangePasswordView(APIView):
     """ 
     Change user password
     """
     renderer_classes = [UserRenderer]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]  # Allow any user to access this endpoint
+
     def post(self, request, format=None):
-        serializer = UserChangePasswordSerializer(data=request.data, context={'user':request.user})
-        serializer.is_valid(raise_exception=True)
-        return Response({'msg':'Password Changed Successfully'}, status=status.HTTP_200_OK)
+        email = request.data.get('email')
+        verification_code = request.data.get('verification_code')
+        new_password = request.data.get('new_password')
+
+        # Check if required fields are provided
+        if not email or not verification_code or not new_password:
+            return Response({'message': 'Please provide the following details', 'details': {'email': 'Email', 'verification_code': 'Verification code', 'new_password': 'New Password'}}, status=status.HTTP_400_BAD_REQUEST)
+
+         # Check if verification code is a valid number
+        if not verification_code.isdigit():
+            return Response({'message': 'Invalid Verification Code.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = CustomUser.objects.get(email=email, verification_code=verification_code)
+        except CustomUser.DoesNotExist:
+            return Response({'message': 'Invalid email or verification code.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = UserChangePasswordSerializer(instance=user, data={'password': new_password, 'password2': new_password})
+        try:
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response({'msg': 'Password changed successfully'}, status=status.HTTP_200_OK)
+        except ValidationError as e:
+            # Handle validation errors
+            return Response({'message': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#---------------------------------------------Change Password by Adil------------------------------------------------------------
+
+
+
+
+
+
+
+
 
 from django.core.mail import send_mail
 
@@ -988,3 +1095,31 @@ class SuperuserDashboard(APIView):
         
         return Response({'msg' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
         
+
+
+
+#---------------------------------Forgot Password by Adil--------------------------------------------------------------------
+
+class ForgotPasswordView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({'message': 'Please provide the following details', 'details': {'email': 'Email'}}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Check if user exists in records
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            # If user is not in records, prompt user to register first
+            return Response({'message': 'User not in records. Register first.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Generate a verification code
+        verification_code = random.randint(100000, 999999)
+        user.verification_code = verification_code
+        user.save()
+
+        # Send verification code via email
+        send_otp_via_email(email)
+
+        return Response({'message': 'Password Reset code sent successfully. Use it to reset your password.'}, status=status.HTTP_200_OK)
+
+#------------------------------------Forgot Password by Adil---------------------------------------------------------------

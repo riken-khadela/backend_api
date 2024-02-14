@@ -52,22 +52,49 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields =['email','first_name','is_user_verified','credit','password']
+# # --------------COde by RIken---------------------------------------------------
+# class UserChangePasswordSerializer(serializers.Serializer):
+#     """ 
+#     To change a password for user if they forget password
+#     """
+#     password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+#     password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+#     class Meta:
+#         fields = ['password', 'password2']
 
+#     def validate(self, attrs):
+#         password = attrs.get('password')
+#         password2 = attrs.get('password2')
+#         user = self.context.get('user')
+
+#         if password != password2:
+#             raise serializers.ValidationError("Password and Confirm Password doesn't match")
+#         user.set_password(password)
+#         user.save()
+#         return attrs
+# # --------------Code by RIken---------------------------------------------------
+        
+
+# # --------------Code by ADIL---------------------------------------------------
 class UserChangePasswordSerializer(serializers.Serializer):
     """ 
-    To change a password for user if they forget password
+    Serializer for changing user password
     """
-    password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
-    password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
-    class Meta:
-        fields = ['password', 'password2']
+    password = serializers.CharField(max_length=255, style={'input_type': 'password'}, write_only=True)
+    password2 = serializers.CharField(max_length=255, style={'input_type': 'password'}, write_only=True)
 
     def validate(self, attrs):
         password = attrs.get('password')
         password2 = attrs.get('password2')
-        user = self.context.get('user')
+
         if password != password2:
-            raise serializers.ValidationError("Password and Confirm Password doesn't match")
-        user.set_password(password)
-        user.save()
+            raise serializers.ValidationError("Password and Confirm Password don't match")
+
         return attrs
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance        
+
+# # --------------Code by ADIL---------------------------------------------------

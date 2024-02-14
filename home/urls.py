@@ -1,5 +1,6 @@
 from django.urls import path, include
 from .views import *
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
@@ -8,6 +9,7 @@ urlpatterns = [
     path('api/login/', UserLoginView.as_view(), name='api-login'),
     path('api/refresh-token/', RefreshTokenView.as_view(), name='refresh-token'),
     path('api/profile/', UserProfileView.as_view(), name='api-profile'),
+    path('api/forgotpassword/', ForgotPasswordView.as_view(), name='api-forgotpassword'), #Adil
     path('api/changepassword/', UserChangePasswordView.as_view(), name='api-changepassword'),
     path('api/send-email/', send_email.as_view(), name='api-send-email'), # email is not sending
     path('api/diposite-money/', DepositeMoneyAPI.as_view(), name='diposite-money'), # email is not sending
