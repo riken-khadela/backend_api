@@ -1123,3 +1123,876 @@ class ForgotPasswordView(APIView):
         return Response({'message': 'Password Reset code sent successfully. Use it to reset your password.'}, status=status.HTTP_200_OK)
 
 #------------------------------------Forgot Password by Adil---------------------------------------------------------------
+    
+
+
+
+
+
+#-------------------------------Youtube Hashtag Search By Adil---------------------------------------------------------------
+
+class YoutubeHashTag_new(APIView):
+    """
+    This function takes Query as Input and returns top_five_video_titles, avg_views,avg_likes & avg_comments as Output.
+
+    """
+
+    def search_youtube(self,query):
+        lst = []
+        url = "https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8&prettyPrint=false"
+        
+        headers = {
+            "Accept": "*/*",
+            #"Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Authorization": "SAPISIDHASH 1707374253_db06ff3c4865646cc7e60b0d91fb6343a057d70e",
+            "Content-Type": "application/json",
+            "Origin": "https://www.youtube.com",
+            "Referer": f"https://www.youtube.com/results?search_query={query}",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "same-origin",
+            "Sec-Fetch-Site": "same-origin",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+            "X-Goog-Authuser": "0",
+            "X-Goog-Visitor-Id": "CgtRVDBNZC10YjhiRSiB7ZGuBjIKCgJJThIEGgAgTg%3D%3D",
+            "X-Origin": "https://www.youtube.com",
+            "X-Youtube-Client-Name": "1",
+            "X-Youtube-Client-Version": "2.20240207.01.00"
+        }
+        
+        cookies = {
+            "SID": "g.a000gAhJjhQVJKHBBXaBY68i4nfoaCao9dHK-af3mg-T17NLt9H6hA1IUadg7WYJqCo2PIRShwACgYKAT4SAQASFQHGX2MifPyGJryV-pdKdPFnkApENRoVAUF8yKrr1PZ4ObLLCQk2WaxO23VE0076",
+            "__Secure-1PSID": "g.a000gAhJjhQVJKHBBXaBY68i4nfoaCao9dHK-af3mg-T17NLt9H6CMWiFbLxypOOiClxT_twBQACgYKAfISAQASFQHGX2Mi6EPKJiUX9_H8aPGnd-nznxoVAUF8yKq7u_T5cA3_6jyJSv-31vlM0076",
+            "__Secure-3PSID": "g.a000gAhJjhQVJKHBBXaBY68i4nfoaCao9dHK-af3mg-T17NLt9H6E8djN5wlekq077HtCM5KgAACgYKAeoSAQASFQHGX2MiCQeBFS35eAkJDAWqvNjQqBoVAUF8yKopgrg-BBHgqyMpmb9Fukje0076",
+            "HSID": "ANRZYhMwnKWC1VV1A",
+            "SSID": "AW9hnKacmAvmNmqbm",
+            "APISID": "qx3YOrlTqUDgwkNo/AAEstHL4MHVmHg4TQ",
+            "SAPISID": "A2WA-2epk6mIVn3n/A_l7GS8mEQOL_xPZw",
+            "__Secure-1PAPISID": "A2WA-2epk6mIVn3n/A_l7GS8mEQOL_xPZw",
+            "__Secure-3PAPISID": "A2WA-2epk6mIVn3n/A_l7GS8mEQOL_xPZw",
+            "YSC": "1AybS0LaEtQ",
+    #         "LOGIN_INFO": "AFmmF2swRQIgQfv7fKfpigXRDNRNo1bJ3_wIcCmGNP4HPM37gVcLa_kCIQDd7_sCH30rUCvuK4bJermQfdiVf-j6lC8odTfUQFhVMQ:QUQ3MjNmeVh0bUk3MnpIUXhIUWdieFFVVThNODdTZFdncEIwTW82Q0J4aVdDaEZaSUMxZTZ0Z0dIOERQbGJpdHpQUTJMVGZmbzdJSGdKT3l0Zk9hQjBsQlNwMGR5MUJpUTNwYVRVWHZ2UjEtc0JqVUtOS094WVNBdDV0R0tKS1lhLVNoTnFnV0ljUVo5SUEwZE1sM0hOTm1WLVFwSFRqcHpB",
+    #         "VISITOR_PRIVACY_METADATA": "CgJJThIEGgAgTg%3D%3D",
+    #         "VISITOR_INFO1_LIVE": "QT0Md-tb8bE",
+            "PREF": "f7=4100&tz=Asia.Calcutta&f4=4000000&f5=30000",
+            "__Secure-1PSIDTS": "sidts-CjEBPVxjSq7fPfKFm5cRqLqj1lg8e_LgpP5FczWUN5nrjebICE7aPkikLpbm6z4LzdpIEAA",
+            "__Secure-3PSIDTS": "sidts-CjEBPVxjSq7fPfKFm5cRqLqj1lg8e_LgpP5FczWUN5nrjebICE7aPkikLpbm6z4LzdpIEAA",
+            "CONSISTENCY": "AKreu9sWrLkdroQecNvyq9hIFL1SiHNDNQlbqEHaoJHpdH2lJRZ7rFsxkkQ9r9VhvnzAeqWqMjVQQIKk5hYSOTFyabobaWmEWLIVKByKfoBmMfg1xObtHpJM0JLU8TAJoCrCdrnU8d_zOVmoli3E0NBa",
+            "SIDCC": "ABTWhQFist3oSOwEusHXhFerSf_BPZUaf7W7zHIJk8_Zf35u-343J6qznSIDkbSYM2_sz91oCA",
+            "__Secure-1PSIDCC": "ABTWhQHC4whbeFvJKxTgPWH46on1CTAUbm2YmPFfXzN9wZ1xmp6kja80vpKRqfg1XQBBXNhumA",
+            "__Secure-3PSIDCC": "ABTWhQGEzHWCQMtrZuVFsk91tvIK-X61Yg11c3BUO4Rbdc7Z_orv9JGYHraKn59SB5C2A-TZ2A",
+            "ST-vhwkpf": "oq=%23bike&gs_l=youtube.3..0i71k1l9.0.0.2.13127.0.0.0.0.0.0.0.0..0.0.ytpnlt_c...0...1ac..64.youtube..0.0.0....0.1V7XxGFYavk&itct=CBMQ7VAiEwiF1-HYkJuEAxUp0XMBHWRaAtY%3D&csn=MC4xODU4MTUyMjM4OTE0NDIzNA..&endpoint=%7B%22clickTrackingParams%22%3A%22CBMQ7VAiEwiF1-HYkJuEAxUp0XMBHWRaAtY%3D%22%2C%22commandMetadata%22%3A%7B%22webCommandMetadata%22%3A%7B%22url%22%3A%22%2Fresults%3Fsearch_query%3D%2523bike%22%2C%22webPageType%22%3A%22WEB_PAGE_TYPE_SEARCH%22%2C%22rootVe%22%3A4724%7D%7D%2C%22searchEndpoint%22%3A%7B%22query%22%3A%22%23bike%22%7D%7D"
+        }
+        
+        payload = {
+            "context": {
+                "client": {
+                    "clientName": "WEB",
+                    "clientVersion": "2.20240207.01.00",
+                    "hl": "en",
+                    "gl": "US",
+                    "experimentIds": [],
+                },
+                "request": {
+                    "sessionId": "None",
+                    "internalExperimentFlags": [],
+                    "consistencyTokenJars": [],
+                },
+            },
+            "query": query,
+            "params": "Eg-KA3gC",
+        }
+        
+        response = requests.post(url, headers=headers, cookies=cookies, json=payload)
+        
+        if response.status_code == 200:
+            data = response.json()
+            
+            link_extra='https://www.youtube.com/watch?v='
+            #count=0
+            for j in range(len(data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'])):
+                try:
+                    video_title=data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][j]['videoRenderer']['title']['runs'][0]['text']
+                    views_count=int(data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][j]['videoRenderer']['viewCountText']['simpleText'].split()[0].replace(',',''))
+                    link=link_extra+data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][j]['videoRenderer']['videoId']
+                    #count+=1
+                    #print(count)
+                    dct={
+                            'video_title':video_title,
+                            'views_count':views_count,
+                            'link':link
+                        }
+                    
+                    
+                    lst.append(dct)
+                    
+                except:
+                        pass
+            return lst
+            
+            
+        else:
+            print("Error:", response.status_code)
+            return None
+    
+    def get_youtube_videos(self,query):
+        response = self.search_youtube(query)
+        response=response[:5]
+        return response
+
+
+
+    def get_youtube_video_data(self,query):
+        videos = self.get_youtube_videos(query)
+        video_titles=[i['video_title'] for i in videos]
+        links=[i['link'] for i in videos]
+        view_tmp=[int(i['views_count']) for i in videos]
+        avg_view=round(sum(view_tmp)/len(view_tmp))
+        return video_titles, links, avg_view
+
+#----------------------------------------Extract Video ID----------------------------------------------------------------------
+    def extract_video_id(self,url):
+        try: 
+            v_id=url.split('=')[-1]
+        #     match = re.search(r"watch\?v=(\w+)", url)
+            return v_id
+        except:
+            print('Invalid URL')
+
+
+#----------------------------------------Extract Video ID----------------------------------------------------------------------
+
+
+    #----------------------------------------LIKE----------------------------------------------------------------------
+
+    def get_youtube_like_counts(self,video_url):
+        video_id = self.extract_video_id(video_url)
+
+        # Check if video ID exists
+        if video_id:
+            # API endpoint URL with updated video ID
+            url = f"https://www.youtube.com/youtubei/v1/updated_metadata?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8&prettyPrint=false&videoId={video_id}"
+
+            # Request headers
+            headers = {
+                "Accept": "*/*",
+                #"Accept-Encoding": "gzip, deflate, br",
+                "Accept-Language": "en-US,en;q=0.9",
+                # Add your authorization headers here if needed
+            }
+
+            # Payload containing the video ID
+            payload = {
+                "context": {
+                    "client": {
+                        "clientName": "WEB",
+                        "clientVersion": "2.20240207.01.00",
+                        "hl": "en",
+                        "gl": "IN",
+                        "experimentIds": [],
+                        "experimentsToken": "",
+                        "utcOffsetMinutes": 330,
+                        "browserName": "Chrome",
+                        "browserVersion": "121.0.0",
+                        "osName": "Windows",
+                        "osVersion": "10.0",
+                        "mobile": False,
+                        "screenWidthPoints": 1920,
+                        "screenHeightPoints": 1080,
+                        "screenPixelDensity": 1,
+                        "platform": "DESKTOP",
+                        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+                        "clientFormFactor": "UNKNOWN_FORM_FACTOR",
+                        "browserIsBots": False
+                    },
+                    "request": {},
+                    "user": {}
+                },
+            }
+
+            # Make the POST request
+            response = requests.post(url, json=payload, headers=headers)
+
+            # Check if the request was successful
+            if response.status_code == 200:
+                try:
+                    # Extract like counts from the response JSON
+                    like_counts = int(response.json()['frameworkUpdates']['entityBatchUpdate']['mutations'][0]['payload']['likeCountEntity']['expandedLikeCountIfLiked']['content'].replace(',',''))
+                    return like_counts
+                except (KeyError, IndexError):
+                    #print("Failed to extract like counts from the response.")
+                    return None
+            else:
+                #print("Request failed with status code:", response.status_code)
+                return None
+        else:
+            print("Failed to extract video ID from the URL.")
+            return None
+        
+
+    #----------------------------------------------LIKE------------------------------------------------------
+        
+
+
+    #------------------------------------------COMMENTS-----------------------------------------------------------
+        
+# -------------------------------Extract The Continous Token From Pattern----------------------------------------------------
+    def extract_continuation(self,response_text):
+        pattern = r'"token":"([^"]*)"'
+        match = re.search(pattern, response_text)
+        if match:
+            return match.group(1)
+        else:
+            return None
+
+
+# -------------------------------Extract The Continous Token From Pattern----------------------------------------------------
+        
+    #-----------------------------------------Get Continuous Token----------------------------------------------------------#
+    def get_youtube_continuation(self,video_url):
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+        }
+
+        try:
+            response = requests.get(video_url, headers=headers)
+            response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+
+            response_text = response.text
+            # Extract continuation from the response text
+            continuation = self.extract_continuation(response_text)
+            return continuation
+        except Exception as e:
+            print("Error:", e)
+            return None
+        
+    #-----------------------------------------Get Comments----------------------------------------------------------#
+
+    def get_video_metadata(self,continuation_token):
+        url = "https://www.youtube.com/youtubei/v1/next?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8&prettyPrint=false"
+
+        headers = {
+            "Accept": "*/*",
+            #"Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Content-Type": "application/json",
+            "Origin": "https://www.youtube.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+        }
+
+        payload = {
+            "key": "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
+            "prettyPrint": False,
+            "context": {
+                "client": {
+                    "hl": "en-GB",
+                    "gl": "IN",
+                    "remoteHost": "103.219.216.157",
+                    "deviceMake": "",
+                    "deviceModel": "",
+                    "browserName": "Chrome",
+                    "browserVersion": "121.0.0",
+                    "osName": "Windows",
+                    "osVersion": "10.0",
+                    "mobile": False,
+                    "screenWidthPoints": 1920,
+                    "screenHeightPoints": 1080,
+                    "screenPixelDensity": 1,
+                    "platform": "DESKTOP",
+                    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+                    "clientName": "WEB",
+                    "clientVersion": "2.20240207.01.00",
+                    "clientFormFactor": "UNKNOWN_FORM_FACTOR",
+                    "browserIsBots": False
+                },
+                "user": {},
+                "request": {}
+            },             
+            "continuation": continuation_token,
+        }
+
+        try:
+            response = requests.post(url, headers=headers, json=payload)
+            response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+            tmp= response.json()
+            return int(tmp['onResponseReceivedEndpoints'][0]['reloadContinuationItemsCommand']['continuationItems'][0]['commentsHeaderRenderer']['countText']['runs'][0]['text'].replace(',',''))
+        except requests.exceptions.HTTPError as err:
+            print("HTTP Error:", err)
+        except requests.exceptions.RequestException as err:
+            print("Request Exception:", err)
+
+            
+    def get_youtube_comment_counts(self,video_url):
+        continuation_token=self.get_youtube_continuation(video_url)
+        comment=self.get_video_metadata(continuation_token)
+        return comment
+
+    #------------------------------------------COMMENTS-----------------------------------------------------------
+
+
+    #---------------------------------------------MAIN------------------------------------------------------------
+
+    def get_youtube_result(self,query):
+        video_titles_lst, link_lst, avg_views = self.get_youtube_video_data(query)
+        time.sleep(1)
+        # ------------------Average Comment---------------------------------
+        comment_lst=[int(self.get_youtube_comment_counts(url)) if self.get_youtube_comment_counts(url) is not None else 0 for url in link_lst]
+        avg_comment=round(sum(comment_lst)/len(comment_lst))
+        
+        # -------------------Average Likes-----------------------------------
+        like_lst=[int(self.get_youtube_like_counts(url)) if self.get_youtube_like_counts(url) is not None else 0 for url in link_lst]
+        avg_likes=round(sum(like_lst)/len(like_lst))
+        
+        main={
+        'top_five_video_titles':video_titles_lst,
+        'avg_views':avg_views,
+        'avg_likes':avg_likes,
+        'avg_comments':avg_comment
+        }
+        return main
+
+
+    #---------------------------------------------MAIN-------------------------------------------------------------
+#from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+# -------------------------------Main Calling Class For youtube API call----------------------------------------------------#
+class GetYouTubeTagsView(APIView):
+    def post(self, request):
+        # Get the query from the request
+        query = request.POST.get('query')
+
+        # Create an instance of your YoutubeHashTag_new class
+        youtube_instance = YoutubeHashTag_new()
+        
+        # Call the get_youtube_result method to get the desired data
+        result = youtube_instance.get_youtube_result(f'{query}')
+        
+#------------------------Save Search History Code----------------------------------------------------------
+        # # Save search history
+        # user = request.user
+        # # Save search history
+        # #user = request.user if request.user.is_authenticated else 'AnonymousUser'
+        # platform = 'Youtube'  # Assuming this view specifically handles YouTube queries
+        # hashtag = query  # Use query value as hashtag
+        
+        # # Serialize the result dictionary to JSON
+        # result_json = json.dumps(result)
+        
+        # searched_history = SearchedHistory(
+        #     user=user,
+        #     hashtag=hashtag,
+        #     platform=platform,
+        #     query=query,
+        #     result=result_json
+        # )
+        # searched_history.save()
+
+
+#------------------------Save Search History Code----------------------------------------------------------
+        # Return the result as a JSON response
+        return JsonResponse(result)
+#--------------------------------Youtube Hashtag Search By Adil--------------------------------------------------------------
+    
+
+
+#--------------------------------Instagram Hashtag Search By Adil--------------------------------------------------------------
+
+import requests
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+class InstaHashTag_new(APIView):
+    # ------------------------------------ First Block  Start-----------------------------------------------------------------------------------------------
+
+    def get_instagram_cookies(self, username, password):
+        # Use the Instagram login URL
+        login_url = 'https://www.instagram.com/accounts/login/'
+
+        # Create a headless browser (you may need to install the appropriate driver)
+        driver = webdriver.Chrome()
+
+        # Navigate to the Instagram login page
+        driver.get(login_url)
+
+        # Wait for the page to load
+        time.sleep(2)
+
+        # Find the username and password fields and fill them with your credentials
+        username_field = driver.find_element(By.NAME, 'username')
+        username_field.send_keys(username)
+
+        password_field = driver.find_element(By.NAME, 'password')
+        password_field.send_keys(password)
+
+        # Submit the login form
+        login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+        login_button.click()
+
+        # Wait for the login process to complete
+        time.sleep(5)
+
+    
+
+        response_cookie=driver.get_cookies()
+
+        return response_cookie
+    
+
+
+
+    def check_login(self, username, password):
+        driver = None  # Initialize driver variable
+        try:            
+            if os.path.exists(f'cookies/cookies_{username}.txt'):
+                with open(f'cookies/cookies_{username}.txt', 'r') as file:
+                    cookies_data = json.load(file)  # Assuming the cookies data is stored as a Python list
+
+                    sessionid = None
+                    csrftoken = None
+
+                    for cookie in cookies_data:
+                        if cookie.get('name') == 'sessionid':
+                            sessionid = cookie.get('value')
+                        elif cookie.get('name') == 'csrftoken':
+                            csrftoken = cookie.get('value')
+
+                    # Check if cookies are expired
+                    if self.are_cookies_expired(cookies_data):
+                        print("Cookies are expired. Obtaining new cookies.")
+                        raise Exception("Cookies expired")
+
+                    print('Cookies file exists')
+                return driver, csrftoken, sessionid
+
+        except Exception as e:
+            print(e)
+            print("An error occurred while loading cookies file")
+
+        try:
+            response_cookie = self.get_instagram_cookies(username, password)
+            # response_cookie = json.loads(response_cookie)
+            sessionid = None
+            csrftoken = None
+
+            for cookie in response_cookie:
+                if cookie.get('name') == 'sessionid':
+                    sessionid = cookie.get('value')
+                elif cookie.get('name') == 'csrftoken':
+                    csrftoken = cookie.get('value')
+
+            # sessionid = response_cookie['sessionid']
+            # csrftoken = response_cookie['csrftoken']
+            cookies = response_cookie
+            with open(f'cookies/cookies_{username}.txt', 'w') as file:
+                json.dump(cookies, file)
+            print('User has been logged in')
+            return driver, csrftoken, sessionid
+
+        except Exception as e:
+            print(e)
+            print("An error occurred while obtaining new cookies")
+            return None, None, None
+
+
+
+    def are_cookies_expired(self, cookies_data):
+        if not cookies_data:
+            return True
+        
+        for cookie in cookies_data:
+            if 'expiry' in cookie:
+                if cookie['expiry'] < int(time.time()):
+                    return True
+        
+        return False
+
+    
+    def get_hashtags(self,query,csrftoken,sessionid):
+        # RIGHT NOW i HAVE JUST HARD CODED THESE VALUES
+        csrftoken= csrftoken
+        sessionid= sessionid
+
+        url = "https://www.instagram.com/api/graphql"
+        dct={}
+
+        headers = {
+            "Accept": "*/*",
+            #"Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Origin": "https://www.instagram.com",
+            "Referer": "https://www.instagram.com/",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
+            "X-Asbd-Id": "129477",
+            "X-Csrftoken": csrftoken,
+            "X-Fb-Friendly-Name": "PolarisSearchBoxRefetchableQuery",
+            "X-Fb-Lsd": "NFayaAYxCIr2sjmcgk81Be",
+            "Sec-Ch-Ua": '"Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"',
+            "Sec-Ch-Ua-Full-Version-List": '"Not A(Brand";v="99.0.0.0", "Microsoft Edge";v="121.0.2277.83", "Chromium";v="121.0.6167.85"',
+            "Sec-Ch-Ua-Mobile": "?0",
+            "Sec-Ch-Ua-Model": '""',
+            "Sec-Ch-Ua-Platform": '"Windows"',
+            "Sec-Ch-Ua-Platform-Version": '"15.0.0"',
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Ch-Prefers-Color-Scheme": "light",
+        "Origin-Agent-Cluster": "?0",
+        "Permissions-Policy": "accelerometer=(self), ambient-light-sensor=(), bluetooth=(), camera=(self), display-capture=(), fullscreen=(self), gamepad=(), geolocation=(self), gyroscope=(self), hid=(), idle-detection=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(self), midi=(), otp-credentials=(), payment=(), picture-in-picture=(self), publickey-credentials-get=(), screen-wake-lock=(), serial=(), usb=(), window-management=()",
+        "Permissions-Policy-Report-Only": "autoplay=(), clipboard-read=(), clipboard-write=(), encrypted-media=(), xr-spatial-tracking=()",
+        "Pragma": "no-cache",
+        "Priority": "u=1,i",
+        "Report-To": "{\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://www.facebook.com/browser_reporting/coop/?minimize=0\"}],\"group\":\"coop_report\",\"include_subdomains\":true}, {\"max_age\":86400,\"endpoints\":[{\"url\":\"https://www.facebook.com/browser_reporting/coep/?minimize=0\"}],\"group\":\"coep_report\"}, {\"max_age\":259200,\"endpoints\":[{\"url\":\"https://www.instagram.com/error/ig_web_error_reports/?device_level=unknown\"}]}",
+        "Reporting-Endpoints": "coop_report=\"https://www.facebook.com/browser_reporting/coop/?minimize=0\", coep_report=\"https://www.facebook.com/browser_reporting/coep/?minimize=0\", default=\"https://www.instagram.com/error/ig_web_error_reports/?device_level=unknown\"",
+        "Strict-Transport-Security": "max-age=31536000; preload; includeSubDomains",
+        "Vary": "Origin, Accept-Encoding",
+        "X-Content-Type-Options": "nosniff",
+        "X-Fb-Debug": "1JRBkBdBnQsRcYj130p54bbE2I5021ciwlckKMYy9bLVarSQOQyzuLgq8TUN9fjXFHP0JLrvHPW1RkY8O3BjCA==",
+        "X-Frame-Options": "DENY",
+        "X-Xss-Protection": "0",
+        }
+
+        payload = {
+            "av": 17841432819377428,
+            "__d": "www",
+            "__user": 0,
+            "__a": 1,
+            "__req": "1p",
+            "__hs": "19754.HYP:instagram_web_pkg.2.1..0.1",
+            "dpr": 1.5,
+            "__ccg": "UNKNOWN",
+            "__rev": 1011158543,
+            "__s": "f5eww0:cx3okz:ike52g",
+            "__hsi": 7330629208565479708,
+            "__dyn": "7xeUjG1mxu1syUbFp60DU98nwgU7SbzEdF8aUco2qwJxS0k24o0B-q1ew65xO2O1Vw8G1nzUO0n24oaEd86a3a1YwBgao6C0Mo2iyovw8OfK0EUjwGzEaE7622362W2K0zK5o4q3y1Sx-0iS2Sq2-azqwt8dUaob82cwMwrUdUbGwmk1xwmo6O1FwlE6PhA6bxy4UjK5V8",
+            "__csr": "gvMCx5gH9sLEIzti9QhiH8LH_898yqZaVZvmAuVrAmFqzqF3EJalyEFVIyt4Gaauy3bXx0xemqlaBGECeF3ryWAh-H-WjCKcVoV3aAxucyeEjwCg9e4po5G2qbw05dUwur9w9ro1U404mE0mTPF6OF1fgO0X898owo81cpU1PO05Sw9SOm0KU1qK0ia0qS1_wtUgwzg9EV00aAa",
+            "__comet_req": 7,
+            "fb_dtsg": "NAcMv12OeUaZP1Y9tFln7RbaZZUwyZiFL5xvz3ucV--Nvwadj5zfDgA:17864970403026470:1706794861",
+            "jazoest": 26361,
+            "lsd": "NFayaAYxCIr2sjmcgk81Be",
+            "__spin_r": 1011158543,
+            "__spin_b": "trunk",
+            "__spin_t": 1706795117,
+            "fb_api_caller_class": "RelayModern",
+            "fb_api_req_friendly_name": "PolarisSearchBoxRefetchableQuery",
+            "variables": f'{{"data":{{"context":"blended","include_reel":"true","query":"#{query}","rank_token":"","search_surface":"web_top_search"}},"hasQuery":true}}',
+            "server_timestamps": True,
+            "doc_id": 6901177919928333,
+        }
+
+        response = requests.post(url, headers=headers, data=payload)
+        
+        hashtag_list = []
+        for i in range(len(response.json()['data']['xdt_api__v1__fbsearch__topsearch_connection']['hashtags'])):
+            hashtag_info = {
+                "hashtag": response.json()['data']['xdt_api__v1__fbsearch__topsearch_connection']['hashtags'][i]['hashtag']['name'],
+                "total_post": response.json()['data']['xdt_api__v1__fbsearch__topsearch_connection']['hashtags'][i]['hashtag']['media_count'],
+                "rank": 1 + i,
+                "link": f'https://www.instagram.com/explore/tags/{response.json()["data"]["xdt_api__v1__fbsearch__topsearch_connection"]["hashtags"][i]["hashtag"]["name"]}/'
+            }
+            hashtag_list.append(hashtag_info)
+        
+        return hashtag_list
+
+    # ------------------------------------ First Block End -----------------------------------------------------------------------------------------------
+
+
+
+#     -------------------------- Average Calculation Block-------------------------------------------------------------
+    def count_reel_tag(self,json_data):
+        target_tag='video_length'
+        count = 0
+
+        if isinstance(json_data, list):
+            for item in json_data:
+                count += self.count_reel_tag(item)
+        elif isinstance(json_data, dict):
+            for key, value in json_data.items():
+                if key == target_tag:
+                    count += 1
+                count += self.count_reel_tag(value)
+
+        return count
+
+    
+    
+    def get_average_like_count(self,json_object):
+        total_like_count = 0
+        total_items = 0
+
+        if isinstance(json_object, dict):
+            for key, value in json_object.items():
+                if key == 'like_count':
+                    total_like_count += value
+                    total_items += 1
+                elif isinstance(value, (dict, list)):
+                    count, items = self.get_average_like_count(value)
+                    total_like_count += count
+                    total_items += items
+
+        elif isinstance(json_object, list):
+            for item in json_object:
+                count, items = self.get_average_like_count(item)
+                total_like_count += count
+                total_items += items
+
+        if total_items > 0:
+            return total_like_count, total_items
+        else:
+            return 0, 0  # Return 0 for both total_like_count and total_items if there are no items
+
+    
+    def get_average_comment_count(self,json_object):
+        total_comment_count = 0
+        total_items = 0
+
+        if isinstance(json_object, dict):
+            for key, value in json_object.items():
+                if key == 'comment_count':
+                    total_comment_count += value
+                    total_items += 1
+                elif isinstance(value, (dict, list)):
+                    count, items = self.get_average_comment_count(value)
+                    total_comment_count += count
+                    total_items += items
+
+        elif isinstance(json_object, list):
+            for item in json_object:
+                count, items = self.get_average_comment_count(item)
+                total_comment_count += count
+                total_items += items
+
+        return total_comment_count, total_items
+    
+    
+    
+#     -------------------------- Average Calculation Block-------------------------------------------------------------
+
+
+
+
+    # ------------------------------------ Second Block Start -----------------------------------------------------------------------------------------------
+
+
+    def count_tags_all(self,tag_list,csrftoken,sessionid):
+        # RIGHT NOW i HAVE JUST HARD CODED THESE VALUES
+        csrftoken= csrftoken
+        sessionid= sessionid
+
+
+        lst=[]
+        main={}
+        
+        
+        # Define the API endpoint
+        url = "https://www.instagram.com/api/v1/tags/web_info/"
+        for i in range(len(tag_list)):
+#             print(i)
+            if i==0:
+                query=tag_list[i]['hashtag']
+                ranking=tag_list[i]['rank']
+                total_post=tag_list[i]['total_post']
+                # Define the query parameters
+                params = {"tag_name": f"{query}"}
+
+                # Define the headers
+                headers = {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
+                    "Accept": "*/*",
+                    "Accept-Language": "en-US,en;q=0.9",
+                    "Referer": "https://www.instagram.com/explore/tags/rammandirayodhya/",
+                    "Sec-Fetch-Dest": "empty",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Site": "same-origin",
+                    "Dpr": "1.25",
+                    "Sec-Ch-Prefers-Color-Scheme": "light",
+                    "Sec-Ch-Ua": '"Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"',
+                    "Sec-Ch-Ua-Full-Version-List": '"Not A(Brand";v="99.0.0.0", "Microsoft Edge";v="121.0.2277.83", "Chromium";v="121.0.6167.85"',
+                    "Sec-Ch-Ua-Mobile": "?0",
+                    "Sec-Ch-Ua-Model": '""',
+                    "Sec-Ch-Ua-Platform": '"Windows"',
+                    "Sec-Ch-Ua-Platform-Version": '"15.0.0"',
+                    "Sec-Fetch-Dest": "empty",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Site": "same-origin",
+                    "Viewport-Width": "934",
+                    "X-Asbd-Id": "129477",
+                    "X-Csrftoken": csrftoken,
+                    "X-Ig-App-Id": "936619743392459",
+                    "X-Ig-Www-Claim": "hmac.AR2V8u0CfqOPW5C_C1-_H6dEcSPRweDaHL6E554mdkqC_80b",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Origin": "https://www.instagram.com",
+                    "Host": "www.instagram.com",
+                    "Connection": "keep-alive",
+                    "Pragma": "no-cache",
+                    "Cache-Control": "no-cache",
+                    "TE": "Trailers",
+                }
+
+                cookies = {
+                    "csrftoken": csrftoken,
+                    "sessionid": sessionid,
+                }
+
+                # Make the GET request
+                response = requests.get(url, params=params, headers=headers, cookies=cookies)
+
+                #total_post=response.json()['count']
+                hashtag_name=query
+                kk=response.json()
+
+                #-------------------------------------------------- Avg_comment -------------------------------------------------#
+                comment_count, total_items = self.get_average_comment_count(kk)
+                if total_items > 0:
+                    average_comment_count = comment_count / total_items
+                average_comment_count= round(average_comment_count)
+
+                #------------------------------------------------ Reel_percentage -----------------------------------------------#
+                reel_percentage=round((self.count_reel_tag(kk)/total_items)*100)
+
+
+                #------------------------------------------------- Avg_likes ----------------------------------------------------#
+                total_like_count, total_items = self.get_average_like_count(kk)
+                if total_items > 0:
+                    average_like_count = total_like_count / total_items
+                else:
+                    average_like_count = 0
+                average_like_count=round(average_like_count)
+
+
+
+                main_second={
+                        "hashtag": hashtag_name,
+                        "total_post": total_post,
+                        "rank": ranking,
+                        "likes": average_like_count,
+                        "comment": average_comment_count,
+                        "reels": f"{reel_percentage} %",
+
+
+                    }
+
+
+                lst.append(main_second)
+#                 print(main_second)
+            else:
+                query=tag_list[i]['hashtag']
+                ranking=tag_list[i]['rank']
+                total_post=tag_list[i]['total_post']
+                
+                main_second={
+                        "hashtag": query,
+                        "total_post": total_post,
+                        "rank": ranking
+                    }
+                lst.append(main_second)
+                
+                
+
+        main['Hashtag']=lst
+        
+        return main
+        
+        
+    # ------------------------------------ Second Block End -----------------------------------------------------------------------------------------------     
+
+
+    # ---------------------------------------CPC Function Start--------------------------------------------------------------------------------------------
+
+
+    def get_ranking(self,data) :
+            for item in data["Hashtag"]:
+                item["total_post"] = int(str(item["total_post"]).replace(",", ""))
+
+            max_posts = max([item['total_post'] for item in data["Hashtag"]])
+
+            referanceposts = sum([item['total_post'] for item in data["Hashtag"]])
+            
+            referance_cpc = 5
+            referance_total_post = 1000000000
+            total_post_ration = referanceposts/referance_total_post
+            estimated_base_cpc = referance_cpc * total_post_ration
+
+            # Perform normalization and scoring calculations
+            total_hashtags = len(data["Hashtag"])  # Total number of hashtags
+            normalized_data = []
+            for index, item in enumerate(data["Hashtag"]):
+                normalized_rank = 1 - ((index + 1) / total_hashtags)  # Rank normalization
+                normalized_posts = item["total_post"] / max_posts
+                combined_score = (0.4 * normalized_rank) + (0.6 * normalized_posts)  
+
+                item_data = {
+                    "hashtag": item["hashtag"],
+                    "total_post": item["total_post"],
+                    "rank" : index,
+                    "combined_score": combined_score
+                }
+                if 'likes' in item : item_data['likes'] = item['likes']
+                if 'comment' in item : item_data['comment'] = item['comment']
+                if 'reels' in item : item_data['reels'] = item['reels']
+                normalized_data.append(item_data)
+
+            # Set thresholds for competition levels
+            low_comp_threshold = 0.3
+            med_comp_threshold = 0.6
+
+            # Categorize based on competition levels
+            for item in normalized_data:
+                item['rank'] += 1
+                if item["combined_score"] <= low_comp_threshold:
+                    item["competition_level"] = "Low Competition"
+                    item["CPC"] = round(estimated_base_cpc*0.8,3)
+                elif low_comp_threshold < item["combined_score"] <= med_comp_threshold:
+                    item["competition_level"] = "Medium Competition"
+                    item["CPC"] = round(estimated_base_cpc*1.0,3)
+                else:
+                    item["CPC"] = round(estimated_base_cpc*1.2,3)
+                    item["competition_level"] = "High Competition"
+
+
+            return normalized_data
+    
+
+
+    # ---------------------------------------CPC Function Start--------------------------------------------------------------------------------------------
+
+    
+# -------------------------------Main Class For Instagram API call----------------------------------------------------#
+    
+
+class GetInstaTagsView(APIView):
+    def post(self, request):
+        # Get the query from the request
+        query = request.POST.get('query')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        # Create an instance of your YoutubeHashTag_new class
+        insta_instance = InstaHashTag_new()
+        
+        # Call the check_login method to ensure the user is logged in
+        drivers, csrftoken, sessionid = insta_instance.check_login(username, password)
+        # # Call the check_login method to ensure the user is logged in
+        # drivers = insta_instance.check_login(username, password)
+        # print('Check Login FUNCTION WORKS')
+        # if drivers:
+        try:
+            # Call the get_hashtags method to get the desired data
+            json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
+            response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
+            result = insta_instance.get_ranking(response_json)
+            return JsonResponse(result, safe=False)
+        
+        except Exception as e:
+            error_message = str(e)
+            if "max() arg is an empty sequence" in error_message:
+                return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+            else:
+                return JsonResponse({'error': f'Login failed. Please check your credentials.: {error_message}'}, status=400)
+
+
+
+# -------------------------------Main Class For Instagram API call----------------------------------------------------#
+
+
+#--------------------------------Instagram Hashtag Search By Adil--------------------------------------------------------------
