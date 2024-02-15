@@ -1458,9 +1458,14 @@ class YoutubeHashTag_new(APIView):
 
 # -------------------------------Main Calling Class For youtube API call----------------------------------------------------#
 class GetYouTubeTagsView(APIView):
+    """
+    Search any query that you want and it provide you with relevant Top 5 Video tiles, avg count, avg likes etc...
+    """
     def post(self, request):
         # Get the query from the request
-        query = request.POST.get('query')
+        data = request.data
+        query = data.get('query')
+        #query = request.POST.get('query')
 
         # Create an instance of your YoutubeHashTag_new class
         youtube_instance = YoutubeHashTag_new()
@@ -1964,9 +1969,20 @@ class InstaHashTag_new(APIView):
 class GetInstaTagsView(APIView):
     def post(self, request):
         # Get the query from the request
-        query = request.POST.get('query')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+
+        # Parse JSON data from request body
+        data = request.data
+        query = data.get('query')
+
+        username= "sajaltech_keywordlit"
+        password= "sajalsajal"
+
+        # username = data.get('username')
+        # password = data.get('password')
+
+        # query = request.POST.get('query')
+        # username = request.POST.get('username')
+        # password = request.POST.get('password')
         # Create an instance of your YoutubeHashTag_new class
         insta_instance = InstaHashTag_new()
         
