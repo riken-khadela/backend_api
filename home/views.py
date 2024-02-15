@@ -1546,6 +1546,58 @@ class InstaHashTag_new(APIView):
 
 
 
+    # def check_login(self, username, password):
+    #     driver = None  # Initialize driver variable
+    #     try:            
+    #         if os.path.exists(f'cookies/cookies_{username}.txt'):
+    #             with open(f'cookies/cookies_{username}.txt', 'r') as file:
+    #                 cookies_data = json.load(file)  # Assuming the cookies data is stored as a Python list
+
+    #                 sessionid = None
+    #                 csrftoken = None
+
+    #                 for cookie in cookies_data:
+    #                     if cookie.get('name') == 'sessionid':
+    #                         sessionid = cookie.get('value')
+    #                     elif cookie.get('name') == 'csrftoken':
+    #                         csrftoken = cookie.get('value')
+
+    #                 # Check if cookies are expired
+    #                 if self.are_cookies_expired(cookies_data):
+    #                     print("Cookies are expired. Obtaining new cookies.")
+    #                     raise Exception("Cookies expired")
+
+    #                 print('Cookies file exists')
+    #             return driver, csrftoken, sessionid
+
+    #     except Exception as e:
+    #         print(e)
+    #         print("An error occurred while loading cookies file")
+
+    #     try:
+    #         response_cookie = self.get_instagram_cookies(username, password)
+    #         # response_cookie = json.loads(response_cookie)
+    #         sessionid = None
+    #         csrftoken = None
+
+    #         for cookie in response_cookie:
+    #             if cookie.get('name') == 'sessionid':
+    #                 sessionid = cookie.get('value')
+    #             elif cookie.get('name') == 'csrftoken':
+    #                 csrftoken = cookie.get('value')
+
+    #         # sessionid = response_cookie['sessionid']
+    #         # csrftoken = response_cookie['csrftoken']
+    #         cookies = response_cookie
+    #         with open(f'cookies/cookies_{username}.txt', 'w') as file:
+    #             json.dump(cookies, file)
+    #         print('User has been logged in')
+    #         return driver, csrftoken, sessionid
+
+    #     except Exception as e:
+    #         print(e)
+    #         print("An error occurred while obtaining new cookies")
+    #         return None, None, None
     def check_login(self, username, password):
         driver = None  # Initialize driver variable
         try:            
@@ -1562,10 +1614,10 @@ class InstaHashTag_new(APIView):
                         elif cookie.get('name') == 'csrftoken':
                             csrftoken = cookie.get('value')
 
-                    # Check if cookies are expired
-                    if self.are_cookies_expired(cookies_data):
-                        print("Cookies are expired. Obtaining new cookies.")
-                        raise Exception("Cookies expired")
+                    # Check if cookies are expired or used for 30 times
+                    if self.are_cookies_expired(cookies_data) or self.cookies_used_too_many_times(username):
+                        print("Cookies are expired or used too many times. Obtaining new cookies.")
+                        raise Exception("Cookies expired or used too many times")
 
                     print('Cookies file exists')
                 return driver, csrftoken, sessionid
@@ -1600,7 +1652,6 @@ class InstaHashTag_new(APIView):
             return None, None, None
 
 
-
     def are_cookies_expired(self, cookies_data):
         if not cookies_data:
             return True
@@ -1611,6 +1662,53 @@ class InstaHashTag_new(APIView):
                     return True
         
         return False
+
+
+    # def cookies_used_too_many_times(self, username):
+    #     # Implement logic to check if the cookies in the file have been used too many times
+    #     # For example, you can keep track of the number of times the cookies have been used in a separate file or database
+    #     # Here's a simplified example assuming you have a counter stored in a file
+    #     counter_file = f'cookies/counter_{username}.txt'
+    #     if os.path.exists(counter_file):
+    #         with open(counter_file, 'r') as file:
+    #             counter = int(file.read().strip())
+    #         if counter >= 10:
+    #             return True
+    #         else:
+    #             # Increment the counter
+    #             counter += 1
+    #             with open(counter_file, 'w') as file:
+    #                 file.write(str(counter))
+    #     else:
+    #         # Initialize the counter file if it doesn't exist
+    #         with open(counter_file, 'w') as file:
+    #             file.write('1')
+    #     return False
+
+    def cookies_used_too_many_times(self, username):
+        # Implement logic to check if the cookies in the file have been used too many times
+        # For example, you can keep track of the number of times the cookies have been used in a separate file or database
+        # Here's a simplified example assuming you have a counter stored in a file
+        counter_file = f'cookies/counter_{username}.txt'
+        if os.path.exists(counter_file):
+            with open(counter_file, 'r') as file:
+                counter = int(file.read().strip())
+            if counter >= 10:
+                # Reset the counter to 1
+                with open(counter_file, 'w') as file:
+                    file.write('1')
+                return True
+            else:
+                # Increment the counter
+                counter += 1
+                with open(counter_file, 'w') as file:
+                    file.write(str(counter))
+        else:
+            # Initialize the counter file if it doesn't exist
+            with open(counter_file, 'w') as file:
+                file.write('1')
+        return False
+
 
     
     def get_hashtags(self,query,csrftoken,sessionid):
@@ -1974,11 +2072,11 @@ class GetInstaTagsView(APIView):
         data = request.data
         query = data.get('query')
 
-        username= "sajaltech_keywordlit"
-        password= "sajalsajal"
+        # username= "sajaltech_keywordlit"
+        # password= "sajalsajal"
 
-        # username = data.get('username')
-        # password = data.get('password')
+        username = data.get('username')
+        password = data.get('password')
 
         # query = request.POST.get('query')
         # username = request.POST.get('username')
