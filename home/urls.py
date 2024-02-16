@@ -6,6 +6,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path('api/register/', UserRegistrationView.as_view(), name='api-register'),
     path('api/verification/', UserEmailVerificationView.as_view(), name='api-register'),
+    path('api/resendotp/', ResendOTPView.as_view(), name='api-resendotp'),# Resend OTP BY ADIL
     path('api/login/', UserLoginView.as_view(), name='api-login'),
     path('api/refresh-token/', RefreshTokenView.as_view(), name='refresh-token'),
     path('api/profile/', UserProfileView.as_view(), name='api-profile'),

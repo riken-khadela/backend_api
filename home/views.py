@@ -160,7 +160,7 @@ class UserEmailVerificationView(APIView):
                 verification_code = random.randint(100000, 999999)
                 user.verification_code = verification_code
                 user.save()
-                send_otp_via_email(email)  # Resend verification code via email
+                #send_otp_via_email(email)  # Now Resend verification code via email will not be send Instaed call Resend OTP API
                 return Response({'message': 'Verification code is incorrect. Resent verification code.'}, status=status.HTTP_400_BAD_REQUEST)
         except CustomUser.DoesNotExist:
             # If email is not in records, prompt user to register first
@@ -168,6 +168,28 @@ class UserEmailVerificationView(APIView):
 
 #---------------------------------------------------------UserEmailVerification By Adil--------------------------------------------------------
  
+#---------------------------------------------------------Resend OTP API by ADIL----------------------------------------------------------------
+
+class ResendOTPView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({'message':  {"email": 'Please provide an email address.'}}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            verification_code = random.randint(100000, 999999)
+            user.verification_code = verification_code
+            user.save()
+            # Call the function to send OTP via email
+            send_otp_via_email(email)
+            return Response({'message': 'New verification code sent successfully.'}, status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({'message': 'Email not found in records. Register First'}, status=status.HTTP_404_NOT_FOUND)
+
+
+#---------------------------------------------------------Resend OTP APY by ADIL---------------------------------------------------------------
+
 
 
 
@@ -2072,11 +2094,11 @@ class GetInstaTagsView(APIView):
         data = request.data
         query = data.get('query')
 
-        # username= "sajaltech_keywordlit"
-        # password= "sajalsajal"
+        username = "sajaltech_keywordlit"
+        password = "sajalsajal"
 
-        username = data.get('username')
-        password = data.get('password')
+        # username = data.get('username')
+        # password = data.get('password')
 
         # query = request.POST.get('query')
         # username = request.POST.get('username')
