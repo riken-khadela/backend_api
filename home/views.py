@@ -2094,8 +2094,8 @@ class GetInstaTagsView(APIView):
         data = request.data
         query = data.get('query')
 
-        username = "sajaltech_keywordlit"
-        password = "sajalsajal"
+        username = "keywordlit@gmail.com"
+        password = "Keywordlit-01"
 
         # username = data.get('username')
         # password = data.get('password')
