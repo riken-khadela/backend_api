@@ -143,7 +143,7 @@ class UserEmailVerificationView(APIView):
         try:
             user = CustomUser.objects.get(email=email)
 
-            if user.is_user_verified:
+            if user.is_user_verified == True:
                 # If user is already verified, return a message indicating so
                 return Response({'message': 'User is already verified.'}, status=status.HTTP_400_BAD_REQUEST)
             
