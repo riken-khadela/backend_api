@@ -255,7 +255,7 @@ class UserProfileView(APIView):
                 'hashtag' : history.hashtag,
                 'date' : history.created.strftime("%d/%m/%Y"),
                 'result' : json.loads(history.result.replace("'", "\"")
-),
+            ),
             }
             search_history.append(tmp)
         
@@ -719,6 +719,9 @@ class YouTubeHashTag(APIView):
         # breakpoint()
         if not past_searched_hashtag :
             Hastag = self.get_related_keywords(request.data['tag'])
+            print("The Hashtag Is",Hastag)
+            # if len(Hastag)>=15:
+            #     Hastag=Hastag[:15]
         else :
             try :
                 Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result.replace("'", "\""))
@@ -1483,10 +1486,208 @@ class YoutubeHashTag_new(APIView):
 
 
     #---------------------------------------------MAIN-------------------------------------------------------------
-#from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-# -------------------------------Main Calling Class For youtube API call----------------------------------------------------#
+
+# # -------------------------------Main Calling Class For youtube API call----------------------------------------------------#
+# class GetYouTubeTagsView(APIView):
+#     """
+#     Search any query that you want and it provide you with relevant Top 5 Video tiles, avg count, avg likes etc...
+#     """
+#     def post(self, request):
+#         # Get the query from the request
+#         data = request.data
+#         query = data.get('query')
+#         #query = request.POST.get('query')
+
+#         # Create an instance of your YoutubeHashTag_new class
+#         youtube_instance = YoutubeHashTag_new()
+        
+#         # Call the get_youtube_result method to get the desired data
+#         result = youtube_instance.get_youtube_result(f'{query}')
+        
+# #------------------------Save Search History Code----------------------------------------------------------
+#         # # Save search history
+#         # user = request.user
+#         # # Save search history
+#         # #user = request.user if request.user.is_authenticated else 'AnonymousUser'
+#         # platform = 'Youtube'  # Assuming this view specifically handles YouTube queries
+#         # hashtag = query  # Use query value as hashtag
+        
+#         # # Serialize the result dictionary to JSON
+#         # result_json = json.dumps(result)
+        
+#         # searched_history = SearchedHistory(
+#         #     user=user,
+#         #     hashtag=hashtag,
+#         #     platform=platform,
+#         #     query=query,
+#         #     result=result_json
+#         # )
+#         # searched_history.save()
+        
+#         username = insta_user.username
+#         password = insta_user.password
+        
+#         user_id = get_user_id_from_token(request)
+        
+#         #user_id = insta_user.id  # Update to get user_id from insta_user
+
+#         # Create an instance of your InstaHashTag_new class
+#         insta_instance = InstaHashTag_new()
+        
+#         # Call the check_login method to ensure the user is logged in
+#         drivers, csrftoken, sessionid = insta_instance.check_login(username, password)
+        
+#         try:
+#             # Call the get_hashtags method to get the desired data
+#             user = CustomUser.objects.filter(id=user_id).first()
+#             i_bot = Bot(user=user)
+#             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+#             past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram")
+#             # Check if the hashtag/query is in past_searched_hashtag
+#             if not past_searched_hashtag:
+#                 for _ in range(3):
+#                     json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
+#                     response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
+#                     hashtag_data = insta_instance.get_ranking(response_json)
+#                     if len(hashtag_data) > 5:
+#                         break
+#                 else:
+#                     msg = 'Failed to scrape the hashtag'
+#                     return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+#             else:
+#                 try:
+#                     hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result.replace("'", "\""))
+#                 except:
+#                     try:
+#                         hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result)
+#                     except:
+#                         msg = 'Failed to scrape the hashtag'
+#                         return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                
+
+#         except Exception as e:
+#             error_message = str(e)
+#             if "max() arg is an empty sequence" in error_message:
+#                 return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+#             else:
+#                 return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
+
+#         # Check if hashtag_data is retrieved successfully
+#         if hashtag_data:
+#             msg = 'Hashtag scraped successfully'
+#             # Save to history if not found in past_searched_hashtag
+#             if not past_searched_hashtag:
+#                 SearchedHistory.objects.create(
+#                     user=user,
+#                     hashtag=query,
+#                     platform='Instagram',
+#                     result=json.dumps(hashtag_data)
+#                 )
+#                 user.credit -= 10  # Deduct credits from the user
+#                 user.save()
+#             # Convert to JSON if it's a string
+#             if isinstance(hashtag_data, str): 
+#                 hashtag_data = json.loads(hashtag_data.replace("'", "\""))
+#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_200_OK)
+#         else:
+#             msg = 'Failed to scrape the hashtag'
+#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# #------------------------Save Search History Code----------------------------------------------------------
+#         # Return the result as a JSON response
+#         return JsonResponse(result)
+# #--------------------------------Youtube Hashtag Search By Adil--------------------------------------------------------------
+    
+#------------------------Get Youtube Tags and Save Search History Code----------------------------------------------------------
+
+# class GetYouTubeTagsView(APIView):
+#     """
+#     Search any query that you want and it provide you with relevant Top 5 Video tiles, avg count, avg likes etc...
+#     """
+#     def post(self, request):
+#         # Get the query from the request
+#         data = request.data
+#         query = data.get('query')
+#         #query = request.POST.get('query')
+
+#         # Create an instance of your YoutubeHashTag_new class
+#         # youtube_instance = YoutubeHashTag_new()
+        
+#         # Call the get_youtube_result method to get the desired data
+#         # result = youtube_instance.get_youtube_result(f'{query}')
+        
+#         #-----------------------------------------------------New Code---------------------------------------
+        
+#         user_id = get_user_id_from_token(request)
+        
+#         #user_id = insta_user.id  # Update to get user_id from insta_user
+
+#         # Create an instance of your InstaHashTag_new class
+#         youtube_instance = YoutubeHashTag_new()
+        
+        
+#         try:
+#             # Call the get_hashtags method to get the desired data
+#             user = CustomUser.objects.filter(id=user_id).first()
+#             i_bot = Bot(user=user)
+#             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+#             past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube")
+#             # Check if the hashtag/query is in past_searched_hashtag
+#             if not past_searched_hashtag:
+#                 for _ in range(3):
+#                     hashtag_data = youtube_instance.get_youtube_result(f'{query}')
+#                     if len(hashtag_data) > 5:
+#                         break
+#                 else:
+#                     msg = 'Failed to scrape the hashtag'
+#                     return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+#             else:
+#                 try:
+#                     hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube").first().result.replace("'", "\""))
+#                 except:
+#                     try:
+#                         hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube").first().result)
+#                     except:
+#                         msg = 'Failed to scrape the hashtag'
+#                         return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                
+
+#         except Exception as e:
+#             error_message = str(e)
+#             if "max() arg is an empty sequence" in error_message:
+#                 return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+#             else:
+#                 return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
+
+#         # Check if hashtag_data is retrieved successfully
+#         if hashtag_data:
+#             msg = 'Hashtag scraped successfully'
+#             # Save to history if not found in past_searched_hashtag
+#             if not past_searched_hashtag:
+#                 SearchedHistory.objects.create(
+#                     user=user,
+#                     hashtag=query,
+#                     platform='Youtube',
+#                     result=json.dumps(hashtag_data)
+#                 )
+#                 user.credit -= 10  # Deduct credits from the user
+#                 user.save()
+#             # Convert to JSON if it's a string
+#             if isinstance(hashtag_data, str): 
+#                 hashtag_data = json.loads(hashtag_data.replace("'", "\""))
+#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_200_OK)
+#         else:
+#             msg = 'Failed to scrape the hashtag'
+#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+
+#------------------------Get Youtube Tags and Save Search History Code----------------------------------------------------------
+
 class GetYouTubeTagsView(APIView):
     """
     Search any query that you want and it provide you with relevant Top 5 Video tiles, avg count, avg likes etc...
@@ -1496,39 +1697,78 @@ class GetYouTubeTagsView(APIView):
         data = request.data
         query = data.get('query')
         #query = request.POST.get('query')
+        
+        #-----------------------------------------------------New Code---------------------------------------
+        
+        user_id = get_user_id_from_token(request)
 
-        # Create an instance of your YoutubeHashTag_new class
+        # Create an instance of your InstaHashTag_new class
         youtube_instance = YoutubeHashTag_new()
         
-        # Call the get_youtube_result method to get the desired data
-        result = youtube_instance.get_youtube_result(f'{query}')
         
-#------------------------Save Search History Code----------------------------------------------------------
-        # # Save search history
-        # user = request.user
-        # # Save search history
-        # #user = request.user if request.user.is_authenticated else 'AnonymousUser'
-        # platform = 'Youtube'  # Assuming this view specifically handles YouTube queries
-        # hashtag = query  # Use query value as hashtag
-        
-        # # Serialize the result dictionary to JSON
-        # result_json = json.dumps(result)
-        
-        # searched_history = SearchedHistory(
-        #     user=user,
-        #     hashtag=hashtag,
-        #     platform=platform,
-        #     query=query,
-        #     result=result_json
-        # )
-        # searched_history.save()
+        try:
+            # Call the get_hashtags method to get the desired data
+            user = CustomUser.objects.filter(id=user_id).first()
+            if user.credit < 10 :
+                msg = 'Insufficient credit to perform this action.'
+                return Response({"Hashtag": query, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
+            
+            if not 'query' in request.data and not request.data['query']:
+                msg = 'could not found the query'
+                return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
 
 
-#------------------------Save Search History Code----------------------------------------------------------
-        # Return the result as a JSON response
-        return JsonResponse(result)
-#--------------------------------Youtube Hashtag Search By Adil--------------------------------------------------------------
-    
+            i_bot = Bot(user=user)
+            twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+            past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube")
+            # Check if the hashtag/query is in past_searched_hashtag
+            
+            if not past_searched_hashtag :
+                #Hastag = self.get_related_keywords(request.data['tag'])
+                Hastag = youtube_instance.get_youtube_result(f'{query}')
+            else :
+                try :
+                    Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['query'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result.replace("'", "\""))
+                except :
+                    try :
+                        Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['query'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result)
+                    except :
+                        msg = 'Failed to scrape the hashtag'
+                        return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                
+
+        except Exception as e:
+            error_message = str(e)
+            if "max() arg is an empty sequence" in error_message:
+                return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+            else:
+                return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
+
+        # Check if hashtag_data is retrieved successfully
+        if Hastag:
+            msg = 'Hashtag scraped successfully'
+            # Save to history if not found in past_searched_hashtag
+            if Hastag:
+                if not past_searched_hashtag :
+                    SearchedHistory.objects.create(
+                        user = user,
+                        hashtag = request.data['query'],
+                        platform = 'Youtube',
+                        result = json.dumps(Hastag)
+                    )
+                    user.credit= user.credit - 10
+                    user.save()
+            # Convert to JSON if it's a string
+            if isinstance(Hastag, str): 
+                Hastag = json.loads(Hastag.replace("'", "\""))
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_200_OK)
+        else:
+            msg = 'Failed to scrape the hashtag'
+            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+#------------------------Get Youtube Tags and Save Search History Code----------------------------------------------------------
 
 
 #--------------------------------Instagram Hashtag Search By Adil--------------------------------------------------------------
@@ -1574,60 +1814,6 @@ class InstaHashTag_new(APIView):
         return response_cookie
     
 
-
-
-    # def check_login(self, username, password):
-    #     driver = None  # Initialize driver variable
-    #     try:            
-    #         if os.path.exists(f'cookies/cookies_{username}.txt'):
-    #             with open(f'cookies/cookies_{username}.txt', 'r') as file:
-    #                 cookies_data = json.load(file)  # Assuming the cookies data is stored as a Python list
-
-    #                 sessionid = None
-    #                 csrftoken = None
-
-    #                 for cookie in cookies_data:
-    #                     if cookie.get('name') == 'sessionid':
-    #                         sessionid = cookie.get('value')
-    #                     elif cookie.get('name') == 'csrftoken':
-    #                         csrftoken = cookie.get('value')
-
-    #                 # Check if cookies are expired
-    #                 if self.are_cookies_expired(cookies_data):
-    #                     print("Cookies are expired. Obtaining new cookies.")
-    #                     raise Exception("Cookies expired")
-
-    #                 print('Cookies file exists')
-    #             return driver, csrftoken, sessionid
-
-    #     except Exception as e:
-    #         print(e)
-    #         print("An error occurred while loading cookies file")
-
-    #     try:
-    #         response_cookie = self.get_instagram_cookies(username, password)
-    #         # response_cookie = json.loads(response_cookie)
-    #         sessionid = None
-    #         csrftoken = None
-
-    #         for cookie in response_cookie:
-    #             if cookie.get('name') == 'sessionid':
-    #                 sessionid = cookie.get('value')
-    #             elif cookie.get('name') == 'csrftoken':
-    #                 csrftoken = cookie.get('value')
-
-    #         # sessionid = response_cookie['sessionid']
-    #         # csrftoken = response_cookie['csrftoken']
-    #         cookies = response_cookie
-    #         with open(f'cookies/cookies_{username}.txt', 'w') as file:
-    #             json.dump(cookies, file)
-    #         print('User has been logged in')
-    #         return driver, csrftoken, sessionid
-
-    #     except Exception as e:
-    #         print(e)
-    #         print("An error occurred while obtaining new cookies")
-    #         return None, None, None
     def check_login(self, username, password):
         driver = None  # Initialize driver variable
         try:            
@@ -1693,27 +1879,6 @@ class InstaHashTag_new(APIView):
         
         return False
 
-
-    # def cookies_used_too_many_times(self, username):
-    #     # Implement logic to check if the cookies in the file have been used too many times
-    #     # For example, you can keep track of the number of times the cookies have been used in a separate file or database
-    #     # Here's a simplified example assuming you have a counter stored in a file
-    #     counter_file = f'cookies/counter_{username}.txt'
-    #     if os.path.exists(counter_file):
-    #         with open(counter_file, 'r') as file:
-    #             counter = int(file.read().strip())
-    #         if counter >= 10:
-    #             return True
-    #         else:
-    #             # Increment the counter
-    #             counter += 1
-    #             with open(counter_file, 'w') as file:
-    #                 file.write(str(counter))
-    #     else:
-    #         # Initialize the counter file if it doesn't exist
-    #         with open(counter_file, 'w') as file:
-    #             file.write('1')
-    #     return False
 
     def cookies_used_too_many_times(self, username):
         # Implement logic to check if the cookies in the file have been used too many times
@@ -2092,106 +2257,6 @@ class InstaHashTag_new(APIView):
     
 # -------------------------------Main Class For Instagram API call----------------------------------------------------#
     
-
-# class GetInstaTagsView(APIView):
-#     def post(self, request):
-#         # Get the query from the request
-#         insta_user_list=instagram_accounts.objects.filter(status='ACTIVE')
-#         if not insta_user_list:
-#             return JsonResponse({'error': "No User is Active"}, status=400)
-        
-#         insta_user= insta_user_list.first()
-
-
-#         # Parse JSON data from request body
-#         data = request.data
-#         query = data.get('query')
-
-#         username = insta_user.username#"keywordlit@gmail.com"
-#         password = insta_user.password#"Keywordlit-01"
-#         user_id = insta_user.password.id
-#         #----------==================================RIken BHai COde-------------------------================================================
-
-#         user = CustomUser.objects.filter(id=user_id).first()
-#         i_bot = Bot(user=user)
-#         twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
-#         past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
-        
-#         if not past_searched_hashtag :
-#             for _ in range(3) :
-#                 Hastag = main_call(request.data['hashtag'])
-#                 if len(Hastag) > 5: break
-#             else:
-#                 msg = 'Failed to scrape the hashtag'
-#                 return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-#         else :
-#             try :
-#                 Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result.replace("'", "\""))
-#             except :
-#                 try :
-#                     Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result)
-#                 except :
-#                     msg = 'Failed to scrape the hashtag'
-#                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-
-#         if Hastag:
-#             msg = 'Hashtag scraped successfully'
-#             if not past_searched_hashtag :
-#                 SearchedHistory.objects.create(
-#                     user = user,
-#                     hashtag = request.data['hashtag'],
-#                     platform = 'Instagram',
-#                     result = json.dumps(Hastag)
-#                 )
-#                 user.credit= user.credit - 10
-#                 user.save()
-#             if type(Hastag) == str : 
-#                 Hastag = json.loads(Hastag.replace("'", "\""))
-#             return Response({"Hashtag": Hastag, "Message": msg},status=status.HTTP_200_OK)
-#             # return Response({"Hashtag": self.get_ranking2({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
-#         else:
-#             msg = 'Failed to scrape the hashtag'
-#             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-#         #----------==================================RIken BHai COde-------------------------================================================
-
-#         # username = data.get('username')
-#         # password = data.get('password')
-
-#         # query = request.POST.get('query')
-#         # username = request.POST.get('username')
-#         # password = request.POST.get('password')
-#         # Create an instance of your YoutubeHashTag_new class
-#         insta_instance = InstaHashTag_new()
-        
-#         # Call the check_login method to ensure the user is logged in
-#         drivers, csrftoken, sessionid = insta_instance.check_login(username, password)
-#         # # Call the check_login method to ensure the user is logged in
-#         # drivers = insta_instance.check_login(username, password)
-#         # print('Check Login FUNCTION WORKS')
-#         # if drivers:
-#         try:
-#             # Call the get_hashtags method to get the desired data
-#             json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
-#             response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
-#             result = insta_instance.get_ranking(response_json)
-#             return JsonResponse(result, safe=False)
-        
-#         except Exception as e:
-#             error_message = str(e)
-#             if "max() arg is an empty sequence" in error_message:
-#                 return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
-#             else:
-#                 return JsonResponse({'error': f'Login failed. Please check your credentials.: {error_message}'}, status=400)
-
-
-
-# -------------------------------Main Class For Instagram API call----------------------------------------------------#
-
-
-#--------------------------------Instagram Hashtag Search By Adil--------------------------------------------------------------
             
 
 
@@ -2224,6 +2289,15 @@ class GetInstaTagsView(APIView):
         try:
             # Call the get_hashtags method to get the desired data
             user = CustomUser.objects.filter(id=user_id).first()
+
+            if user.credit < 10 :
+                msg = 'Insufficient credit to perform this action.'
+                return Response({"Hashtag": query, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
+            
+            if not 'query' in request.data and not request.data['query']:
+                msg = 'could not found the query'
+                return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+
             i_bot = Bot(user=user)
             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
             past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram")
@@ -2277,3 +2351,10 @@ class GetInstaTagsView(APIView):
         else:
             msg = 'Failed to scrape the hashtag'
             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+# -------------------------------Main Class For Instagram API call----------------------------------------------------#
+
+
+#--------------------------------Instagram Hashtag Search By Adil--------------------------------------------------------------
