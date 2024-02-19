@@ -32,6 +32,7 @@ from .models import CustomUser
 from .email import send_otp_via_email
 from .email import *
 from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import NotFound
 
 
 user_driver_dict = {}
@@ -203,7 +204,14 @@ class UserLoginView(APIView):
         serializer.is_valid(raise_exception=True)
         email = serializer.data.get('email')
         password = serializer.data.get('password')
-        user = CustomUser.objects.get(email = email)
+        #user = CustomUser.objects.get(email = email)
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            # If the email is not found in records, return a 404 NotFound response
+            return Response({'errors': {'non_field_errors': ['Email not in record. Register First!']}}, status=status.HTTP_404_NOT_FOUND)
+
         if user.check_password(password)  :
             token = get_tokens_for_user(user)
 
@@ -2202,7 +2210,10 @@ class GetInstaTagsView(APIView):
 
         username = insta_user.username
         password = insta_user.password
-        user_id = insta_user.id  # Update to get user_id from insta_user
+        
+        user_id = get_user_id_from_token(request)
+        
+        #user_id = insta_user.id  # Update to get user_id from insta_user
 
         # Create an instance of your InstaHashTag_new class
         insta_instance = InstaHashTag_new()
@@ -2212,34 +2223,16 @@ class GetInstaTagsView(APIView):
         
         try:
             # Call the get_hashtags method to get the desired data
-            # json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
-            # response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
-            # result = insta_instance.get_ranking(response_json)
-
-            # Integrate with the provided code
-            #print("I AM HERE _-----------=======================")
-
-            #print(CustomUser.objects.all(),[str(i.id) for i in CustomUser.objects.all()], [str(i.username) for i in CustomUser.objects.all()])
-            #print("user id-------?23244423--------------->",user_id)
             user = CustomUser.objects.filter(id=user_id).first()
-            #print('USer------------------> ',user)
             i_bot = Bot(user=user)
-            #print('I BOT -------------------->',i_bot)
             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
-            #print('twenty_four_hours_ago',twenty_four_hours_ago)
             past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram")
-           # print("I AM HERE 22222222222222222222222222222222222222222222222222")
             # Check if the hashtag/query is in past_searched_hashtag
             if not past_searched_hashtag:
                 for _ in range(3):
-                    #print('I am in the function')
                     json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
-                    #print('json_data------------------>',json_data)
                     response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
-                    #print('response_json------------------>',response_json)
                     hashtag_data = insta_instance.get_ranking(response_json)
-                    #print('hashtag_data------------------>',hashtag_data)
-                    #print("I AM HERE 333333333333333333333333333333333333333333")
                     if len(hashtag_data) > 5:
                         break
                 else:
