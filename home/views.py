@@ -1922,18 +1922,19 @@ class InstaHashTag_new(APIView):
                 params = {"tag_name": f"{query}"}
 
                 # Define the headers
+                # Define headers
                 headers = {
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
                     "Accept": "*/*",
                     "Accept-Language": "en-US,en;q=0.9",
-                    "Referer": "https://www.instagram.com/explore/tags/rammandirayodhya/",
+                    "Referer": "https://www.instagram.com",
                     "Sec-Fetch-Dest": "empty",
                     "Sec-Fetch-Mode": "cors",
                     "Sec-Fetch-Site": "same-origin",
                     "Dpr": "1.25",
                     "Sec-Ch-Prefers-Color-Scheme": "light",
                     "Sec-Ch-Ua": '"Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"',
-                    "Sec-Ch-Ua-Full-Version-List": '"Not A(Brand";v="99.0.0.0", "Microsoft Edge";v="121.0.2277.83", "Chromium";v="121.0.6167.85"',
+                    "Sec-Ch-Ua-Full-Version-List": '"Not A(Brand";v="99.0.0.0", "Microsoft Edge";v="121.0.2277.128", "Chromium";v="121.0.6167.184"',
                     "Sec-Ch-Ua-Mobile": "?0",
                     "Sec-Ch-Ua-Model": '""',
                     "Sec-Ch-Ua-Platform": '"Windows"',
@@ -1941,25 +1942,22 @@ class InstaHashTag_new(APIView):
                     "Sec-Fetch-Dest": "empty",
                     "Sec-Fetch-Mode": "cors",
                     "Sec-Fetch-Site": "same-origin",
-                    "Viewport-Width": "934",
+                    "Viewport-Width": "744",
                     "X-Asbd-Id": "129477",
-                    "X-Csrftoken": csrftoken,
+                    "X-Csrftoken": csrftoken,  # Replace with your actual csrftoken
                     "X-Ig-App-Id": "936619743392459",
-                    "X-Ig-Www-Claim": "hmac.AR2V8u0CfqOPW5C_C1-_H6dEcSPRweDaHL6E554mdkqC_80b",
+                    "X-Ig-Www-Claim": "hmac.AR2aC1xHaqmnod4qoRG9Dil2v4H1H21pxuX_IGEyaetED4Fv",
                     "X-Requested-With": "XMLHttpRequest",
-                    "Origin": "https://www.instagram.com",
-                    "Host": "www.instagram.com",
-                    "Connection": "keep-alive",
-                    "Pragma": "no-cache",
-                    "Cache-Control": "no-cache",
-                    "TE": "Trailers",
                 }
 
                 cookies = {
                     "csrftoken": csrftoken,
                     "sessionid": sessionid,
                 }
-
+                # print({
+                #     "csrftoken": csrftoken,
+                #     "sessionid": sessionid,
+                # })
                 # Make the GET request
                 response = requests.get(url, params=params, headers=headers, cookies=cookies)
 
@@ -1968,6 +1966,7 @@ class InstaHashTag_new(APIView):
                 kk=response.json()
 
                 #-------------------------------------------------- Avg_comment -------------------------------------------------#
+                
                 comment_count, total_items = self.get_average_comment_count(kk)
                 if total_items > 0:
                     average_comment_count = comment_count / total_items
@@ -1980,10 +1979,10 @@ class InstaHashTag_new(APIView):
                 #------------------------------------------------- Avg_likes ----------------------------------------------------#
                 total_like_count, total_items = self.get_average_like_count(kk)
                 if total_items > 0:
-                    average_like_count = total_like_count / total_items
+                    average_like_counts = total_like_count / total_items
                 else:
-                    average_like_count = 0
-                average_like_count=round(average_like_count)
+                    average_like_counts = 0
+                average_like_count=round(average_like_counts)
 
 
 
@@ -2086,45 +2085,98 @@ class InstaHashTag_new(APIView):
 # -------------------------------Main Class For Instagram API call----------------------------------------------------#
     
 
-class GetInstaTagsView(APIView):
-    def post(self, request):
-        # Get the query from the request
-
-        # Parse JSON data from request body
-        data = request.data
-        query = data.get('query')
-
-        username = "keywordlit@gmail.com"
-        password = "Keywordlit-01"
-
-        # username = data.get('username')
-        # password = data.get('password')
-
-        # query = request.POST.get('query')
-        # username = request.POST.get('username')
-        # password = request.POST.get('password')
-        # Create an instance of your YoutubeHashTag_new class
-        insta_instance = InstaHashTag_new()
+# class GetInstaTagsView(APIView):
+#     def post(self, request):
+#         # Get the query from the request
+#         insta_user_list=instagram_accounts.objects.filter(status='ACTIVE')
+#         if not insta_user_list:
+#             return JsonResponse({'error': "No User is Active"}, status=400)
         
-        # Call the check_login method to ensure the user is logged in
-        drivers, csrftoken, sessionid = insta_instance.check_login(username, password)
-        # # Call the check_login method to ensure the user is logged in
-        # drivers = insta_instance.check_login(username, password)
-        # print('Check Login FUNCTION WORKS')
-        # if drivers:
-        try:
-            # Call the get_hashtags method to get the desired data
-            json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
-            response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
-            result = insta_instance.get_ranking(response_json)
-            return JsonResponse(result, safe=False)
+#         insta_user= insta_user_list.first()
+
+
+#         # Parse JSON data from request body
+#         data = request.data
+#         query = data.get('query')
+
+#         username = insta_user.username#"keywordlit@gmail.com"
+#         password = insta_user.password#"Keywordlit-01"
+#         user_id = insta_user.password.id
+#         #----------==================================RIken BHai COde-------------------------================================================
+
+#         user = CustomUser.objects.filter(id=user_id).first()
+#         i_bot = Bot(user=user)
+#         twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+#         past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram")
         
-        except Exception as e:
-            error_message = str(e)
-            if "max() arg is an empty sequence" in error_message:
-                return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
-            else:
-                return JsonResponse({'error': f'Login failed. Please check your credentials.: {error_message}'}, status=400)
+#         if not past_searched_hashtag :
+#             for _ in range(3) :
+#                 Hastag = main_call(request.data['hashtag'])
+#                 if len(Hastag) > 5: break
+#             else:
+#                 msg = 'Failed to scrape the hashtag'
+#                 return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+#         else :
+#             try :
+#                 Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result.replace("'", "\""))
+#             except :
+#                 try :
+#                     Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['hashtag'],created__gte=twenty_four_hours_ago,platform="Instagram").first().result)
+#                 except :
+#                     msg = 'Failed to scrape the hashtag'
+#                     return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+#         if Hastag:
+#             msg = 'Hashtag scraped successfully'
+#             if not past_searched_hashtag :
+#                 SearchedHistory.objects.create(
+#                     user = user,
+#                     hashtag = request.data['hashtag'],
+#                     platform = 'Instagram',
+#                     result = json.dumps(Hastag)
+#                 )
+#                 user.credit= user.credit - 10
+#                 user.save()
+#             if type(Hastag) == str : 
+#                 Hastag = json.loads(Hastag.replace("'", "\""))
+#             return Response({"Hashtag": Hastag, "Message": msg},status=status.HTTP_200_OK)
+#             # return Response({"Hashtag": self.get_ranking2({"Hashtag": Hastag}), "Message": msg},status=status.HTTP_200_OK)
+#         else:
+#             msg = 'Failed to scrape the hashtag'
+#             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+#         #----------==================================RIken BHai COde-------------------------================================================
+
+#         # username = data.get('username')
+#         # password = data.get('password')
+
+#         # query = request.POST.get('query')
+#         # username = request.POST.get('username')
+#         # password = request.POST.get('password')
+#         # Create an instance of your YoutubeHashTag_new class
+#         insta_instance = InstaHashTag_new()
+        
+#         # Call the check_login method to ensure the user is logged in
+#         drivers, csrftoken, sessionid = insta_instance.check_login(username, password)
+#         # # Call the check_login method to ensure the user is logged in
+#         # drivers = insta_instance.check_login(username, password)
+#         # print('Check Login FUNCTION WORKS')
+#         # if drivers:
+#         try:
+#             # Call the get_hashtags method to get the desired data
+#             json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
+#             response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
+#             result = insta_instance.get_ranking(response_json)
+#             return JsonResponse(result, safe=False)
+        
+#         except Exception as e:
+#             error_message = str(e)
+#             if "max() arg is an empty sequence" in error_message:
+#                 return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+#             else:
+#                 return JsonResponse({'error': f'Login failed. Please check your credentials.: {error_message}'}, status=400)
 
 
 
@@ -2132,3 +2184,103 @@ class GetInstaTagsView(APIView):
 
 
 #--------------------------------Instagram Hashtag Search By Adil--------------------------------------------------------------
+            
+
+
+class GetInstaTagsView(APIView):
+    def post(self, request):
+        # Get the query from the request
+        insta_user_list = instagram_accounts.objects.filter(status='ACTIVE')
+        if not insta_user_list:
+            return JsonResponse({'error': "No User is Active"}, status=400)
+        
+        insta_user = insta_user_list.first()
+
+        # Parse JSON data from request body
+        data = request.data
+        query = data.get('query')
+
+        username = insta_user.username
+        password = insta_user.password
+        user_id = insta_user.id  # Update to get user_id from insta_user
+
+        # Create an instance of your InstaHashTag_new class
+        insta_instance = InstaHashTag_new()
+        
+        # Call the check_login method to ensure the user is logged in
+        drivers, csrftoken, sessionid = insta_instance.check_login(username, password)
+        
+        try:
+            # Call the get_hashtags method to get the desired data
+            # json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
+            # response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
+            # result = insta_instance.get_ranking(response_json)
+
+            # Integrate with the provided code
+            #print("I AM HERE _-----------=======================")
+
+            #print(CustomUser.objects.all(),[str(i.id) for i in CustomUser.objects.all()], [str(i.username) for i in CustomUser.objects.all()])
+            #print("user id-------?23244423--------------->",user_id)
+            user = CustomUser.objects.filter(id=user_id).first()
+            #print('USer------------------> ',user)
+            i_bot = Bot(user=user)
+            #print('I BOT -------------------->',i_bot)
+            twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
+            #print('twenty_four_hours_ago',twenty_four_hours_ago)
+            past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram")
+           # print("I AM HERE 22222222222222222222222222222222222222222222222222")
+            # Check if the hashtag/query is in past_searched_hashtag
+            if not past_searched_hashtag:
+                for _ in range(3):
+                    #print('I am in the function')
+                    json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
+                    #print('json_data------------------>',json_data)
+                    response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
+                    #print('response_json------------------>',response_json)
+                    hashtag_data = insta_instance.get_ranking(response_json)
+                    #print('hashtag_data------------------>',hashtag_data)
+                    #print("I AM HERE 333333333333333333333333333333333333333333")
+                    if len(hashtag_data) > 5:
+                        break
+                else:
+                    msg = 'Failed to scrape the hashtag'
+                    return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                try:
+                    hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result.replace("'", "\""))
+                except:
+                    try:
+                        hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result)
+                    except:
+                        msg = 'Failed to scrape the hashtag'
+                        return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                
+
+        except Exception as e:
+            error_message = str(e)
+            if "max() arg is an empty sequence" in error_message:
+                return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+            else:
+                return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
+
+        # Check if hashtag_data is retrieved successfully
+        if hashtag_data:
+            msg = 'Hashtag scraped successfully'
+            # Save to history if not found in past_searched_hashtag
+            if not past_searched_hashtag:
+                SearchedHistory.objects.create(
+                    user=user,
+                    hashtag=query,
+                    platform='Instagram',
+                    result=json.dumps(hashtag_data)
+                )
+                user.credit -= 10  # Deduct credits from the user
+                user.save()
+            # Convert to JSON if it's a string
+            if isinstance(hashtag_data, str): 
+                hashtag_data = json.loads(hashtag_data.replace("'", "\""))
+            return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_200_OK)
+        else:
+            msg = 'Failed to scrape the hashtag'
+            return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
