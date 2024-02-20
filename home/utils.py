@@ -86,6 +86,9 @@ def get_search_history(week_num : int, platform_ : str) :
         end_of_week = now - timedelta(days= 6*i  )
         start_of_week = end_of_week - timedelta(days=6)
 
+        print("start_of_week------------->4444444444444444444444444444444444444",end_of_week)
+        print("start_of_week------------->4444444444444444444444444444444444444",start_of_week)
+
         # Query to get data created in this week
         week_data = SearchedHistory.objects.filter(created__gte=start_of_week,  created__lte=end_of_week,platform=platform_)
 
@@ -103,6 +106,8 @@ def get_search_history(week_num : int, platform_ : str) :
             })
         else :
             search_his = [ {src.id : { "hashtag" : src.hashtag, "user" : src.user.email} } for src in week]
+            #print("Week data 281787234782348747",week)
+            #print("search_his------->8723t72t4t8234",search_his)
             main_weekly_search.append( {
                 Weekly_search.index(week)+1 : {
                     "total_search" : len(search_his),
@@ -110,7 +115,50 @@ def get_search_history(week_num : int, platform_ : str) :
                 }
             })
     return main_weekly_search
-                
+
+def get_search_history_(platform_: str, start_date: datetime = None, end_date: datetime = None):
+    tz = pytz.timezone('UTC')
+    now = datetime.now().astimezone(tz)
+    Weekly_search = []    
+    if end_date ==None:
+
+        week_data = SearchedHistory.objects.filter(created__gte=start_date,  created__lte=now, platform=platform_)
+        Weekly_search.append(week_data)
+            # Add the query results to the list
+    elif end_date !=None and start_date !=None:
+        
+        week_data = SearchedHistory.objects.filter(created__gte=start_date,  created__lte=end_date, platform=platform_)
+        Weekly_search.append(week_data)
+    else:
+        print("Provide valid Date Range")
+        week_data=None
+
+        Weekly_search.append(week_data)
+            
+    main_weekly_search = []
+    for week in Weekly_search :
+        if not week :
+            main_weekly_search.append({
+                Weekly_search.index(week)+1 : {
+                    "total_search_count" : 0,
+                    'search_history' : []
+                }
+            })
+        else :
+            search_his = [ {src.id : { "hashtag" : src.hashtag, "user" : src.user.email} } for src in week]
+            #print("search_his------->8723t72t4t8234",search_his)
+            main_weekly_search.append( {
+                Weekly_search.index(week)+1 : {
+                    "total_search_count" : len(search_his),
+                    'search_history' :  search_his
+                }
+            })
+    return main_weekly_search
+
+
+
+
+
 
 def generate_random_string(length=10):
     import random, string

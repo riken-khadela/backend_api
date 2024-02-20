@@ -10,7 +10,7 @@ from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from .serializers import  UserChangePasswordSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer
 import random, dotenv
 from django.http import JsonResponse
-from .utils import GetActiveChromeSelenium, get_yt_trend_data, scrape_hashtags,get_user_id_from_token, generate_random_string, get_search_history
+from .utils import GetActiveChromeSelenium, get_yt_trend_data, scrape_hashtags,get_user_id_from_token, generate_random_string, get_search_history, get_search_history_
 import random, time, os, json, pytz
 from .bot import Bot
 from datetime import timedelta, datetime
@@ -1127,7 +1127,179 @@ class SuperuserDashboard(APIView):
         }
         
         return Response({'msg' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
+    
+
+from dateutil.relativedelta import relativedelta       
+#---------------------------------------------------------New code for SuperUSerDashboard---------------------------------------
+class SuperuserDashboardNew(APIView):
+    """ 
+    Get-all-user if token is of super user
+    """
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+    
+    
+    def post(self, request, format=None):
+        try :
+            tz = pytz.timezone('UTC')
+            now = datetime.now().astimezone(tz)
+            user_id = get_user_id_from_token(request)
+            user, is_superuser = IsSuperUser(user_id)
+            if not user or not is_superuser:
+                msg = 'could not found the super user'
+                return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+            if request.method == 'POST':
+                data = request.data
+                date_filter = data.get('date_filter')
+                start_date_str = data.get('start_date')
+                end_date_str = data.get('end_date')
+                periods_str = data.get('periods')
+            
+                # Convert start_date and end_date strings to datetime objects
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d').astimezone(tz) if start_date_str else None
+                end_date = datetime.strptime(end_date_str, '%Y-%m-%d').astimezone(tz) if end_date_str else None
+
+                # Convert periods string to integer
+                periods = int(periods_str) if periods_str else None
+
+
+            if date_filter==None:
+                msg={
+                        "date_filter": "Missing"
+                    }
+
+                return Response({"Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+            
+
+            if start_date == None and periods == None:
+                msg={"Please Provide either of  the value":{
+                        "start_date": "Missing",
+                        "periods":"Missing"
+                    }}
+
+                return Response({"Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+
         
+            if date_filter == 'month' or date_filter == 'week' or date_filter == 'year':
+                if date_filter == 'week':
+                    end_date = now
+                    start_date = now - timedelta(weeks=periods)
+                elif date_filter == 'month':
+                    end_date = now
+                    start_date = now - relativedelta(months=periods)
+                elif date_filter == 'year':
+                    end_date = now
+                    start_date = now - relativedelta(years=periods)
+            else:
+                start_date=start_date
+                end_date=end_date
+
+
+
+
+
+
+
+            # #Dash board
+            # # all_user = CustomUser.objects.filter(is_superuser=False)
+            # weekly_data = []
+
+            # for i in range(6):
+            #     # Calculate the start and end of the week
+            #     end_of_week = now - timedelta(days= 6*i  )
+            #     start_of_week = end_of_week - timedelta(days=6)
+
+            #     # Query to get data created in this week
+            #     week_data = CustomUser.objects.filter(created__gte=start_of_week,  created__lte=end_of_week,is_superuser=False)
+
+            #     # Add the query results to the list
+            #     weekly_data.append(week_data)
+                
+            # main_weekly_data = []
+            # for week in weekly_data :
+            #     main_weekly_data.append( {
+            #         weekly_data.index(week)+1 : {
+            #             'weekly_total_user' : len(week)
+            #         }
+            #     })
+            
+            
+            # Weekly_income = []
+            # for i in range(6):
+            #     # Calculate the start and end of the week
+            #     end_of_week = now - timedelta(days= 6*i  )
+            #     start_of_week = end_of_week - timedelta(days=6)
+
+            #     # Query to get data created in this week
+            #     week_data = DepositeMoney.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
+
+            #     # Add the query results to the list
+            #     Weekly_income.append(week_data)
+            # main_weekly_income = []
+            # for week in Weekly_income :
+            #     if not week :
+            #         main_weekly_income.append({
+            #             Weekly_income.index(week)+1 : {
+            #                 'weekly_total_income' : 0
+            #             }
+            #         })
+            #     else :
+            #         main_weekly_income.append( {
+            #             Weekly_income.index(week)+1 : {
+            #                 'weekly_total_income' : sum([ dp.Amount for dp in week]),
+            #                 "weekly_total_diposite" : len(week)
+            #             }
+            #         })
+                    
+                    
+            # Weekly_search = []
+            # for i in range(6):
+            #     # Calculate the start and end of the week
+            #     end_of_week = now - timedelta(days= 6*i  )
+            #     start_of_week = end_of_week - timedelta(days=6)
+
+            #     # Query to get data created in this week
+            #     week_data = SearchedHistory.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
+
+            #     # Add the query results to the list
+            #     Weekly_search.append(week_data)
+            # main_weekly_search = []
+            # for week in Weekly_search :
+            #     if not week :
+            #         main_weekly_search.append({
+            #             Weekly_search.index(week)+1 : {
+            #                 'weekly_total_search' : 0
+            #             }
+            #         })
+            #     else :
+            #         main_weekly_search.append( {
+            #             Weekly_search.index(week)+1 : {
+            #                 'weekly_total_search' : len(week)
+            #             }
+            #         })
+            msg = 'get the data successfully'            
+        except :
+            msg = 'could not get the data successfully'    
+                    
+        responsee = {
+            "date_filter":date_filter,
+            "date_range":{"Start_date":str(start_date), "End_date":str(end_date)},
+            "total_user" : CustomUser.objects.filter(is_superuser=False,created__gte=start_date,  created__lte=end_date).count(),
+            "total_Instagram_search" : SearchedHistory.objects.filter(platform="Instagram",created__gte=start_date,  created__lte=end_date).count(),
+            "Instagram_search_history" : get_search_history_(start_date=start_date,end_date=end_date,platform_="Instagram"),
+            "total_Youtube_search" : SearchedHistory.objects.filter(platform="Youtube",created__gte=start_date,  created__lte=end_date).count(),
+            "Youtube_search_history" : get_search_history_(start_date=start_date,end_date=end_date,platform_="Youtube"),
+            "total_deposit_amount" : DepositeMoney.objects.filter(status="COMPLETE",created__gte=start_date,  created__lte=end_date).aggregate(total_amount=Sum('Amount'))['total_amount'],
+            "total_deposit" : DepositeMoney.objects.filter(status="COMPLETE",created__gte=start_date,  created__lte=end_date).count(),
+            # "weekly_user" : main_weekly_data,
+            # "weekly_income" : main_weekly_income,
+            # "weekly_search" : main_weekly_search
+        }
+        
+        return Response({'msg' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
+#---------------------------------------------------------New code for SuperUSerDashboard---------------------------------------
 
 
 
@@ -1490,201 +1662,6 @@ class YoutubeHashTag_new(APIView):
 
 
 # # -------------------------------Main Calling Class For youtube API call----------------------------------------------------#
-# class GetYouTubeTagsView(APIView):
-#     """
-#     Search any query that you want and it provide you with relevant Top 5 Video tiles, avg count, avg likes etc...
-#     """
-#     def post(self, request):
-#         # Get the query from the request
-#         data = request.data
-#         query = data.get('query')
-#         #query = request.POST.get('query')
-
-#         # Create an instance of your YoutubeHashTag_new class
-#         youtube_instance = YoutubeHashTag_new()
-        
-#         # Call the get_youtube_result method to get the desired data
-#         result = youtube_instance.get_youtube_result(f'{query}')
-        
-# #------------------------Save Search History Code----------------------------------------------------------
-#         # # Save search history
-#         # user = request.user
-#         # # Save search history
-#         # #user = request.user if request.user.is_authenticated else 'AnonymousUser'
-#         # platform = 'Youtube'  # Assuming this view specifically handles YouTube queries
-#         # hashtag = query  # Use query value as hashtag
-        
-#         # # Serialize the result dictionary to JSON
-#         # result_json = json.dumps(result)
-        
-#         # searched_history = SearchedHistory(
-#         #     user=user,
-#         #     hashtag=hashtag,
-#         #     platform=platform,
-#         #     query=query,
-#         #     result=result_json
-#         # )
-#         # searched_history.save()
-        
-#         username = insta_user.username
-#         password = insta_user.password
-        
-#         user_id = get_user_id_from_token(request)
-        
-#         #user_id = insta_user.id  # Update to get user_id from insta_user
-
-#         # Create an instance of your InstaHashTag_new class
-#         insta_instance = InstaHashTag_new()
-        
-#         # Call the check_login method to ensure the user is logged in
-#         drivers, csrftoken, sessionid = insta_instance.check_login(username, password)
-        
-#         try:
-#             # Call the get_hashtags method to get the desired data
-#             user = CustomUser.objects.filter(id=user_id).first()
-#             i_bot = Bot(user=user)
-#             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
-#             past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram")
-#             # Check if the hashtag/query is in past_searched_hashtag
-#             if not past_searched_hashtag:
-#                 for _ in range(3):
-#                     json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
-#                     response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
-#                     hashtag_data = insta_instance.get_ranking(response_json)
-#                     if len(hashtag_data) > 5:
-#                         break
-#                 else:
-#                     msg = 'Failed to scrape the hashtag'
-#                     return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-
-#             else:
-#                 try:
-#                     hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result.replace("'", "\""))
-#                 except:
-#                     try:
-#                         hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result)
-#                     except:
-#                         msg = 'Failed to scrape the hashtag'
-#                         return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-                
-
-#         except Exception as e:
-#             error_message = str(e)
-#             if "max() arg is an empty sequence" in error_message:
-#                 return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
-#             else:
-#                 return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
-
-#         # Check if hashtag_data is retrieved successfully
-#         if hashtag_data:
-#             msg = 'Hashtag scraped successfully'
-#             # Save to history if not found in past_searched_hashtag
-#             if not past_searched_hashtag:
-#                 SearchedHistory.objects.create(
-#                     user=user,
-#                     hashtag=query,
-#                     platform='Instagram',
-#                     result=json.dumps(hashtag_data)
-#                 )
-#                 user.credit -= 10  # Deduct credits from the user
-#                 user.save()
-#             # Convert to JSON if it's a string
-#             if isinstance(hashtag_data, str): 
-#                 hashtag_data = json.loads(hashtag_data.replace("'", "\""))
-#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_200_OK)
-#         else:
-#             msg = 'Failed to scrape the hashtag'
-#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-
-
-# #------------------------Save Search History Code----------------------------------------------------------
-#         # Return the result as a JSON response
-#         return JsonResponse(result)
-# #--------------------------------Youtube Hashtag Search By Adil--------------------------------------------------------------
-    
-#------------------------Get Youtube Tags and Save Search History Code----------------------------------------------------------
-
-# class GetYouTubeTagsView(APIView):
-#     """
-#     Search any query that you want and it provide you with relevant Top 5 Video tiles, avg count, avg likes etc...
-#     """
-#     def post(self, request):
-#         # Get the query from the request
-#         data = request.data
-#         query = data.get('query')
-#         #query = request.POST.get('query')
-
-#         # Create an instance of your YoutubeHashTag_new class
-#         # youtube_instance = YoutubeHashTag_new()
-        
-#         # Call the get_youtube_result method to get the desired data
-#         # result = youtube_instance.get_youtube_result(f'{query}')
-        
-#         #-----------------------------------------------------New Code---------------------------------------
-        
-#         user_id = get_user_id_from_token(request)
-        
-#         #user_id = insta_user.id  # Update to get user_id from insta_user
-
-#         # Create an instance of your InstaHashTag_new class
-#         youtube_instance = YoutubeHashTag_new()
-        
-        
-#         try:
-#             # Call the get_hashtags method to get the desired data
-#             user = CustomUser.objects.filter(id=user_id).first()
-#             i_bot = Bot(user=user)
-#             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
-#             past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube")
-#             # Check if the hashtag/query is in past_searched_hashtag
-#             if not past_searched_hashtag:
-#                 for _ in range(3):
-#                     hashtag_data = youtube_instance.get_youtube_result(f'{query}')
-#                     if len(hashtag_data) > 5:
-#                         break
-#                 else:
-#                     msg = 'Failed to scrape the hashtag'
-#                     return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-
-#             else:
-#                 try:
-#                     hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube").first().result.replace("'", "\""))
-#                 except:
-#                     try:
-#                         hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube").first().result)
-#                     except:
-#                         msg = 'Failed to scrape the hashtag'
-#                         return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-                
-
-#         except Exception as e:
-#             error_message = str(e)
-#             if "max() arg is an empty sequence" in error_message:
-#                 return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
-#             else:
-#                 return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
-
-#         # Check if hashtag_data is retrieved successfully
-#         if hashtag_data:
-#             msg = 'Hashtag scraped successfully'
-#             # Save to history if not found in past_searched_hashtag
-#             if not past_searched_hashtag:
-#                 SearchedHistory.objects.create(
-#                     user=user,
-#                     hashtag=query,
-#                     platform='Youtube',
-#                     result=json.dumps(hashtag_data)
-#                 )
-#                 user.credit -= 10  # Deduct credits from the user
-#                 user.save()
-#             # Convert to JSON if it's a string
-#             if isinstance(hashtag_data, str): 
-#                 hashtag_data = json.loads(hashtag_data.replace("'", "\""))
-#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_200_OK)
-#         else:
-#             msg = 'Failed to scrape the hashtag'
-#             return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
-
 
 #------------------------Get Youtube Tags and Save Search History Code----------------------------------------------------------
 

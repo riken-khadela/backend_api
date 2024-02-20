@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/edit-user/', EditUser.as_view(), name='user-edit'),
     path('api/user-delete/', DeleteUser.as_view(), name='user-delete'),
     path('api/superuser-dashboard/', SuperuserDashboard.as_view(), name='superuser-dashboard'),
+    path('api/superuser-dashboard-new/', SuperuserDashboardNew.as_view(), name='superuser-dashboard-new'),
 ]
