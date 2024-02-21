@@ -156,6 +156,8 @@ class UserEmailVerificationView(APIView):
             if str(user.verification_code) == verification_code:
                 user.is_user_verified = True
                 token = get_tokens_for_user(user)
+                verification_code = random.randint(100000, 999999)# Extra Code added to change the code after Process because same code will be used multiple times ex- same code will be used to chnage password.
+                user.verification_code = verification_code# Extra Code added to change the code after Process because same code will be used multiple times ex- same code will be used to chnage password.
                 user.save()
                 return Response({'token':token,'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
             else:
