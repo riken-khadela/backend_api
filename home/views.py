@@ -88,7 +88,7 @@ class UserRegistrationView(APIView):
         if 'super' in request.data and request.data['super'] == True : 
             user.is_superuser = True
             user.save()
-        token = get_tokens_for_user(user)
+        #token = get_tokens_for_user(user)
         verification_code = random.randint(100000,999999)
         user.verification_code = verification_code
         user.save()
@@ -97,7 +97,8 @@ class UserRegistrationView(APIView):
         from_email = 'info@keywordlit.com'
         recipient_list = [user.email]   
         send_mail(subject, message, from_email, recipient_list)            
-        return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration Successful'}, status=status.HTTP_201_CREATED)
+        #return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration succesful'}, status=status.HTTP_201_CREATED)
+        return Response({"email" : 'Email verification code has been set' ,'msg':'Verify your account'}, status=status.HTTP_201_CREATED)
 
 #---------------------------------------------------------UserEmailVerification By Riken--------------------------------------------------------
 
@@ -154,13 +155,14 @@ class UserEmailVerificationView(APIView):
 
             if str(user.verification_code) == verification_code:
                 user.is_user_verified = True
+                token = get_tokens_for_user(user)
                 user.save()
-                return Response({'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
+                return Response({'token':token,'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
             else:
                 # If verification code is incorrect, resend verification code
-                verification_code = random.randint(100000, 999999)
-                user.verification_code = verification_code
-                user.save()
+                #verification_code = random.randint(100000, 999999)
+                #user.verification_code = verification_code
+                #user.save()
                 #send_otp_via_email(email)  # Now Resend verification code via email will not be send Instaed call Resend OTP API
                 return Response({'message': 'Verification code is incorrect. Resent verification code.'}, status=status.HTTP_400_BAD_REQUEST)
         except CustomUser.DoesNotExist:
@@ -214,8 +216,10 @@ class UserLoginView(APIView):
 
         if user.check_password(password)  :
             token = get_tokens_for_user(user)
-
-            return Response({'token':token,'verified' : user.is_user_verified, 'msg':'Login Success'}, status=status.HTTP_200_OK)
+            if user.is_user_verified:
+                return Response({'token':token,'verified' : user.is_user_verified, 'msg':'Login Success'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'verified' : user.is_user_verified, 'msg':'Verify your account First!'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'errors':{'non_field_errors':['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
@@ -323,6 +327,9 @@ class UserChangePasswordView(APIView):
 
         try:
             user = CustomUser.objects.get(email=email, verification_code=verification_code)
+            verification_code = random.randint(100000, 999999)# Extra Code added to change the code after Process because same code will be used multiple times.
+            user.verification_code = verification_code# Extra Code added to change the code after Process because same code will be used multiple times.
+            user.save()# Extra Code added to change the code after Process because same code will be used multiple times.
         except CustomUser.DoesNotExist:
             return Response({'message': 'Invalid email or verification code.'}, status=status.HTTP_400_BAD_REQUEST)
 
