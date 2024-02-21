@@ -33,6 +33,7 @@ from .email import send_otp_via_email
 from .email import *
 from rest_framework.exceptions import ValidationError
 from rest_framework.exceptions import NotFound
+import concurrent.futures
 
 
 user_driver_dict = {}
@@ -1206,88 +1207,6 @@ class SuperuserDashboardNew(APIView):
                 end_date=end_date
 
 
-
-
-
-
-
-            # #Dash board
-            # # all_user = CustomUser.objects.filter(is_superuser=False)
-            # weekly_data = []
-
-            # for i in range(6):
-            #     # Calculate the start and end of the week
-            #     end_of_week = now - timedelta(days= 6*i  )
-            #     start_of_week = end_of_week - timedelta(days=6)
-
-            #     # Query to get data created in this week
-            #     week_data = CustomUser.objects.filter(created__gte=start_of_week,  created__lte=end_of_week,is_superuser=False)
-
-            #     # Add the query results to the list
-            #     weekly_data.append(week_data)
-                
-            # main_weekly_data = []
-            # for week in weekly_data :
-            #     main_weekly_data.append( {
-            #         weekly_data.index(week)+1 : {
-            #             'weekly_total_user' : len(week)
-            #         }
-            #     })
-            
-            
-            # Weekly_income = []
-            # for i in range(6):
-            #     # Calculate the start and end of the week
-            #     end_of_week = now - timedelta(days= 6*i  )
-            #     start_of_week = end_of_week - timedelta(days=6)
-
-            #     # Query to get data created in this week
-            #     week_data = DepositeMoney.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
-
-            #     # Add the query results to the list
-            #     Weekly_income.append(week_data)
-            # main_weekly_income = []
-            # for week in Weekly_income :
-            #     if not week :
-            #         main_weekly_income.append({
-            #             Weekly_income.index(week)+1 : {
-            #                 'weekly_total_income' : 0
-            #             }
-            #         })
-            #     else :
-            #         main_weekly_income.append( {
-            #             Weekly_income.index(week)+1 : {
-            #                 'weekly_total_income' : sum([ dp.Amount for dp in week]),
-            #                 "weekly_total_diposite" : len(week)
-            #             }
-            #         })
-                    
-                    
-            # Weekly_search = []
-            # for i in range(6):
-            #     # Calculate the start and end of the week
-            #     end_of_week = now - timedelta(days= 6*i  )
-            #     start_of_week = end_of_week - timedelta(days=6)
-
-            #     # Query to get data created in this week
-            #     week_data = SearchedHistory.objects.filter(created__gte=start_of_week,  created__lte=end_of_week)
-
-            #     # Add the query results to the list
-            #     Weekly_search.append(week_data)
-            # main_weekly_search = []
-            # for week in Weekly_search :
-            #     if not week :
-            #         main_weekly_search.append({
-            #             Weekly_search.index(week)+1 : {
-            #                 'weekly_total_search' : 0
-            #             }
-            #         })
-            #     else :
-            #         main_weekly_search.append( {
-            #             Weekly_search.index(week)+1 : {
-            #                 'weekly_total_search' : len(week)
-            #             }
-            #         })
             msg = 'get the data successfully'            
         except :
             msg = 'could not get the data successfully'    
@@ -1302,9 +1221,7 @@ class SuperuserDashboardNew(APIView):
             "Youtube_search_history" : get_search_history_(start_date=start_date,end_date=end_date,platform_="Youtube"),
             "total_deposit_amount" : DepositeMoney.objects.filter(status="COMPLETE",created__gte=start_date,  created__lte=end_date).aggregate(total_amount=Sum('Amount'))['total_amount'],
             "total_deposit" : DepositeMoney.objects.filter(status="COMPLETE",created__gte=start_date,  created__lte=end_date).count(),
-            # "weekly_user" : main_weekly_data,
-            # "weekly_income" : main_weekly_income,
-            # "weekly_search" : main_weekly_search
+
         }
         
         return Response({'msg' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
@@ -1646,22 +1563,61 @@ class YoutubeHashTag_new(APIView):
 
     #---------------------------------------------MAIN------------------------------------------------------------
 
-    def get_youtube_result(self,query):
+    # def get_youtube_result(self,query):
+    #     video_titles_lst, link_lst, avg_views = self.get_youtube_video_data(query)
+    #     #time.sleep(1)
+
+    #     # -------------------Average Likes-----------------------------------
+    #     like_lst=[int(self.get_youtube_like_counts(url)) if self.get_youtube_like_counts(url) is not None else 0 for url in link_lst]
+    #     avg_likes=round(sum(like_lst)/len(like_lst))
+
+    #     # ------------------Average Comment---------------------------------
+    #     comment_lst=[int(self.get_youtube_comment_counts(url)) if self.get_youtube_comment_counts(url) is not None else 0 for url in link_lst]
+    #     avg_comment=round(sum(comment_lst)/len(comment_lst))
+        
+    #     # # -------------------Average Likes-----------------------------------
+    #     # like_lst=[int(self.get_youtube_like_counts(url)) if self.get_youtube_like_counts(url) is not None else 0 for url in link_lst]
+    #     # avg_likes=round(sum(like_lst)/len(like_lst))
+        
+    #     main={
+    #     'top_five_video_titles':video_titles_lst,
+    #     'avg_views':avg_views,
+    #     'avg_likes':avg_likes,
+    #     'avg_comments':avg_comment
+    #     }
+    #     return main
+    
+    def get_youtube_result(self, query):
+        #print(time.localtime())
         video_titles_lst, link_lst, avg_views = self.get_youtube_video_data(query)
-        time.sleep(1)
-        # ------------------Average Comment---------------------------------
-        comment_lst=[int(self.get_youtube_comment_counts(url)) if self.get_youtube_comment_counts(url) is not None else 0 for url in link_lst]
-        avg_comment=round(sum(comment_lst)/len(comment_lst))
+        #print('Video Link EXtracted')
+        #print(time.localtime())
+        # Fetch like counts and comment counts concurrently
         
-        # -------------------Average Likes-----------------------------------
-        like_lst=[int(self.get_youtube_like_counts(url)) if self.get_youtube_like_counts(url) is not None else 0 for url in link_lst]
-        avg_likes=round(sum(like_lst)/len(like_lst))
-        
-        main={
-        'top_five_video_titles':video_titles_lst,
-        'avg_views':avg_views,
-        'avg_likes':avg_likes,
-        'avg_comments':avg_comment
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            like_counts = list(executor.map(self.get_youtube_like_counts, link_lst))
+            #print('likes count Extracted')
+            #print(time.localtime())
+            comment_counts = list(executor.map(self.get_youtube_comment_counts, link_lst))
+            #print('Comment Count Extracted')
+            #print(time.localtime())
+
+        # Calculate average likes and comments
+        like_lst = [int(count) if count is not None else 0 for count in like_counts]
+        avg_likes = round(sum(like_lst) / len(like_lst))
+        #print('Avg Like DONE')
+        #print(time.localtime())
+
+        comment_lst = [int(count) if count is not None else 0 for count in comment_counts]
+        avg_comment = round(sum(comment_lst) / len(comment_lst))
+        #print("Avg Comment Done")
+        #print(time.localtime())
+
+        main = {
+            'top_five_video_titles': video_titles_lst,
+            'avg_views': avg_views,
+            'avg_likes': avg_likes,
+            'avg_comments': avg_comment
         }
         return main
 
