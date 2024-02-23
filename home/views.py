@@ -34,6 +34,7 @@ from .email import *
 from rest_framework.exceptions import ValidationError
 from rest_framework.exceptions import NotFound
 import concurrent.futures
+import yaml
 
 
 user_driver_dict = {}
@@ -761,7 +762,82 @@ class YouTubeHashTag(APIView):
             msg = 'Failed to scrape the hashtag'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
         
+    #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
+    def read_token_from_file(self,file_path):
+        with open(file_path, 'r') as file:
+            token_data = json.load(file)
+        return token_data
+
+    def write_token_to_file(self,file_path, token_data):
+        with open(file_path, 'w') as file:
+            json.dump(token_data, file)
+
+    def refresh_access_token(self,client_id, client_secret, refresh_token, token_uri):
+        token_data = {
+            'client_id': client_id,
+            'client_secret': client_secret,
+            'refresh_token': refresh_token,
+            'grant_type': 'refresh_token'
+        }
+
+        try:
+            response = requests.post(token_uri, data=token_data)
+            response_data = response.json()
+            if 'access_token' in response_data and 'expires_in' in response_data:
+                access_token = response_data['access_token']
+                refresh_token = response_data.get('refresh_token', refresh_token)
+                expiry_seconds = response_data['expires_in']
+                return access_token, refresh_token, expiry_seconds
+            else:
+                print("Failed to refresh access token.")
+                return None, None, None
+        except Exception as e:
+            print("Error occurred during token refresh:", e)
+            return None, None, None
+
+    def update_config_yaml(self,config_file, refresh_token):
+        with open(config_file, 'r') as file:
+            config_data = yaml.safe_load(file)
+        config_data['refresh_token'] = refresh_token
+        with open(config_file, 'w') as file:
+            yaml.dump(config_data, file)
+
+    def refresh_token_flow(self,config_file, token_file):
+        # Read token data from file
+        token_data = self.read_token_from_file(token_file)
+        client_id = token_data['client_id']
+        client_secret = token_data['client_secret']
+        refresh_token = token_data['refresh_token']
+        token_uri = token_data['token_uri']
+
+        # Check if token is expired
+        expiry_datetime = datetime.strptime(token_data['expiry'], "%Y-%m-%dT%H:%M:%S.%fZ")
+        if datetime.utcnow() >= expiry_datetime:
+            # Token is expired, get a new one
+            new_access_token, new_refresh_token, expiry_seconds = self.refresh_access_token(client_id, client_secret, refresh_token, token_uri)
+            if new_refresh_token:
+                expiry_datetime = datetime.utcnow() + timedelta(seconds=expiry_seconds)
+                # Update token data
+                token_data['refresh_token'] = new_refresh_token
+                token_data['expiry'] = expiry_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+                # Write updated token data to file
+                self.write_token_to_file(token_file, token_data)
+                # Update config.yaml with new refresh token
+                self.update_config_yaml(config_file, new_refresh_token)
+                print("Refreshed token and updated config.yaml.")
+            else:
+                print("Failed to refresh token.")
+        else:
+            print("Token is still valid.")
+    #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
+        
     def get_related_keywords(self, keyword_text):
+        
+        #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
+        config_file = './conf.yaml'
+        token_file = './ref-token.json'
+        self.refresh_token_flow(config_file, token_file)
+        #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
         hashtags = []
         # Initialize the Google Ads client.
         client = GoogleAdsClient.load_from_storage("./conf.yaml")
@@ -1275,7 +1351,7 @@ class YoutubeHashTag_new(APIView):
         headers = {
             "Accept": "*/*",
             #"Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Language": "en-US,en;q=0.9,ko;q=0.8",
             "Authorization": "SAPISIDHASH 1707374253_db06ff3c4865646cc7e60b0d91fb6343a057d70e",
             "Content-Type": "application/json",
             "Origin": "https://www.youtube.com",
@@ -1408,7 +1484,7 @@ class YoutubeHashTag_new(APIView):
             headers = {
                 "Accept": "*/*",
                 #"Accept-Encoding": "gzip, deflate, br",
-                "Accept-Language": "en-US,en;q=0.9",
+                "Accept-Language": "en-US,en;q=0.9,ko;q=0.8",
                 # Add your authorization headers here if needed
             }
 
@@ -1505,7 +1581,7 @@ class YoutubeHashTag_new(APIView):
         headers = {
             "Accept": "*/*",
             #"Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Language": "en-US,en;q=0.9,ko;q=0.8",
             "Content-Type": "application/json",
             "Origin": "https://www.youtube.com",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
