@@ -85,7 +85,7 @@ class UserRegistrationView(APIView):
         serializer = UserRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if not request.data['email'] :
-            return Response({'msg':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
         user = serializer.save()
         if 'super' in request.data and request.data['super'] == True : 
             user.is_superuser = True
@@ -100,7 +100,7 @@ class UserRegistrationView(APIView):
         recipient_list = [user.email]   
         send_mail(subject, message, from_email, recipient_list)            
         #return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration succesful'}, status=status.HTTP_201_CREATED)
-        return Response({"email" : 'Email verification code has been set' ,'msg':'Verify your account'}, status=status.HTTP_201_CREATED)
+        return Response({"email" : 'Email verification code has been set' ,'message':'Verify your account'}, status=status.HTTP_201_CREATED)
 
 #---------------------------------------------------------UserEmailVerification By Riken--------------------------------------------------------
 
@@ -221,9 +221,9 @@ class UserLoginView(APIView):
         if user.check_password(password)  :
             token = get_tokens_for_user(user)
             if user.is_user_verified:
-                return Response({'token':token,'verified' : user.is_user_verified, 'msg':'Login Success'}, status=status.HTTP_200_OK)
+                return Response({'token':token,'verified' : user.is_user_verified, 'message':'Login Success'}, status=status.HTTP_200_OK)
             else:
-                return Response({'verified' : user.is_user_verified, 'msg':'Verify your account First!'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'verified' : user.is_user_verified, 'message':'Verify your account First!'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'errors':{'non_field_errors':['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
@@ -341,7 +341,7 @@ class UserChangePasswordView(APIView):
         try:
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            return Response({'msg': 'Password changed successfully'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
         except ValidationError as e:
             # Handle validation errors
             return Response({'message': e.detail}, status=status.HTTP_400_BAD_REQUEST)

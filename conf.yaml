@@ -1,5 +1,5 @@
-developer_token: "mhE8MXIuUevTOWMamhcErA"
-client_id: "604224507923-344v2ad19lc7peline6l6rp2fh3vk6n1.apps.googleusercontent.com"
-client_secret: "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"
-refresh_token: "1//0gmkelpWL8lR4CgYIARAAGBASNwF-L9IrVSthPg5gWMhyIRzoyqSb4yvkpnM5zOQYA521cx_nt2CvjviRqc-PCRBmtD55rBPvHyo"
-use_proto_plus: True # Optional
+client_id: 604224507923-344v2ad19lc7peline6l6rp2fh3vk6n1.apps.googleusercontent.com
+client_secret: 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
+developer_token: mhE8MXIuUevTOWMamhcErA
+refresh_token: 1//0g-yHLMGrag8nCgYIARAAGBASNwF-L9Ircg6KEa2oMBBlboKS6k9tT9AExnpP20UylyHc84B6lt63uHiJAJbssznQ79bIwxCUtpY
+use_proto_plus: true
