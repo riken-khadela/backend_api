@@ -219,9 +219,9 @@ CRONJOBS = [
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtpout.secureserver.net'  # GoDaddy's SMTP server hostname
-EMAIL_PORT = 587  # TLS port for GoDaddy
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'info@keywordlit.com'
-EMAIL_HOST_PASSWORD = 'Keywordlit-01'
+EMAIL_HOST = 'mail.keywordlit.com' #'smtpout.secureserver.net'  # GoDaddy's SMTP server hostname
+EMAIL_PORT = 465 #587  # TLS port for GoDaddy
+EMAIL_USE_TLS = False #True
+EMAIL_USE_SSL = True #False
+EMAIL_HOST_USER = 'donotreply@keywordlit.com' #'info@keywordlit.com'
+EMAIL_HOST_PASSWORD = 'keywordlit@123' #'Keywordlit-01'
