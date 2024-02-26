@@ -35,6 +35,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.exceptions import NotFound
 import concurrent.futures
 import yaml
+import urllib.parse
 
 
 user_driver_dict = {}
@@ -1347,6 +1348,8 @@ class YoutubeHashTag_new(APIView):
     def search_youtube(self,query):
         lst = []
         url = "https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8&prettyPrint=false"
+
+        encoded_query = urllib.parse.quote(query)
         
         headers = {
             "Accept": "*/*",
@@ -1355,7 +1358,8 @@ class YoutubeHashTag_new(APIView):
             "Authorization": "SAPISIDHASH 1707374253_db06ff3c4865646cc7e60b0d91fb6343a057d70e",
             "Content-Type": "application/json",
             "Origin": "https://www.youtube.com",
-            "Referer": f"https://www.youtube.com/results?search_query={query}",
+            #"Referer": f"https://www.youtube.com/results?search_query={query}",
+            "Referer": f"https://www.youtube.com/results?search_query={encoded_query}",
             "Sec-Fetch-Dest": "empty",
             "Sec-Fetch-Mode": "same-origin",
             "Sec-Fetch-Site": "same-origin",
@@ -1935,7 +1939,7 @@ class InstaHashTag_new(APIView):
         headers = {
             "Accept": "*/*",
             #"Accept-Encoding": "gzip, deflate, br",
-            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Language": "en-US,en;q=0.9,ko;q=0.8",
             "Content-Type": "application/x-www-form-urlencoded",
             "Origin": "https://www.instagram.com",
             "Referer": "https://www.instagram.com/",
@@ -2117,7 +2121,7 @@ class InstaHashTag_new(APIView):
                 headers = {
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
                     "Accept": "*/*",
-                    "Accept-Language": "en-US,en;q=0.9",
+                    "Accept-Language": "en-US,en;q=0.9,ko;q=0.8",
                     "Referer": "https://www.instagram.com",
                     "Sec-Fetch-Dest": "empty",
                     "Sec-Fetch-Mode": "cors",
