@@ -36,6 +36,8 @@ from rest_framework.exceptions import NotFound
 import concurrent.futures
 import yaml
 import urllib.parse
+import langdetect
+
 
 
 user_driver_dict = {}
@@ -830,14 +832,25 @@ class YouTubeHashTag(APIView):
                 print("Failed to refresh token.")
         else:
             print("Token is still valid.")
+#-------------------- To Detect the language of keyword given by user --------------------------------------------------------------
+    def detect_language(self,text):
+        try:
+            detected_lang = langdetect.detect(text)
+            return detected_lang
+        except:
+            return "ko" # If it failed to detect language then by default --> KOREAN
+
+#-------------------- To Detect the language of keyword given by user --------------------------------------------------------------
+
+
     #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
         
     def get_related_keywords(self, keyword_text):
         
         #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
-        config_file = './conf.yaml'
-        token_file = './ref-token.json'
-        self.refresh_token_flow(config_file, token_file)
+        config_file = './conf.yaml'    # Riken Bhai Please check this
+        token_file = './ref-token.json' # Riken Bhai Please check this
+        self.refresh_token_flow(config_file, token_file) # Riken Bhai Please check this
         #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
         hashtags = []
         # Initialize the Google Ads client.
@@ -846,11 +859,38 @@ class YouTubeHashTag(APIView):
         # Get the service.
         keyword_plan_idea_service = client.get_service("KeywordPlanIdeaService")
 
+        #------------------------------- Hard Coded Values Used Before--------------------------------------------------------------
         # Set up the query parameters.
         #language = client.get_type("StringValue")
-        language = "1000" # For English
-        language_criterion_id = "1000"  # Criterion ID for English
-        geo_target_criterion_id = "2840"  # Criterion ID for United States
+        #language = "1000" # For English
+        #language_criterion_id = "1000"  # Criterion ID for English
+        #geo_target_criterion_id = "2840"  # Criterion ID for United States
+
+        #------------------------------- Hard Coded Values Used Before--------------------------------------------------------------
+        
+        
+        #--------------------------------------New Code that detect the Lnaguage of user input and region set to South Korea -------------------------------------
+        
+        user_input_language = self.detect_language(keyword_text)
+        print("UserInput Langauge is :",user_input_language)
+        if user_input_language == 'ko':  # Korean
+            language = "1012"
+            language_criterion_id = "1012"
+            # Update geo target criterion for South Korea
+            geo_target_criterion_id = "2410"
+        elif user_input_language == 'en':  # English
+            language = "1000"
+            language_criterion_id = "1000"
+            # Update geo target criterion for South Korea
+            geo_target_criterion_id = "2410"
+        else:
+            # Default to English if language detection fails or unknown language
+            language = "1012"
+            language_criterion_id = "1012"
+            # Update geo target criterion for South Korea
+            geo_target_criterion_id = "2410"
+
+    #--------------------------------------New Code that detect the Lnaguage of user input and region set to South Korea -------------------------------------
 
         keyword = keyword_text
 
