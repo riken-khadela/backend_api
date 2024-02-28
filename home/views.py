@@ -760,7 +760,13 @@ class YouTubeHashTag(APIView):
             if type(Hastag) == str : 
                 Hastag = json.loads(Hastag.replace("'", "\""))
             msg = 'Hashtag scraped successfully'
-            return Response({"Hashtag":  Hastag, "trend" : get_yt_trend_data(request.data['tag']), "Message": msg},status=status.HTTP_200_OK)
+
+            try:
+                TREND = get_yt_trend_data(request.data['tag'])
+            except:
+                TREND = "Unable to get the Trends Data" 
+
+            return Response({"Hashtag":  Hastag, "trend" : TREND, "Message": msg},status=status.HTTP_200_OK)
         else:
             msg = 'Failed to scrape the hashtag'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
