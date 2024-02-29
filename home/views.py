@@ -732,7 +732,11 @@ class YouTubeHashTag(APIView):
         past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube")
         # breakpoint()
         if not past_searched_hashtag :
-            Hastag = self.get_related_keywords(request.data['tag'])
+            if 'language' in request.data and request.data['language']:
+                lang = request.data['language']# en or ko else lang=None
+                Hastag = self.get_related_keywords(request.data['tag'],lang)
+            else:
+                Hastag = self.get_related_keywords(request.data['tag'])
             print("The Hashtag Is",Hastag)
             # if len(Hastag)>=15:
             #     Hastag=Hastag[:15]
@@ -763,10 +767,9 @@ class YouTubeHashTag(APIView):
 
             try:
                 TREND = get_yt_trend_data(request.data['tag'])
+                return Response({"Hashtag":  Hastag, "trend" : TREND, "Message": msg},status=status.HTTP_200_OK) # If we get trends
             except:
-                TREND = "Unable to get the Trends Data" 
-
-            return Response({"Hashtag":  Hastag, "trend" : TREND, "Message": msg},status=status.HTTP_200_OK)
+                return Response({"Hashtag":  Hastag,  "Message": msg},status=status.HTTP_200_OK) # If we don't get trends
         else:
             msg = 'Failed to scrape the hashtag'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
@@ -851,7 +854,7 @@ class YouTubeHashTag(APIView):
 
     #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
         
-    def get_related_keywords(self, keyword_text):
+    def get_related_keywords(self, keyword_text, lang=None):
         
         #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
         config_file = './conf.yaml'    # Riken Bhai Please check this
@@ -877,24 +880,43 @@ class YouTubeHashTag(APIView):
         
         #--------------------------------------New Code that detect the Lnaguage of user input and region set to South Korea -------------------------------------
         
-        user_input_language = self.detect_language(keyword_text)
-        print("UserInput Langauge is :",user_input_language)
-        if user_input_language == 'ko':  # Korean
-            language = "1012"
-            language_criterion_id = "1012"
-            # Update geo target criterion for South Korea
-            geo_target_criterion_id = "2410"
-        elif user_input_language == 'en':  # English
-            language = "1000"
-            language_criterion_id = "1000"
-            # Update geo target criterion for South Korea
-            geo_target_criterion_id = "2410"
+        if lang is not None:
+            if lang == 'ko':  # Korean
+                language = "1012"
+                language_criterion_id = "1012"
+                # Update geo target criterion for South Korea
+                geo_target_criterion_id = "2410"
+            elif lang == 'en':  # English
+                language = "1000"
+                language_criterion_id = "1000"
+                # Update geo target criterion for South Korea
+                geo_target_criterion_id = "2410"
+            else:
+                pass
+        
+        
         else:
-            # Default to English if language detection fails or unknown language
-            language = "1012"
-            language_criterion_id = "1012"
-            # Update geo target criterion for South Korea
-            geo_target_criterion_id = "2410"
+        
+            
+            # if lang is None
+            user_input_language = self.detect_language(keyword_text)
+            print("UserInput Langauge is :",user_input_language)
+            if user_input_language == 'ko':  # Korean
+                language = "1012"
+                language_criterion_id = "1012"
+                # Update geo target criterion for South Korea
+                geo_target_criterion_id = "2410"
+            elif user_input_language == 'en':  # English
+                language = "1000"
+                language_criterion_id = "1000"
+                # Update geo target criterion for South Korea
+                geo_target_criterion_id = "2410"
+            else:
+                # Default to Korean if language detection fails or unknown language
+                language = "1012"
+                language_criterion_id = "1012"
+                # Update geo target criterion for South Korea
+                geo_target_criterion_id = "2410"
 
     #--------------------------------------New Code that detect the Lnaguage of user input and region set to South Korea -------------------------------------
 
