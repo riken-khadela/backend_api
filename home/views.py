@@ -270,7 +270,7 @@ class UserProfileView(APIView):
                 print(f"Error decoding JSON for history ID {history.id}: {e}")
                 print(f"Error decoding JSON for history platform {history.platform}: {e}")
                 print(f"Error decoding JSON for history hashtag {history.hashtag}: {e}")
-                print(f"Error decoding JSON for history date {history.date}: {e}")
+                print(f"Error decoding JSON for history date {history.created}: {e}")
                 continue
 #-------------------------Code to fetch the error in the section---------------------------------------------------
             tmp = {
