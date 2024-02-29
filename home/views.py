@@ -261,6 +261,18 @@ class UserProfileView(APIView):
         user = CustomUser.objects.filter(id=user_id).first()
         
         for history in SearchedHistory.objects.filter(user=user) :
+#-------------------------Code to fetch the error in the section---------------------------------------------------
+            try:
+                # Attempt to load the JSON data, replacing single quotes with double quotes
+                result_json = json.loads(history.result.replace("'", '"'))
+            except json.JSONDecodeError as e:
+                # Handle JSON decoding errors, for example by skipping the problematic entry
+                print(f"Error decoding JSON for history ID {history.id}: {e}")
+                print(f"Error decoding JSON for history platform {history.platform}: {e}")
+                print(f"Error decoding JSON for history hashtag {history.hashtag}: {e}")
+                print(f"Error decoding JSON for history date {history.date}: {e}")
+                continue
+#-------------------------Code to fetch the error in the section---------------------------------------------------
             tmp = {
                 'platform' : history.platform,
                 'hashtag' : history.hashtag,
