@@ -37,7 +37,7 @@ import concurrent.futures
 import yaml
 import urllib.parse
 import langdetect
-
+from django.db.models import Q
 
 
 user_driver_dict = {}
@@ -1173,8 +1173,23 @@ class YoutubeHashTagHistory(APIView):
         if not user or not is_superuser:
             msg = 'could not found the super user'
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+        
+
+        # Get search history for "Youtube"
+        youtube_history = get_search_history_(start_date=now - timedelta(days=6), end_date=now, platform_="Youtube")
+        
+        # Get search history for "Youtube1"
+        youtube1_history = get_search_history_(start_date=now - timedelta(days=6), end_date=now, platform_="Youtube1")
+        
+        # Combine the histories into a single response
+        combined_response = {
+            "Youtube_search_history": youtube_history,
+            "Youtube_average_search_history": youtube1_history
+        }
+        
+        return Response({'msg': 'Successfully get the data', 'data': combined_response}, status=status.HTTP_200_OK)
                     
-        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Youtube")}, status=status.HTTP_200_OK)
+        #return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Youtube")}, status=status.HTTP_200_OK)
 
 
 
@@ -1374,8 +1389,10 @@ class SuperuserDashboardNew(APIView):
             "total_user" : CustomUser.objects.filter(is_superuser=False,created__gte=start_date,  created__lte=end_date).count(),
             "total_Instagram_search" : SearchedHistory.objects.filter(platform="Instagram",created__gte=start_date,  created__lte=end_date).count(),
             "Instagram_search_history" : get_search_history_(start_date=start_date,end_date=end_date,platform_="Instagram"),
-            "total_Youtube_search" : SearchedHistory.objects.filter(platform="Youtube",created__gte=start_date,  created__lte=end_date).count(),
+            #"total_Youtube_search" : SearchedHistory.objects.filter(platform="Youtube",created__gte=start_date,  created__lte=end_date).count(),
+            "total_Youtube_search" : SearchedHistory.objects.filter(Q(platform="Youtube") | Q(platform="Youtube1"),created__gte=start_date,created__lte=end_date).count(),
             "Youtube_search_history" : get_search_history_(start_date=start_date,end_date=end_date,platform_="Youtube"),
+            "Youtube_average_search_history" : get_search_history_(start_date=start_date,end_date=end_date,platform_="Youtube1"),
             "total_deposit_amount" : DepositeMoney.objects.filter(status="COMPLETE",created__gte=start_date,  created__lte=end_date).aggregate(total_amount=Sum('Amount'))['total_amount'],
             "total_deposit" : DepositeMoney.objects.filter(status="COMPLETE",created__gte=start_date,  created__lte=end_date).count(),
 
@@ -1822,7 +1839,7 @@ class GetYouTubeTagsView(APIView):
 
             i_bot = Bot(user=user)
             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
-            past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube")
+            past_searched_hashtag = SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Youtube1")
             # Check if the hashtag/query is in past_searched_hashtag
             
             if not past_searched_hashtag :
@@ -1830,10 +1847,10 @@ class GetYouTubeTagsView(APIView):
                 Hastag = youtube_instance.get_youtube_result(f'{query}')
             else :
                 try :
-                    Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['query'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result.replace("'", "\""))
+                    Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['query'],created__gte=twenty_four_hours_ago,platform="Youtube1").first().result.replace("'", "\""))
                 except :
                     try :
-                        Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['query'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result)
+                        Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['query'],created__gte=twenty_four_hours_ago,platform="Youtube1").first().result)
                     except :
                         msg = 'Failed to scrape the hashtag'
                         return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
@@ -1855,7 +1872,7 @@ class GetYouTubeTagsView(APIView):
                     SearchedHistory.objects.create(
                         user = user,
                         hashtag = request.data['query'],
-                        platform = 'Youtube',
+                        platform = "Youtube1",
                         result = json.dumps(Hastag)
                     )
                     user.credit= user.credit - 10

@@ -197,6 +197,7 @@ class SearchedHistory(TimeStampModel):
     CHOICES = (
         ('Instagram','Instagram'),
         ('Youtube','Youtube'),
+        ('Youtube1','Youtube1'),
     )
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
