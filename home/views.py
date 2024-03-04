@@ -88,7 +88,7 @@ class UserRegistrationView(APIView):
         serializer = UserRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         if not request.data['email'] :
-            return Response({'message':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message':'email field is required'}, status=status.HTTP_400_BAD_REQUEST)
         user = serializer.save()
         if 'super' in request.data and request.data['super'] == True : 
             user.is_superuser = True
@@ -103,7 +103,7 @@ class UserRegistrationView(APIView):
         recipient_list = [user.email]   
         send_mail(subject, message, from_email, recipient_list)            
         #return Response({'token':token, "email" : 'email verification code has been set' ,'msg':'Registration succesful'}, status=status.HTTP_201_CREATED)
-        return Response({"email" : 'Email verification code has been set' ,'message':'Verify your account'}, status=status.HTTP_201_CREATED)
+        return Response({"email" : 'Email verification code has been set' ,'Message':'Verify your account'}, status=status.HTTP_201_CREATED)
 
 #---------------------------------------------------------UserEmailVerification By Riken--------------------------------------------------------
 
@@ -145,18 +145,18 @@ class UserEmailVerificationView(APIView):
         verification_code = request.data.get('verification_code')
         # Check if required fields are provided
         if not email or not verification_code:
-            return Response({'message': 'Please provide the following details', 'details': {'email': 'Email', 'verification_code': 'Verification code'}}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'Please provide the following details', 'details': {'email': 'Email', 'verification_code': 'Verification code'}}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = CustomUser.objects.get(email=email)
 
             if user.is_user_verified == True:
                 # If user is already verified, return a message indicating so
-                return Response({'message': 'User is already verified.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'Message': 'User is already verified.'}, status=status.HTTP_400_BAD_REQUEST)
             
              # Check if verification code is a valid number
             if not verification_code.isdigit():
-                return Response({'message': 'Invalid Verification Code.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'Message': 'Invalid Verification Code.'}, status=status.HTTP_400_BAD_REQUEST)
 
             if str(user.verification_code) == verification_code:
                 user.is_user_verified = True
@@ -164,17 +164,17 @@ class UserEmailVerificationView(APIView):
                 verification_code = random.randint(100000, 999999)# Extra Code added to change the code after Process because same code will be used multiple times ex- same code will be used to chnage password.
                 user.verification_code = verification_code# Extra Code added to change the code after Process because same code will be used multiple times ex- same code will be used to chnage password.
                 user.save()
-                return Response({'token':token,'message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
+                return Response({'token':token,'Message': 'Email verified successfully.'}, status=status.HTTP_200_OK)
             else:
                 # If verification code is incorrect, resend verification code
                 #verification_code = random.randint(100000, 999999)
                 #user.verification_code = verification_code
                 #user.save()
                 #send_otp_via_email(email)  # Now Resend verification code via email will not be send Instaed call Resend OTP API
-                return Response({'message': 'Verification code is incorrect. Resent verification code.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'Message': 'Verification code is incorrect. Resent verification code.'}, status=status.HTTP_400_BAD_REQUEST)
         except CustomUser.DoesNotExist:
             # If email is not in records, prompt user to register first
-            return Response({'message': 'Email not in records. Please register first.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'Email not in records. Please register first.'}, status=status.HTTP_400_BAD_REQUEST)
 
 #---------------------------------------------------------UserEmailVerification By Adil--------------------------------------------------------
  
@@ -184,7 +184,7 @@ class ResendOTPView(APIView):
     def post(self, request):
         email = request.data.get('email')
         if not email:
-            return Response({'message':  {"email": 'Please provide an email address.'}}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message':  {"email": 'Please provide an email address.'}}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = CustomUser.objects.get(email=email)
@@ -193,9 +193,9 @@ class ResendOTPView(APIView):
             user.save()
             # Call the function to send OTP via email
             send_otp_via_email(email)
-            return Response({'message': 'New verification code sent successfully.'}, status=status.HTTP_200_OK)
+            return Response({'Message': 'New verification code sent successfully.'}, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
-            return Response({'message': 'Email not found in records. Register First'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message': 'Email not found in records. Register First'}, status=status.HTTP_404_NOT_FOUND)
 
 
 #---------------------------------------------------------Resend OTP APY by ADIL---------------------------------------------------------------
@@ -219,16 +219,16 @@ class UserLoginView(APIView):
             user = CustomUser.objects.get(email=email)
         except CustomUser.DoesNotExist:
             # If the email is not found in records, return a 404 NotFound response
-            return Response({'errors': {'non_field_errors': ['Email not in record. Register First!']}}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message': {'non_field_errors': ['Email not in record. Register First!']}}, status=status.HTTP_404_NOT_FOUND)
 
         if user.check_password(password)  :
             token = get_tokens_for_user(user)
             if user.is_user_verified:
-                return Response({'token':token,'verified' : user.is_user_verified, 'message':'Login Success'}, status=status.HTTP_200_OK)
+                return Response({'token':token,'verified' : user.is_user_verified, 'Message':'Login Success'}, status=status.HTTP_200_OK)
             else:
-                return Response({'verified' : user.is_user_verified, 'message':'Verify your account First!'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'verified' : user.is_user_verified, 'Message':'Verify your account First!'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'errors':{'non_field_errors':['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'Message':{'non_field_errors':['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)
 
 class RefreshTokenView(APIView):
     """
@@ -338,11 +338,11 @@ class UserChangePasswordView(APIView):
 
         # Check if required fields are provided
         if not email or not verification_code or not new_password:
-            return Response({'message': 'Please provide the following details', 'details': {'email': 'Email', 'verification_code': 'Verification code', 'new_password': 'New Password'}}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'Please provide the following details', 'details': {'email': 'Email', 'verification_code': 'Verification code', 'new_password': 'New Password'}}, status=status.HTTP_400_BAD_REQUEST)
 
          # Check if verification code is a valid number
         if not verification_code.isdigit():
-            return Response({'message': 'Invalid Verification Code.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'Invalid Verification Code.'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = CustomUser.objects.get(email=email, verification_code=verification_code)
@@ -350,16 +350,16 @@ class UserChangePasswordView(APIView):
             user.verification_code = verification_code# Extra Code added to change the code after Process because same code will be used multiple times.
             user.save()# Extra Code added to change the code after Process because same code will be used multiple times.
         except CustomUser.DoesNotExist:
-            return Response({'message': 'Invalid email or verification code.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'Invalid email or verification code.'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = UserChangePasswordSerializer(instance=user, data={'password': new_password, 'password2': new_password})
         try:
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
+            return Response({'Message': 'Password changed successfully'}, status=status.HTTP_200_OK)
         except ValidationError as e:
             # Handle validation errors
-            return Response({'message': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': e.detail}, status=status.HTTP_400_BAD_REQUEST)
 
 
 #---------------------------------------------Change Password by Adil------------------------------------------------------------
@@ -738,7 +738,7 @@ class YouTubeHashTag(APIView):
         
         if not 'tag' in request.data and not request.data['tag']:
             msg = 'could not found the tag'
-            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message' : msg}, status=status.HTTP_400_BAD_REQUEST)
         
         twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
         past_searched_hashtag = SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube")
@@ -994,7 +994,7 @@ class GetUserList(APIView):
         if 'email' in request.data:
             all_user = CustomUser.objects.filter(is_superuser=False,email=request.data['email'])
             if not all_user :
-                return Response({'msg' : 'counld not got the user list', 'email' : request.data['email']}, status=status.HTTP_204_NO_CONTENT)
+                return Response({'Message' : 'counld not got the user list', 'email' : request.data['email']}, status=status.HTTP_204_NO_CONTENT)
                 
         else :
             all_user = CustomUser.objects.filter(is_superuser=False)
@@ -1008,8 +1008,8 @@ class GetUserList(APIView):
                              "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_user 
                      ]
         if user_list :
-            return Response({'msg' : 'successfully got the user list','userlist' : user_list}, status=status.HTTP_200_OK)
-        return Response({'msg' : 'counld not got the user list', 'userlist' : user_list}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'Message' : 'successfully got the user list','userlist' : user_list}, status=status.HTTP_200_OK)
+        return Response({'Message' : 'counld not got the user list', 'userlist' : user_list}, status=status.HTTP_204_NO_CONTENT)
 
 class GetDipositeList(APIView):
     """ 
@@ -1027,7 +1027,7 @@ class GetDipositeList(APIView):
         if 'TransactionId' in request.data:
             all_diposite = DepositeMoney.objects.filter(TransactionId=request.data['TransactionId'])
             if not all_diposite :
-                return Response({'msg' : 'counld not got the diposite', 'TransactionId' : request.data['TransactionId']}, status=status.HTTP_204_NO_CONTENT)
+                return Response({'Message' : 'counld not got the diposite', 'TransactionId' : request.data['TransactionId']}, status=status.HTTP_204_NO_CONTENT)
                 
         else :
             all_diposite = DepositeMoney.objects.filter()
@@ -1046,8 +1046,8 @@ class GetDipositeList(APIView):
         
         # diposite_list = [ {c_user.id : { 'email' : c_user.email, 'credit' : c_user.credit, 'fname' : c_user.first_name, "Diposited_balance" : sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) if  sum([dp_obj.Amount for dp_obj in DepositeMoney.objects.filter(user=c_user)]) else 0, "search_history" : [ {"hashtag" : search.hashtag, "platform" : search.platform } for search in SearchedHistory.objects.filter(user=c_user)] }} for c_user in all_diposite ]
         if diposite_list :
-            return Response({'msg' : 'successfully got the user list','userlist' : diposite_list}, status=status.HTTP_200_OK)
-        return Response({'msg' : 'counld not got the user list', 'userlist' : diposite_list}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'Message' : 'successfully got the user list','userlist' : diposite_list}, status=status.HTTP_200_OK)
+        return Response({'Message' : 'counld not got the user list', 'userlist' : diposite_list}, status=status.HTTP_204_NO_CONTENT)
 
 class EditUser(APIView):
     """ 
@@ -1066,19 +1066,19 @@ class EditUser(APIView):
         user_found = False
         if not 'email' in request.data and not request.data['email']:
             msg = 'could not found the email'
-            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message' : msg}, status=status.HTTP_400_BAD_REQUEST)
         
         if not 'feild' in request.data and not request.data['feild']:
             msg = 'could not found the feild which needs to be edited'
-            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message' : msg}, status=status.HTTP_400_BAD_REQUEST)
         
         if not 'new_value' in request.data and not request.data['new_value']:
             msg = 'could not found the new value which needs to be replaced with old values'
-            return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message' : msg}, status=status.HTTP_400_BAD_REQUEST)
             
         found_user = CustomUser.objects.filter(is_superuser=False,email=request.data['email'])
         if not found_user :
-            return Response({'msg' : 'could not got the user'}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'Message' : 'could not got the user'}, status=status.HTTP_204_NO_CONTENT)
 
         found_user = found_user.first()
         field_name = request.data['feild']
@@ -1110,7 +1110,7 @@ class EditUser(APIView):
         # foundus
 
         
-        return Response({'msg' : msg}, status=status_code)
+        return Response({'Message' : msg}, status=status_code)
 
 
 class DeleteUser(APIView):
@@ -1130,15 +1130,15 @@ class DeleteUser(APIView):
         if 'email' in request.data and request.data['email']:
             del_user = CustomUser.objects.filter(is_superuser=False,email=request.data['email'])
             if not del_user :
-                return Response({'msg' : 'successfully got the user list','user_deleted' : user_deleted}, status=status.HTTP_204_NO_CONTENT)
+                return Response({'Message' : 'successfully got the user list','user_deleted' : user_deleted}, status=status.HTTP_204_NO_CONTENT)
 
             del_user = del_user.first()
             if del_user.delete() :
                 user_deleted = True
 
         if user_deleted :
-            return Response({'msg' : 'successfully deleted the user list','user_deleted' : user_deleted}, status=status.HTTP_200_OK)
-        return Response({'msg' : 'counld not delete the user', 'user_deleted' : user_deleted}, status=status.HTTP_204_NO_CONTENT)
+            return Response({'Message' : 'successfully deleted the user list','user_deleted' : user_deleted}, status=status.HTTP_200_OK)
+        return Response({'Message' : 'counld not delete the user', 'user_deleted' : user_deleted}, status=status.HTTP_204_NO_CONTENT)
 
 
 class InstaHashTagHistory(APIView):
@@ -1156,7 +1156,7 @@ class InstaHashTagHistory(APIView):
             msg = 'could not found the super user'
             return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
                     
-        return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Instagram")}, status=status.HTTP_200_OK)
+        return Response({'Message' : 'successfully get the data', 'data' : get_search_history(6,"Instagram")}, status=status.HTTP_200_OK)
 
 
 class YoutubeHashTagHistory(APIView):
@@ -1187,7 +1187,7 @@ class YoutubeHashTagHistory(APIView):
             "Youtube_average_search_history": youtube1_history
         }
         
-        return Response({'msg': 'Successfully get the data', 'data': combined_response}, status=status.HTTP_200_OK)
+        return Response({'Message': 'Successfully get the data', 'data': combined_response}, status=status.HTTP_200_OK)
                     
         #return Response({'msg' : 'successfully get the data', 'data' : get_search_history(6,"Youtube")}, status=status.HTTP_200_OK)
 
@@ -1308,7 +1308,7 @@ class SuperuserDashboard(APIView):
             "weekly_search" : main_weekly_search
         }
         
-        return Response({'msg' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
+        return Response({'Message' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
     
 
 from dateutil.relativedelta import relativedelta       
@@ -1398,7 +1398,7 @@ class SuperuserDashboardNew(APIView):
 
         }
         
-        return Response({'msg' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
+        return Response({'Message' : msg, 'data' : responsee}, status=status.HTTP_200_OK)
 #---------------------------------------------------------New code for SuperUSerDashboard---------------------------------------
 
 
@@ -1409,13 +1409,13 @@ class ForgotPasswordView(APIView):
     def post(self, request):
         email = request.data.get('email')
         if not email:
-            return Response({'message': 'Please provide the following details', 'details': {'email': 'Email'}}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'Please provide the following details', 'details': {'email': 'Email'}}, status=status.HTTP_400_BAD_REQUEST)
         try:
             # Check if user exists in records
             user = CustomUser.objects.get(email=email)
         except CustomUser.DoesNotExist:
             # If user is not in records, prompt user to register first
-            return Response({'message': 'User not in records. Register first.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'User not in records. Register first.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Generate a verification code
         verification_code = random.randint(100000, 999999)
@@ -1425,7 +1425,7 @@ class ForgotPasswordView(APIView):
         # Send verification code via email
         send_otp_via_email(email)
 
-        return Response({'message': 'Password Reset code sent successfully. Use it to reset your password.'}, status=status.HTTP_200_OK)
+        return Response({'Message': 'Password Reset code sent successfully. Use it to reset your password.'}, status=status.HTTP_200_OK)
 
 #------------------------------------Forgot Password by Adil---------------------------------------------------------------
     
@@ -1834,7 +1834,7 @@ class GetYouTubeTagsView(APIView):
             
             if not 'query' in request.data and not request.data['query']:
                 msg = 'could not found the query'
-                return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'Message' : msg}, status=status.HTTP_400_BAD_REQUEST)
 
 
             i_bot = Bot(user=user)
@@ -2415,7 +2415,7 @@ class GetInstaTagsView(APIView):
             
             if not 'query' in request.data and not request.data['query']:
                 msg = 'could not found the query'
-                return Response({'msg' : msg}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'Message' : msg}, status=status.HTTP_400_BAD_REQUEST)
 
             i_bot = Bot(user=user)
             twenty_four_hours_ago = datetime.now() - timedelta(hours=24)
