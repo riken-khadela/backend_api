@@ -2449,7 +2449,7 @@ class GetInstaTagsView(APIView):
             if "max() arg is an empty sequence" in error_message:
                 return JsonResponse({'Message': 'Please enter a valid query.'}, status=400)
             else:
-                return JsonResponse({'Message': f'Error occurred: {error_message}' ,"username":username, "hastag_all":request.data['query']}, status=400)
+                return JsonResponse({"Hashtag":request.data['query'], 'Message': f'Error occurred: {error_message}' }, status=400)
 
         # Check if hashtag_data is retrieved successfully
         if hashtag_data:
