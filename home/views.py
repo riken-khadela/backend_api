@@ -748,17 +748,21 @@ class YouTubeHashTag(APIView):
             if 'language' in request.data and request.data['language']:
                 lang = request.data['language']# en or ko else lang=None
                 Hastag = self.get_related_keywords(request.data['tag'],lang)
+                Hastag = Hastag[:15] # Adil Changed HERE
             else:
                 Hastag = self.get_related_keywords(request.data['tag'])
+                Hastag = Hastag[:15] # Adil Changed HERE
             print("The Hashtag Is",Hastag)
             # if len(Hastag)>=15:
             #     Hastag=Hastag[:15]
         else :
             try :
                 Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result.replace("'", "\""))
+                Hastag = Hastag[:15] # Adil Changed HERE
             except :
                 try :
                     Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result)
+                    Hastag = Hastag[:15] # Adil Changed HERE
                 except :
                     msg = 'Failed to scrape the hashtag'
                     return Response({"Hashtag": request.data['tag'], "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
@@ -785,7 +789,7 @@ class YouTubeHashTag(APIView):
                 return Response({"Hashtag":  Hastag,  "Message": msg},status=status.HTTP_200_OK) # If we don't get trends
         else:
             msg = 'Failed to scrape the hashtag'
-            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Hashtag": request.data['tag'], "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
         
     #---------------------New code to refresh token automatically By ADIL--------------------------------------------------------
     def read_token_from_file(self,file_path):
@@ -2427,29 +2431,32 @@ class GetInstaTagsView(APIView):
                     json_data = insta_instance.get_hashtags(query, csrftoken, sessionid)
                     response_json = insta_instance.count_tags_all(json_data, csrftoken, sessionid)
                     hashtag_data = insta_instance.get_ranking(response_json)
+                    hashtag_data=hashtag_data[:15] # Adil Changed HERE
                     if len(hashtag_data) > 5:
                         break
                 else:
                     msg = 'Failed to scrape the hashtag'
-                    return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"Hashtag":  request.data['query'], "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
             else:
                 try:
                     hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result.replace("'", "\""))
+                    hashtag_data=hashtag_data[:15]# Adil Changed HERE
                 except:
                     try:
                         hashtag_data = json.loads(SearchedHistory.objects.filter(hashtag=query, created__gte=twenty_four_hours_ago, platform="Instagram").first().result)
+                        hashtag_data=hashtag_data[:15]# Adil Changed HERE
                     except:
                         msg = 'Failed to scrape the hashtag'
-                        return Response({"Hashtag": hashtag_data, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                        return Response({"Hashtag": request.data['query'], "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
                 
 
         except Exception as e:
             error_message = str(e)
             if "max() arg is an empty sequence" in error_message:
                 return JsonResponse({'Message': 'Please enter a valid query.'}, status=400)
-            else:
-                return JsonResponse({"Hashtag":request.data['query'], 'Message': f'Error occurred: {error_message}' }, status=400)
+            else:# Adil Changed HERE
+                return JsonResponse({"Hashtag": request.data['query'], 'Message': f'Error occurred: {error_message}' }, status=400)
 
         # Check if hashtag_data is retrieved successfully
         if hashtag_data:
