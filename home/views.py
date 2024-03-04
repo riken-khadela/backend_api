@@ -238,13 +238,13 @@ class RefreshTokenView(APIView):
         refresh_token = request.data.get('refresh_token')
 
         if not refresh_token:
-            return Response({'error': 'No refresh token provided'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'No refresh token provided'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             refresh_token = RefreshToken(refresh_token)
             access_token = refresh_token.access_token
         except Exception as e:
-            return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'Message': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'access_token': str(access_token)}, status=status.HTTP_200_OK)
     
@@ -1859,9 +1859,9 @@ class GetYouTubeTagsView(APIView):
         except Exception as e:
             error_message = str(e)
             if "max() arg is an empty sequence" in error_message:
-                return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+                return JsonResponse({'Message': 'Please enter a valid query.'}, status=400)
             else:
-                return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
+                return JsonResponse({'Message': f'Error occurred: {error_message}'}, status=400)
 
         # Check if hashtag_data is retrieved successfully
         if Hastag:
@@ -2384,7 +2384,7 @@ class GetInstaTagsView(APIView):
         # Get the query from the request
         insta_user_list = instagram_accounts.objects.filter(status='ACTIVE')
         if not insta_user_list:
-            return JsonResponse({'error': "No User is Active"}, status=400)
+            return JsonResponse({'Message': "No User is Active"}, status=400)
         
         insta_user = insta_user_list.first()
 
@@ -2446,9 +2446,9 @@ class GetInstaTagsView(APIView):
         except Exception as e:
             error_message = str(e)
             if "max() arg is an empty sequence" in error_message:
-                return JsonResponse({'error': 'Please enter a valid query.'}, status=400)
+                return JsonResponse({'Message': 'Please enter a valid query.'}, status=400)
             else:
-                return JsonResponse({'error': f'Error occurred: {error_message}'}, status=400)
+                return JsonResponse({'Message': f'Error occurred: {error_message}'}, status=400)
 
         # Check if hashtag_data is retrieved successfully
         if hashtag_data:
