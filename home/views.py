@@ -731,8 +731,9 @@ class YouTubeHashTag(APIView):
         user = CustomUser.objects.filter(id=user_id).first()
         if not user :
             msg = 'could not found the user'
-            return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"Message": msg}, status=status.HTTP_401_UNAUTHORIZED)
         if user.credit < 10 :
+            Hastag=request.data['tag']
             msg = 'Insufficient credit to perform this action.'
             return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_402_PAYMENT_REQUIRED)
         
@@ -760,7 +761,7 @@ class YouTubeHashTag(APIView):
                     Hastag = json.loads(SearchedHistory.objects.filter(hashtag=request.data['tag'],created__gte=twenty_four_hours_ago,platform="Youtube").first().result)
                 except :
                     msg = 'Failed to scrape the hashtag'
-                    return Response({"Hashtag": Hastag, "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"Hashtag": request.data['tag'], "Message": msg}, status=status.HTTP_400_BAD_REQUEST)
 
         if Hastag:
             if not past_searched_hashtag :
